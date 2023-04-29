@@ -1,13 +1,7 @@
 ﻿using System;
-//using System.Collections.Generic;
-//using System.Linq;
 using System.Net.Sockets;
 using System.Net;
-//using System.Text;
 using System.Threading;
-//using System.Threading.Tasks;
-//using Microsoft.Data.Sqlite;
-//using static System.Net.Mime.MediaTypeNames;
 using Class_chat;
 using System.Text.Json;
 using System.IO;
@@ -16,12 +10,7 @@ using System.Net.NetworkInformation;
 using static System.Net.WebRequestMethods;
 using System.IO.Pipes;
 using static System.Net.Mime.MediaTypeNames;
-//using System.Data.SqlTypes;
-//using System.Linq;
-//using System.Runtime.Serialization.Formatters.Binary;
-//using System.Collections;
-//using System.IO;
-//using System.Runtime.Remoting.Messaging;
+
 
 namespace ServersAccept
 {
