@@ -24,15 +24,13 @@ namespace ServersAccept
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
             globalClass.CreateTable_Files();
-            //MulticastOption multicastOption = null;
-
+            
             TcpListener server = null;
             try
             {
                 int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-                //ThreadPool.SetMaxThreads(8, 8);
-
+               
                 Int32 port = 9595;
 
                 IPAddress localAddr = IPAddress.Parse("192.168.0.113");//127.0.0.1
@@ -63,10 +61,6 @@ namespace ServersAccept
             {
                 Console.WriteLine("SocketException:{0}", e.Message);
             }
-            //finally
-            //{
-            //  //  server.Stop();
-            //}
             Console.WriteLine("\nНажмите Enter");
             Console.Read();
         }
@@ -77,8 +71,6 @@ namespace ServersAccept
             {
                 Byte[] bytes = new Byte[99999999];
                 String data;
-                /*   //     String name = null;
-                //string pass = null;*/
                 using (TcpClient client = client_obj as TcpClient)
                 {
                     GlobalClass globalClass = new GlobalClass();
