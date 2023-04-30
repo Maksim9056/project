@@ -337,7 +337,7 @@ namespace ServersAccept
                                     stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                                 }
                                 break;
-                            case "012":
+                            case "012": //получение списка сообщений (обновление)
                                 User_photo user_Select = JsonSerializer.Deserialize<User_photo>(msg);
 
                                 globalClass.Select_Friend(user_Select.Current.ToString());
