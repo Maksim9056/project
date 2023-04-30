@@ -6,10 +6,10 @@ using Class_chat;
 using System.Text.Json;
 using System.IO;
 using System.Text;
-using System.Net.NetworkInformation;
-using static System.Net.WebRequestMethods;
-using System.IO.Pipes;
-using static System.Net.Mime.MediaTypeNames;
+//using System.Net.NetworkInformation;
+//using static System.Net.WebRequestMethods;
+//using System.IO.Pipes;
+//using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ServersAccept
@@ -76,7 +76,9 @@ namespace ServersAccept
                     GlobalClass globalClass = new GlobalClass();
 
                     NetworkStream stream = client.GetStream();
-
+                    
+                    Command command = new Command();
+                    
                     int i;
                     while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
                     {
@@ -324,20 +326,24 @@ namespace ServersAccept
                                 break;
                             case "011":
 
-                                MessСhat Delete_Message = JsonSerializer.Deserialize<MessСhat>(msg);
-                                globalClass.Delete_Message_make_up(Delete_Message);
-                                MessСhat[] json_Update_delete = new MessСhat[globalClass.Frends_Chat_Wath.Length];
-                                //        string a = "";  
-                                for (int k = 0; k < globalClass.Frends_Chat_Wath.Length; k++)
-                                {
-                                    json_Update_delete[k] = globalClass.Frends_Chat_Wath[k];
-                                }
-                                UseTravel Update_chats_make_up_after_delete = new UseTravel("true", json_Update_delete.Length, json_Update_delete);
-                                using (MemoryStream ms = new MemoryStream())
-                                {
-                                    JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
-                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
-                                }
+                                command.Delete_Message(msg, globalClass, stream);
+
+                                /*
+                                //MessСhat Delete_Message = JsonSerializer.Deserialize<MessСhat>(msg);
+                                //globalClass.Delete_Message_make_up(Delete_Message);
+                                //MessСhat[] json_Update_delete = new MessСhat[globalClass.Frends_Chat_Wath.Length];
+                                ////        string a = "";  
+                                //for (int k = 0; k < globalClass.Frends_Chat_Wath.Length; k++)
+                                //{
+                                //    json_Update_delete[k] = globalClass.Frends_Chat_Wath[k];
+                                //}
+                                //UseTravel Update_chats_make_up_after_delete = new UseTravel("true", json_Update_delete.Length, json_Update_delete);
+                                //using (MemoryStream ms = new MemoryStream())
+                                //{
+                                //    JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
+                                //    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                //}
+                                */
                                 break;
                             case "012": //получение списка сообщений (обновление)
                                 User_photo user_Select = JsonSerializer.Deserialize<User_photo>(msg);
@@ -382,6 +388,11 @@ namespace ServersAccept
                                 }   
                                 break;
                                 case "013": //получение списка друзей (обновление)
+
+                                
+                                command.List_Friens(msg, globalClass, stream);
+
+                                /*
                                 User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
 
                                 globalClass.Select_Friend(Select_list_Friends.Current.ToString());
@@ -399,7 +410,7 @@ namespace ServersAccept
                                     JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
                                     stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                                 }
-
+                                */
 
                                 //var options_Friends = new JsonSerializerOptions
                                 //{
