@@ -175,9 +175,9 @@ namespace Client_chat
         {
             try
             {
-                Int32 port = 9595;
+                //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, port))
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
@@ -307,9 +307,9 @@ namespace Client_chat
         {
             try
             {
-                Int32 port = 9595;
+                //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, port))
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
@@ -439,8 +439,6 @@ namespace Client_chat
             Friend = Friends;
             try
             {
-
-
                 //   int h = 0;
                 if (Friends == null)
                 {
@@ -569,8 +567,9 @@ namespace Client_chat
 
                 User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
                 Friends = Id_Friend.Id;
+                dataGridViewChat.Rows.Clear();
 
-                Connect(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
+                    Connect(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
                 }
            
                 //OpenChat(dataGridViewChat);
@@ -617,9 +616,9 @@ namespace Client_chat
         {
             try
             {
-                Int32 port = 9595;
+                //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, port))
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
@@ -708,7 +707,7 @@ namespace Client_chat
                                 MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
                                 les[i] = useTravel;
                             }
-                            sender.Rows.Clear();
+                          //  sender.Rows.Clear();
                             sender.RowCount = les.Count();
                             sender.ColumnCount = 2;
 
@@ -905,8 +904,8 @@ namespace Client_chat
         {
             try
             {
-                Int32 port = 9595;
-                using (TcpClient client = new TcpClient(server, port))
+                //Int32 port = 9595;
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
@@ -992,9 +991,9 @@ namespace Client_chat
         {
             try
             {
-                Int32 port = 9595;
+                //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, port))
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
@@ -1103,10 +1102,8 @@ namespace Client_chat
 
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-
                 contextMenuStrip1.Show(Cursor.Position.X, Cursor.Position.Y);
             }
-
         }
 
         private void dgrdResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -1250,81 +1247,114 @@ namespace Client_chat
         {
             if (toolStripLabel1.Text != "") {
 
-                Int32 port = 9595;
-                using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, port))
-                { NetworkStream stream = client.GetStream();
+                //Int32 port = 9595;
+                using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
+                {   
+                    NetworkStream stream = client.GetStream();
                     int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                     User_photo tt = Friend[selectedrowindex];
                     tt.Current = Users;           
 
                     string person = JsonSerializer.Serialize<User_photo>(tt);
 
-                    Byte[] data = System.Text.Encoding.Default.GetBytes("012" + person);
+                    Byte[] data = System.Text.Encoding.Default.GetBytes("013" + person);
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseData = String.Empty;
                     String responseDat = String.Empty;
-                    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
-                    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                    User_photo[] people = null;
-                    if (responseDat == "false")
+
+
+                    //User_photo_Travel
+                    //Int32 bytesFriend = await stream.ReadAsync(data, 0, data.Length);
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        int cnt = 0;
+                        Byte[] locbuffer = new byte[1024];
+                        do
+                        {
+                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                            ms.Write(locbuffer, 0, cnt);
+                        } while (client.Available > 0);
+
+                        responseDat = Encoding.Default.GetString(ms.ToArray());
+                    }
+
+
+                    MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
+
+
+
+
+                    dataGridViewUser.RowCount = msgFriends.AClass.Count();
+                    dataGridViewUser.ColumnCount = 1;
+                    for (int i = 0; i < Friend.Count(); i++)
                     {
 
+                    }
+                        //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
+                       //User_photo[] people = null;
+                      // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
+                     //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;
+                    if (msgFriends.Answe == "true")
+                    {
+                        //}   
+                        try
+                        {
+                            if (msgFriends.AClass == null)
+                            {
+
+
+
+                            }
+                            else
+                            {
+                                dataGridViewUser.RowCount = msgFriends.AClass.Count();
+                                dataGridViewUser.ColumnCount = 1;
+                                for (int i = 0; i < msgFriends.AClass.Count(); i++)
+                                {
+                                    for (int j = 0; j < 1; j++)
+                                    {
+
+                                        dataGridViewUser.Rows[i].Cells[j].Value = msgFriends.AClass[i].Name;
+                                        //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
+                                    }
+                                }
+                                dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
 
 
                     }
                     else
                     {
-                        string result = responseDat.Trim(new char[] { '"', '0' });
-                        Int32 it = Convert.ToInt32(result);
-                        people = new User_photo[it];
-                        // int i =0;
-                        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
-                        //Друзья
-                        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
-                        string rez2 = result.Substring(0, result.IndexOf("}"));
-                        //string rez2 = result.Insert(result.IndexOf("}") + 1, ",");
-                        List<string> tokens = new List<string>(result.Split('}'));
+                        //string result = responseDat.Trim(new char[] { '"', '0' });
+                        //Int32 it = Convert.ToInt32(result);
+                        //people = new User_photo[it];
+                        //// int i =0;
+                        //Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
+                        ////Друзья
+                        //result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
+                        //string rez2 = result.Substring(0, result.IndexOf("}"));
+                        ////string rez2 = result.Insert(result.IndexOf("}") + 1, ",");
+                        //List<string> tokens = new List<string>(result.Split('}'));
 
-                        for (int j = 0; j < tokens.Count - 1; j++)
-                        {
-                            string tt2 = tokens[j] + "}";
-                            people[j] = JsonSerializer.Deserialize<User_photo>(tt2);
-                        }
-                    }
+                        //for (int j = 0; j < tokens.Count - 1; j++)
+                        //{
+                        //    string tt2 = tokens[j] + "}";
+                        //    people[j] = JsonSerializer.Deserialize<User_photo>(tt2);
+              
 
-                    Friend = people;
-                    try
-                    {
-                        if (people == null)
-                        {
-
-
-
-                        }
-                        else
-                        {
-                            dataGridViewUser.RowCount = people.Count();
-                            dataGridViewUser.ColumnCount = 1;
-                            for (int i = 0; i < Friend.Count(); i++)
-                            {
-                                for (int j = 0; j < 1; j++)
-                                {
-                                    // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
-                                    //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;
-                                    dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
-                                    //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
-                                }
-                            }
-                            dataGridViewUser.Columns[0].HeaderText = "Друзья";
-
-                        }
+                 
                    /*     Users = .Id*/;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    }  
+                    //dataGridViewChat.Rows.Clear();
+
+                   
                 }
             }
         }

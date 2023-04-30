@@ -31,12 +31,12 @@ namespace ServersAccept
                 int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
                
-                Int32 port = 9595;
+                //Int32 port = 9595;
 
                 IPAddress localAddr = IPAddress.Parse("192.168.0.113");//127.0.0.1
                 int counter = 0;
                 Console.WriteLine();
-                server = new TcpListener(localAddr, port);
+                server = new TcpListener(localAddr, ConnectSettings.port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
                 Console.WriteLine($"Ip-адрес: {localAddr}");//127.0.0.1 System.Net.Sockets.AddressFamily family
                                                             //      string Host = System.Net.Dns.GetHostName();
@@ -379,7 +379,47 @@ namespace ServersAccept
                                     }
 
 
-                                }   break;
+                                }   
+                                break;
+                                case "013": //получение списка друзей (обновление)
+                                User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
+
+                                globalClass.Select_Friend(Select_list_Friends.Current.ToString());
+
+                                User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+
+                                for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                                {
+                                    json_List_Friends[k] = globalClass.List_Friend[k];
+                                }
+
+                                using (MemoryStream ms = new MemoryStream())
+                                {
+                                    User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
+                                    JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
+                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                }
+
+
+                                //var options_Friends = new JsonSerializerOptions
+                                //{
+                                //    AllowTrailingCommas = true
+                                //};
+                                ////что то не очень
+                                //int tt_Friends = globalClass.List_Friend.Length;
+                                //for (int k = 0; k < tt_Friends; k++)
+                                //{
+                                //    using (MemoryStream ms_Friend_Answe = new MemoryStream())
+                                //    {
+
+                                //        AUser_Friends = globalClass.List_Friend[k];
+
+                                //        JsonSerializer.Serialize<User_photo>(ms_Friend_Answe, AUser_Friends, options_Friends);
+                                //        stream.Write(ms_Friend_Answe.ToArray(), 0, ms_Friend_Answe.ToArray().Length);
+                                //    }
+                                //}
+
+                                break;
                                 //globalClass.Select_Message_Users(user_Select);
                                 ////string FileFS = "";
                                 //if (globalClass.Mess_Chats == true)
@@ -413,7 +453,7 @@ namespace ServersAccept
 
 
 
-                             
+
 
                                 /*int FileNameLenght = data.Length;
                                 ////int FileBytesCount = FileBytes.Length;

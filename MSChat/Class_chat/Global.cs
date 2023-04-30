@@ -14,6 +14,13 @@ using System.Data;
 namespace Class_chat
 {
 
+    public class ConnectSettings
+    {
+        public const Int32 port = 9595;
+        public const string IP = "192.168.0.113";
+    }
+
+
     //[DataContract]
     public class UseTravel
     {
@@ -102,6 +109,27 @@ namespace Class_chat
 
     }
 
+    public class User_photo_Travel
+    {
+        //public static bool UC = true;
+        public string Answe { get; }
+        public int List_Mess { get; set; }
+        public User_photo[] AClass { get; set; }
+        public User_photo_Travel(string answe, int count, User_photo[] aclass)
+        {
+            Answe = answe;
+            List_Mess = count;
+            AClass = aclass;
+        }
+    }
+
+    public class MsgFriends
+    {
+        public string Answe { get; set; }
+        public int List_Mess { get; set; }
+        public List<User_photo> AClass { get; set; } = new List<User_photo>();
+
+    }
 
 
 
