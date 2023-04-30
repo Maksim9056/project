@@ -112,7 +112,7 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseData = String.Empty;
-                    String responseDat = String.Empty;
+                    //String responseDat = String.Empty;
 
                     using (MemoryStream ms = new MemoryStream())
                     {
@@ -166,6 +166,7 @@ namespace Client_chat
          
         }
 
+
         private void pictureBox2_Click(object sender, EventArgs e)
         {
 
@@ -180,6 +181,8 @@ namespace Client_chat
                 }
             }
         }
+
+
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;

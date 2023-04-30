@@ -20,7 +20,7 @@ using System.Collections.Generic;
 //using System.Runtime.Serialization.Formatters.Binary;
 //using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
-using System.Runtime.InteropServices;
+//using System.Runtime.InteropServices;
 //using System.Linq;
 //using Newtonsoft.Json.Linq;
 
@@ -92,7 +92,6 @@ namespace Client_chat
                 {
 
                     DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));
-
 
 
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);

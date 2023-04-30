@@ -1,26 +1,26 @@
 ﻿using Class_chat;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+//using System.ComponentModel;
+//using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
+//using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.WebRequestMethods;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+//using static System.Net.WebRequestMethods;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 //using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization.Json;
-using System.Text.Json.Nodes;
+//using System.Runtime.Serialization.Json;
+//using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Net.Http;
+//using System.Runtime.InteropServices.ComTypes;
+//using System.Net.Http;
 //using static System.Net.Mime.MediaTypeNames;
 //using Newtonsoft.Json;
 
@@ -104,6 +104,8 @@ namespace Client_chat
         {
             // toolTip1.SetToolTip(toolStrip1, "Тут добавьте текст подсказки");
         }
+
+
         private void button3_Click(object sender, EventArgs e)
         {
             string FileFS = "";
@@ -153,21 +155,21 @@ namespace Client_chat
 
 
 
-        async public void Func_Read(Stream str, int length, TcpClient client)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int cnt = 0;
-                Byte[] locbuffer = new byte[length];
-                do
-                {
-                    cnt = await str.ReadAsync(locbuffer, 0, locbuffer.Length);
-                    ms.Write(locbuffer, 0, cnt);
-                } while (client.Available > 0);
+        //async public void Func_Read(Stream str, int length, TcpClient client)
+        //{
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
+        //        int cnt = 0;
+        //        Byte[] locbuffer = new byte[length];
+        //        do
+        //        {
+        //            cnt = await str.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //            ms.Write(locbuffer, 0, cnt);
+        //        } while (client.Available > 0);
 
-                Respons = Encoding.Default.GetString(ms.ToArray());
-            }
-        }
+        //        Respons = Encoding.Default.GetString(ms.ToArray());
+        //    }
+        //}
 
 
 
@@ -200,7 +202,7 @@ namespace Client_chat
 
                     //Func_Read(stream,1024, client);
 
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
                     //responseDat = Respons;
@@ -315,7 +317,7 @@ namespace Client_chat
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
 
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
                     using (MemoryStream ms = new MemoryStream())
@@ -531,14 +533,13 @@ namespace Client_chat
             button1.Visible = false;
         }
 
-        private void dataGridViewUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
+        //private void dataGridViewUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //}
 
         private void dataGridViewUser_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
         }
 
         private void dataGridViewUser_Click(object sender, EventArgs e)
@@ -624,7 +625,7 @@ namespace Client_chat
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
                     //data = new Byte[99999999];
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
                     using (MemoryStream ms = new MemoryStream())
@@ -875,7 +876,6 @@ namespace Client_chat
         private void dataGridViewChat_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -901,6 +901,8 @@ namespace Client_chat
 
             Connect_Friends(IP_ADRES.Ip_adress, FileFS, "008", dataGridViewUser);
         }
+
+
         async void Connect_Friends(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -988,6 +990,9 @@ namespace Client_chat
 
             }
         }
+
+
+
         async void Delete_message_make_up(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -1000,7 +1005,7 @@ namespace Client_chat
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
 
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
                     using (MemoryStream ms = new MemoryStream())
@@ -1190,7 +1195,7 @@ namespace Client_chat
         }
 
         async private void timer1_Tick(object sender, EventArgs e)
-        {              //    Int32 port = 9595;
+        {              
 
             if (toolStripLabel1.Text !="")
             {
@@ -1207,7 +1212,7 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
 
                     data = new Byte[99999999];
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
                     Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
@@ -1244,11 +1249,11 @@ namespace Client_chat
             }
         }
 
+
         async private void timer2_Tick(object sender, EventArgs e)
         {
             if (toolStripLabel1.Text != "") {
-
-                //Int32 port = 9595;
+                
                 using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
                 {   
                     NetworkStream stream = client.GetStream();
@@ -1261,7 +1266,7 @@ namespace Client_chat
                     Byte[] data = System.Text.Encoding.Default.GetBytes("013" + person);
                     await stream.WriteAsync(data, 0, data.Length);
 
-                    String responseData = String.Empty;
+                    //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
 
