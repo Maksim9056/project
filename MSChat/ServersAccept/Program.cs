@@ -284,7 +284,7 @@ namespace ServersAccept
 
                                 }
                                 break;
-                            case "009"://Добавление сообщения с обновлением
+                            case "009":
                                 MessСhat Insert_Message = JsonSerializer.Deserialize<MessСhat>(msg);
                                 globalClass.Insert_Message(Insert_Message);
 
