@@ -567,7 +567,6 @@ namespace Client_chat
 
                 User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
                 Friends = Id_Friend.Id;
-                dataGridViewChat.Rows.Clear();
 
                     Connect(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
                 }
@@ -620,10 +619,11 @@ namespace Client_chat
 
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
+
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
-                    data = new Byte[99999999];
+                    //data = new Byte[99999999];
                     String responseData = String.Empty;
                     String responseDat = String.Empty;
 
@@ -639,6 +639,7 @@ namespace Client_chat
 
                         responseDat = Encoding.Default.GetString(ms.ToArray());
                     }
+                    dataGridViewChat.Rows.Clear();
 
                     //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
                     // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
@@ -1189,7 +1190,8 @@ namespace Client_chat
         }
 
         async private void timer1_Tick(object sender, EventArgs e)
-        {
+        {              //    Int32 port = 9595;
+
             if (toolStripLabel1.Text !="")
             {
 
@@ -1198,8 +1200,7 @@ namespace Client_chat
                 tt.Current = Users;
                 string person = JsonSerializer.Serialize<User_photo>(tt);
 
-                Int32 port = 9595;
-                using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, port))
+                using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress,ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes("012" + person);
                     NetworkStream stream = client.GetStream();

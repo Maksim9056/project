@@ -24,7 +24,7 @@ namespace ServersAccept
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
             globalClass.CreateTable_Files();
-            
+         //   ThreadPool.UnsafeRegisterWaitForSingleObject;
             TcpListener server = null;
             try
             {
@@ -33,13 +33,14 @@ namespace ServersAccept
                
                 //Int32 port = 9595;
 
-                IPAddress localAddr = IPAddress.Parse("192.168.0.113");//127.0.0.1
+                IPAddress localAddr = IPAddress.Parse(ConnectSettings.IP);
                 int counter = 0;
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
-                Console.WriteLine($"Ip-адрес: {localAddr}");//127.0.0.1 System.Net.Sockets.AddressFamily family
-                                                            //      string Host = System.Net.Dns.GetHostName();
+                Console.WriteLine($"Ip-адрес: {localAddr}");
+                //127.0.0.1 System.Net.Sockets.AddressFamily family
+                //      string Host = System.Net.Dns.GetHostName();
                 /*for (int i = 0; i < System.Net.Dns.GetHostByName(Host).AddressList.Length;i++)
                 //{
                 //     string  IP = System.Net.Dns.GetHostByName(Host).AddressList[i].ToString();
@@ -50,9 +51,12 @@ namespace ServersAccept
                 while (true)
                 {
                     Console.WriteLine("\nОжидание соединения...");
-                    Thread.Sleep(10);
+                 //+   Thread.Sleep(10);
+                    ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());// QueueUserWorkItem
+              
+                    // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
-                    ThreadPool.QueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());
+
                     counter++;
                     Console.Write("\nСоединие№" + counter.ToString() + "!");
                 }
@@ -516,7 +520,17 @@ namespace ServersAccept
             }
      
         }
+    }
+    public abstract class Threads
+    {
+
+      static  public void Thread()
+        {
+      
+           
+        }
     } 
+    
 }
 
         /*async static void ClientProcessin()

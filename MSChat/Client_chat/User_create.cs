@@ -1,22 +1,22 @@
 ﻿using Class_chat;
 //using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+//using System.Collections.Generic;
+//using System.ComponentModel;
+//using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.ComTypes;
+///using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+//using System.Text.Json.Serialization;
+//using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using System.Xml.Linq;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Client_chat
 {
@@ -103,8 +103,8 @@ namespace Client_chat
         {     
             try
             {
-                Int32 port = 9595;
-                using (TcpClient client = new TcpClient(server, port))
+                //Int32 port = 9595;
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();

@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 //using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Class_chat;
 //using ServersAccept;
 using System.Text.Json;
@@ -21,8 +21,8 @@ using System.Collections.Generic;
 //using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
 using System.Runtime.InteropServices;
-using System.Linq;
-using Newtonsoft.Json.Linq;
+//using System.Linq;
+//using Newtonsoft.Json.Linq;
 
 namespace Client_chat
 {
@@ -84,8 +84,9 @@ namespace Client_chat
         }
 
         async  void Connect(String server, string fs, string command, string user, Form userpass)
-        {     Int32 port = 9595;
-            using (TcpClient client = new TcpClient(server, port))
+        {     
+            //Int32 port = 9595;
+            using (TcpClient client = new TcpClient(server, ConnectSettings.port))
             {
                 try
                 {
