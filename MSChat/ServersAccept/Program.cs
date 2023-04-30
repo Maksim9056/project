@@ -244,9 +244,11 @@ namespace ServersAccept
                                 }
                                 else
                                 {
-                                    string aFalse = "{Answe: \"false\"}";
-                                    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes(aFalse);
+                                    //  string aFalse = "{Answe: \"false\"}";
+                                    //   byte[] msgAnswe = System.Text.Encoding.Default.GetBytes(aFalse);
+                                    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
                                     stream.Write(msgAnswe, 0, msgAnswe.Length);
+                                  //  stream.Write(msgAnswe, 0, msgAnswe.Length);
                                 }
 
                                 break;
@@ -377,7 +379,7 @@ namespace ServersAccept
                                     }
 
 
-                                }
+                                }   break;
                                 //globalClass.Select_Message_Users(user_Select);
                                 ////string FileFS = "";
                                 //if (globalClass.Mess_Chats == true)
@@ -411,7 +413,7 @@ namespace ServersAccept
 
 
 
-                                break;
+                             
 
                                 /*int FileNameLenght = data.Length;
                                 ////int FileBytesCount = FileBytes.Length;
