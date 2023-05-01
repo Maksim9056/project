@@ -32,8 +32,8 @@ namespace Client_chat
         public Chats_main()
         {
             InitializeComponent();
-
         }
+
         string Na_me { get; set; }
         public User_photo[] Friend { get; set; }
         public MessСhat[] allChat { get; set; }
@@ -48,7 +48,6 @@ namespace Client_chat
         public int selectedBiodataId;
         public bool Entrance { get; set; }
         public string Respons { get; set; }
-
 
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -471,7 +470,9 @@ namespace Client_chat
             {
                 MessageBox.Show(ex.Message);
             }
-        }                    //  dataGridViewUser.Visible = true;
+        }                   
+        
+                  //  dataGridViewUser.Visible = true;
 
                     /*На будущее заготовка для картинки
 
@@ -556,22 +557,23 @@ namespace Client_chat
                 //String Friend = Convert.ToString(selectedRow.Cells[0].Value);
                 User_photo tt = Friend[selectedrowindex];
 
-               if( tt== null)
+                if (tt == null)
                 {
 
                 }
-                else{
-                  tt.Current = Users;
-                string person = JsonSerializer.Serialize<User_photo>(tt);
-                //  Friends = person;
+                else
+                {
+                    tt.Current = Users;
+                    string person = JsonSerializer.Serialize<User_photo>(tt);
+                    //  Friends = person;
 
 
-                User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
-                Friends = Id_Friend.Id;
+                    User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
+                    Friends = Id_Friend.Id;
 
                     Connect(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
                 }
-           
+
                 //OpenChat(dataGridViewChat);
             }
             catch (Exception s)
@@ -662,7 +664,7 @@ namespace Client_chat
                     //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
                     responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
                     */
-            
+
                     if (responseDat == "false")
                     {
 
@@ -997,8 +999,6 @@ namespace Client_chat
         {
             try
             {
-                //Int32 port = 9595;
-
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);

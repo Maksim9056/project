@@ -54,7 +54,6 @@ namespace Client_chat
                 }
                 else
                 {
-
                     textBox2.Text = textBox2.Text;
                 }
             }
@@ -72,15 +71,16 @@ namespace Client_chat
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {    
-             string FileFS = "";
+        {
+            string FileFS = "";
             using (MemoryStream fs = new MemoryStream())
-            {            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+            {
+                UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
 
-                    JsonSerializer.Serialize<UserLogin>(fs, tom);
-                    FileFS = Encoding.Default.GetString(fs.ToArray());
-             }        
-          Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+                JsonSerializer.Serialize<UserLogin>(fs, tom);
+                FileFS = Encoding.Default.GetString(fs.ToArray());
+            }
+            Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
         }
 
         async  void Connect(String server, string fs, string command, string user, Form userpass)

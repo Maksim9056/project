@@ -1,15 +1,15 @@
-﻿using Class_chat;
+﻿//using Class_chat;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+//using System.IO;
+//using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text.Json.Serialization;
-using System.Data;
+//using System.Text.Json;
+//using System.Threading.Tasks;
+//using System.Xml.Linq;
+//using System.Runtime.Serialization.Json;
+//using System.Text.Json.Serialization;
+//using System.Data;
 
 namespace Class_chat
 {
@@ -53,6 +53,8 @@ namespace Class_chat
             Pass = pass;
         }
     }
+
+
     [DataContract]
     public class Friends
     {
@@ -67,6 +69,8 @@ namespace Class_chat
             Current=curent;
         }
     }
+
+
     [DataContract]
     public class User_regis
     {
@@ -87,6 +91,7 @@ namespace Class_chat
         }
 
     }
+
     public class User_photo
     {
         //User_regis() { }
@@ -142,6 +147,7 @@ namespace Class_chat
             __Name = name;
         }
     }
+
     public class MessСhat
     {
         public MessСhat()
@@ -193,6 +199,7 @@ namespace Class_chat
         }
 
     }
+
     public class Searh_Friends
     {
         Searh_Friends() { }
@@ -213,9 +220,6 @@ namespace Class_chat
 
     }
 
-
-
-
     //public static bool UC = true;
 
     //public class Use_Photo
@@ -227,6 +231,7 @@ namespace Class_chat
     //       User = user;
     //    }
     //}
+
     public class UseImage
     {
         UseImage() { }
@@ -238,6 +243,7 @@ namespace Class_chat
         }
     }
 }
+
 //}   Friends[] UserRG = new Friends[] {
 
 //             new Friends(name, Pass)

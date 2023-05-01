@@ -33,24 +33,25 @@ namespace Client_chat
 
         private void textBox1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "Имя") 
+            if (textBox1.Text == "Имя")
             { textBox1.Text = string.Empty; }
-            else 
-            { textBox1.Text = textBox1.Text; } 
+            else
+            { textBox1.Text = textBox1.Text; }
         }
 
         private void textBox2_Click(object sender, EventArgs e)
         {
 
             if (textBox2.Text == "Пароль")
-            { textBox2.Text = string.Empty;                 
-              textBox2.UseSystemPasswordChar = true;
-              textBox2.PasswordChar = '*';
+            {
+                textBox2.Text = string.Empty;
+                textBox2.UseSystemPasswordChar = true;
+                textBox2.PasswordChar = '*';
             }
             else
-            { 
+            {
 
-                textBox2.Text = textBox2.Text; 
+                textBox2.Text = textBox2.Text;
             }
         }
 
@@ -73,34 +74,35 @@ namespace Client_chat
         {
             try
             {
-                
+
                 if (textBox2.Text == textBox3.Text)
-                { string FileFS = "";
+                {
+                    string FileFS = "";
 
                     using (MemoryStream fs = new MemoryStream())
                     {
                         User_regis tom = new User_regis(textBox1.Text, textBox2.Text, textBox4.Text, buf, 0);
                         JsonSerializer.Serialize<User_regis>(fs, tom);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
-                    }                
-                    Connect(IP_ADRES.Ip_adress, FileFS,"002",textBox1.Text, this);
+                    }
+                    Connect(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
 
                 }
                 else
                 {
                     MessageBox.Show($"Пароли не совпадают !");
-                }          
+                }
 
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show($"Пароли не совпадают !", ex.Message);
 
-            }    
+            }
         }
 
         async  void Connect(String server, string fs, string command, string user, Form userpass)
-        {     
+        {
             try
             {
                 //Int32 port = 9595;
@@ -149,7 +151,7 @@ namespace Client_chat
                 }
                 //stream.Close();
                 //client.Close();
-            }   
+            }
 
             catch (ArgumentNullException e)
             {
@@ -163,7 +165,7 @@ namespace Client_chat
             {
                 Console.WriteLine("SocketException: {0}", e.Message);
             }
-         
+
         }
 
 
