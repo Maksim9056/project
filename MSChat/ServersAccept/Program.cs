@@ -38,11 +38,16 @@ namespace ServersAccept
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
-                //string Host = System.Net.Dns.GetHostName();
+                Console.WriteLine(Environment.UserName);
+                Console.WriteLine(Environment.MachineName);
+                Console.WriteLine(Environment.CurrentDirectory);
+                Console.WriteLine(Environment.TickCount);
+                Console.WriteLine(Environment.WorkingSet);
+             /*   //string Host = System.Net.Dns.GetHostName();
                 //string Ip_adres=      System.Net.Dns.Resolve();
-                Console.WriteLine($"Ip-адрес: {localAddr}");
-                //127.0.0.1 System.Net.Sockets.AddressFamily family            
-                Console.WriteLine("\nСервер запушен");
+                Console.WriteLine($"Ip-адрес: {localAddr}");            
+                //127.0.0.1 System.Net.Sockets.AddressFamily family   */         
+                Console.WriteLine("\nСервер запушен");             
                 server.Start();
                 while (true)
                 {
@@ -51,7 +56,7 @@ namespace ServersAccept
                     // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
                     counter++;
-                    Console.Write("\nСоединие№" + counter.ToString() + "!");
+                    Console.Write("\nСоединие№" + counter.ToString() + "!");            
                 }
             }
             catch (SocketException e)
@@ -66,10 +71,11 @@ namespace ServersAccept
         {
             try
             {
-                byte[] bytes = new Byte[99999999];
-                string data;
+           
                 using (TcpClient client = client_obj as TcpClient)
                 {
+                    byte[] bytes = new Byte[99999999];
+                    string data;
                     GlobalClass globalClass = new GlobalClass();
                     NetworkStream stream = client.GetStream();
                     Command command = new Command();

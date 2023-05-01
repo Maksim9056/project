@@ -5,54 +5,75 @@ namespace ServersAccept
 {
     public class GlobalClass
     {
-        //Команда для создание базы даных в файле
+        //Команда для подключения к базе данных в файле (т.к. SQLite)
         public static string connectionString = "Data Source=usersdata.db";
-        //Проверка естли пользователей в  базы данных
+
+        //Проверка есть ли пользователей в  базы данных
         public bool UserConnect { get; set; }
+
         //Проверяет добавляеться пользователей в  базе данных
         public bool User_Insert { get; set; }
+
         //Проверяет есть-ли  пользователей в  базе данных
         public bool User_Select_Chats { get; set; }
+
         //Проверяет  есть-ли  Переписка у пользователей 
         public bool Mess_Chats { get; set; }
-        //Дают id пользователю для проверки  
+
+        //Содержит id пользователя для проверки  
         public string Current_User { get; set; }
+
         //Заготовка для фото  добавление  
         public byte[] Image_User { get; set; }
-        //Передает все аргументы пользователю даже id его изображениея
+
+        //Класс - все аргументы пользователю даже id его изображениея
         public User_photo AUser { get; set; }
-        //Передают значение друзей  у   пользователя
+
+        //Класс - значение друзей  у   пользователя
         public User_photo[] List_Friend { get; set; }
-        //Передают чат  пользователям их сообщения
+
+        //Класс - чат  пользователя их сообщения в его чате
         public MessСhat[] aChatss { get; set; }
+
         //Заготовки 
         public MessСhat List_Mess { get; set; }
-        //Передают id пользользователя для проверки сообщений
-        public string Id_Users { get; set; }
-        //Заготовки
-        public int Frinds { get; set; }
-        //Заготовки
 
-        public int[] Frend { get; set; }
-        //Заготовки
-        public UseImage Use_image { get; set; }
-        //Заготовки
-        public string Frends_id { get; set; }
-        //Передают Имя  пользользователя и добавляет их список друзей
+        //Содержит id пользользователя для проверки сообщений
+        public string Id_Users { get; set; }
+
+        ////Заготовки
+        //public int Frinds { get; set; }
+        ////Заготовки
+
+        //public int[] Frend { get; set; }
+        ////Заготовки
+        //public UseImage Use_image { get; set; }
+        ////Заготовки
+        //public string Frends_id { get; set; }
+        ////Передают Имя  пользользователя и добавляет их список друзей
         public string Searh_Friend { get; set; }
+
         //Проверяет  Имя  пользользователя и есть ли он таблице пользователи
         public bool  _Searh_Freind { get; set; }
-        //Передают 2 пользользователя  id 
+
+        //Содержит id  2 пользользователя (Друга)
         public int Insert_Friend_by_id { get; set; }
-        //Заготовки
-        public int Id_Users_Name { get; set; }
+
+        ////Заготовки
+        //public int Id_Users_Name { get; set; }
+
         //Передают сколько пользователей в чате  и их сообщения
         public MessСhat[] Frends_Chat_Wath { get; set; }
-        //Передают id картин6ки для добавления пользователя картинки 
 
+        //Содержит id картинки для добавления пользователя картинки 
         public int Id_Image { get; set; }
+
         //Проверяет если у данного пользователя друзья 
         public bool Friends { get; set; }
+
+
+        /// <Блок процедур >
+       
 
         //Создают таблицу пользователей 
         public void CreateTable_Users()
@@ -93,6 +114,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
+        
         //Создают таблицу Чат 
         public void CreateTable_Chat()
         {
@@ -115,6 +137,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
+        
         //Создают таблицу Картинка 
         public void CreateTable_Files()
         {
@@ -130,6 +153,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
+
 
         //Заготовка
      /*   async public void Insert_Friends()
@@ -153,7 +177,9 @@ namespace ServersAccept
         }
 
        //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";
-         and Password='{pasword}*/
+         and Password='{pasword}
+     */ 
+
 
         //Добавляет пользователей и проверяет при  том что они там уже добавлены
         async public void Insert_User(string data, string pasword, string age, DateTime dateTime)
@@ -193,6 +219,7 @@ namespace ServersAccept
                 }
             }
         }
+        
         //Добавляет Картинку в таблицу Files  и педают id картинки для пользователей
         async public void Insert_Image(byte[] buf)
         {
@@ -257,7 +284,7 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет  в таблицу Друзья количество друзей 1 пользователя
+        //Проверяет  в таблицу Друзья количество друзей 1го пользователя
         async public void Select_Friend(string curent_user)
         {
             int UserCount = 0;
@@ -352,6 +379,7 @@ namespace ServersAccept
 
             }
         }
+        
         //Проверяет  в таблицу пользователи по имени пользователя
         async public void Select_From_Users(string data)
         {
@@ -378,6 +406,7 @@ namespace ServersAccept
                 }  
             }
         }
+        
         //Проверяет  в таблицу Друзья  добавляет друзей по id 
         async public void Select_From_Users(string IdUserFrom, string IdUserTo)
         {
@@ -402,6 +431,7 @@ namespace ServersAccept
                 command.CommandText = sqй;
             }
         }
+        
         //Добавляет  в таблицу Чат  сообщение от пользователя 
         async public void Insert_Message(MessСhat messСhat)
         {        
@@ -527,6 +557,7 @@ namespace ServersAccept
                 }
             }
         }
+        
         //Удаляет сообщение в чате  сообщение в чате у данного пользователя по 
         async public void Delete_Message_make_up(MessСhat messСhat)
         {
@@ -808,4 +839,7 @@ namespace ServersAccept
         //    }
         //}*/
     }
+
+    /// </summary>
+
 }
