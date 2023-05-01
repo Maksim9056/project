@@ -310,17 +310,12 @@ namespace ServersAccept
                             i = i + 1;
                             //Проходим по созданию фильтра для таблицы Users
                         }
-
-
-
-
-
                     //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
 
                         sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
 
-                        //using (var connections = new SqliteConnection(GlobalClass.connectionString))
-                        //{
+                      // using (var connections = new SqliteConnection(GlobalClass.connectionString))
+                        //  {
                             await connection.OpenAsync();
                             SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
                             SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
@@ -350,7 +345,7 @@ namespace ServersAccept
                                 //друзей нет 
                                 Friends = false;
                             }
-                        //}
+                       // }
                     }
                     else
                     {
@@ -388,8 +383,6 @@ namespace ServersAccept
                 }  
             }
         }
-
-
         async public void Select_From_Users(string IdUserFrom, string IdUserTo)
         {
             Select_From_Users(IdUserFrom);
@@ -411,7 +404,6 @@ namespace ServersAccept
                 command.CommandText = sqй;
             }
         }
-
         async public void Insert_Message(MessСhat messСhat)
         {        
             string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
@@ -439,24 +431,16 @@ namespace ServersAccept
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
-
-
             string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                               $"(IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
-
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
                 SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
                 var n = await command.ExecuteReaderAsync();
-                //   SqliteDataReader adapter = new SqliteDataReader(sqlExpressi, connection);
-
-                //   SQLiteCommand cmd = new SQLiteCommand(sqlExpression, connection);
-                //      ds = new DataSet();
                 //         // Заполняем Dataset
                 SqliteDataReader sqReader = command2.ExecuteReader();
-
                 // Always call Read before accessing data.
                 if (n.HasRows == true)
                 {
@@ -472,10 +456,8 @@ namespace ServersAccept
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                         MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string,DataMess, Mark);
                         //aChat = mСhat;
-
                         aClats[k] = mСhats;
                         k++;
-
                     }
                     Frends_Chat_Wath = aClats;
                 }
@@ -499,8 +481,6 @@ namespace ServersAccept
                 await command.ExecuteNonQueryAsync();
                 command.CommandText = sq;
             }
-
-
             int UserCount = 0;
             string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                                                     $" (IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
@@ -513,8 +493,6 @@ namespace ServersAccept
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
-
-
             string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                             $" (IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -529,7 +507,6 @@ namespace ServersAccept
                 {
                     MessСhat[] aClats = new MessСhat[UserCount];
                     int k = 0;
-
                     while (sqReader.Read())
                     {
                         int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
@@ -538,7 +515,6 @@ namespace ServersAccept
                         DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                         MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
-
                         aClats[k] = mСhats;
                         k++;                     
                     }
@@ -550,8 +526,6 @@ namespace ServersAccept
                 }
             }
         }
-
-
         async public void Delete_Message_make_up(MessСhat messСhat)
         {
             string sqlExpression = $"DELETE   FROM Chat  WHERE Id = '{messСhat.Id}'";
@@ -571,29 +545,22 @@ namespace ServersAccept
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
                 SqliteDataReader sqReader = command.ExecuteReader();
-
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
-
-
             string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                             $" (IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
-
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
                 SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
                 var n = await command.ExecuteReaderAsync();
-
-                SqliteDataReader sqReader = command2.ExecuteReader();
-           
+                SqliteDataReader sqReader = command2.ExecuteReader();      
                 if (n.HasRows == true)
                 {
                     MessСhat[] aClats = new MessСhat[UserCount];
                     int k = 0;
-
                     while (sqReader.Read())
                     {
                         int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
@@ -602,7 +569,6 @@ namespace ServersAccept
                         DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                         MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
-
                         aClats[k] = mСhats;
                         k++;
                     }
@@ -614,80 +580,6 @@ namespace ServersAccept
                 }
             }
         }
-        //async static public void Select_From_Users(string data, string message, DateTime dateTime)
-        //{
-
-        //    string sqlExpression = $"UPDATE Users SET  Name = '{data}',Messege= '{message}, Image = @buf WHERE Id = '{Id}'";
-
-        //    using (var connection = new SqliteConnection(GlobalClass.connectionString))
-        //    {
-        //        connection.Open();
-        //        SqliteCommand command = new SqliteCommand(sqlExpression, connection);
-
-
-        //        command.ExecuteNonQuery();
-
-
-        //    } //      command.Parameters.Add(new ("@buf", buf));
-        //}
-
-
-
-
-        //async public void UPDATE_User(byte[] msg, string data, DateTime dateTime)
-        //{  //*{/*Age*/', {Namme}*/{Id}{Namme} Age = ' Name = '', Image = @buf WHERE Id = ''
-        //    try  /*{data}*/
-        //    {
-        //      string sqlExpression = $"UPDATE Users SET Messege ={msg.ToString()}', DataMess={dateTime:s}, Mark ='1'";
-
-        //        using (var connection = new SqliteConnection(GlobalClass.connectionString))
-        //        {
-        //        await    connection.OpenAsync();
-        //           SqliteCommand command = new SqliteCommand(sqlExpression, connection);
-        //         //   command.Parameters.Add(new SqliteParameter("@buf", buf));
-
-        //          await  command.ExecuteNonQueryAsync();
-
-        //            connection.Close();
-        //            connection.Dispose();
-        //        }
-        //    }
-        //    catch
-        //    {
-
-        //        string sqlExpressio = $"SELECT * FROM Users  WHERE Name = ''";
-
-        //        using (var connection = new SqliteConnection(GlobalClass.connectionString))
-        //        {
-        //            connection.Open();
-        //            SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
-        //          var n =  await command.ExecuteReaderAsync();
-        //            if (n.HasRows == true)
-        //            {
-        //                Console.WriteLine("Такое имя уже есть");
-        //               // N = true;
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
-        //using (var connection = new SqliteConnection(GlobalClass.connectionString))
-        //{
-        //    connection.Open();
-        //    SqliteCommand command = new SqliteCommand();
-        //    command.CommandText = "CREATE TABLE IF NOT EXISTS Chat ( Id	INTEGER UNIQUE," +
-        //        " IdUserFrom INTEGER , " +
-        //     //   "IdUserTo INTEGER , " +
-        //         "Messege TEXT NOT NULL, " +
-        //        "Mark boolean NOT NULL," +
-        //        "PRIMARY KEY(Id), FOREIGN KEY(IdUserFrom) REFERENCES Users(Id)," +
-        //        "FOREIGN KEY(IdUserTo) REFERENCES Users(Id));";
-
-        //    command.Connection = connection;
-        //    command.ExecuteNonQuery();
-        //}
         async public void Select_Message_Users(User_photo data)
         {
 
@@ -736,14 +628,11 @@ namespace ServersAccept
                         MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string,
                                                 DataMess, Mark);
                         //aChat = mСhat;
-
                         aChats[j] = mСhat;
                         j++;
 
                     }
                     //List_Mess = aChats;                         
-
-
                     aChatss = aChats;
                     Mess_Chats = true;
 
@@ -756,56 +645,10 @@ namespace ServersAccept
 
 
 
-                // Frends_id = sqReader["Id"].ToString();
-
-                //   string questions = sqReader["Id"];
-                //.Items.Add(questions);
-                // Console.WriteLine(questions);
-                //  Id_Users =  questions;
-                //}
-                //if (n.HasRows == true)
-                //    {      
-                //       Console.WriteLine($" Такое имя уже есть" );
-                //       User_Select_Chats = true;
-                //    }
-                //    else
-                //    {
-                //    User_Select_Chats = false;
-                //    }
             }
-         
-            //string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {Frends_id}";
-            ////int[] Frend = new int[UserCount];
-            //int i = 0;
-
-            //using (var connection = new SqliteConnection(GlobalClass.connectionString))
-            //{
-            //    await connection.OpenAsync();
-            //    SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
-            //    SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
-            //    var n = await command.ExecuteReaderAsync();
-            //    SqliteDataReader sqReader = commandS.ExecuteReader();
-            //    if (n.HasRows == true)
-            //    {
-            //        Console.WriteLine("У пользователя есть друзья");
-            //        while (sqReader.Read())
-            //        {
-
-            //            Frend[i] = sqReader.GetInt32(0);
-            //            i = i + 1;
-            //            //Проходим по созданию фильтра для таблицы Users
-            //        }
-            //    }
-            //    else
-            //    {
-            //        //друзей нет 
-            //    }
-            //}
-
         }
         async public void Searh_Users(Searh_Friends data)
         {
-            //string Name = "";
             string sqlExpressio = $"SELECT * FROM Users  WHERE Name = '{data.Name}'";
 
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -818,8 +661,7 @@ namespace ServersAccept
 
                 if (n.HasRows == true)
                 {
-                    //   Console.WriteLine("Такое имя уже есть");
-                    // UserConnect = true;
+
                     // Always call Read before accessing data.
                     while (sqReader.Read())
                     {
@@ -875,7 +717,7 @@ namespace ServersAccept
                     }
                 }
 
-            //Обработать ситуацию, когда _Searh_Freind=false т.е. не найден пользователь для добавления в друзья 
+            //Уже обработали ситуацию, когда _Searh_Freind=false т.е. не найден пользователь для добавления в друзья 
             string sqlE = $"SELECT * FROM Friends  WHERE IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users} and IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}";
 
                  using (var connections = new SqliteConnection(GlobalClass.connectionString))
