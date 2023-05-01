@@ -1,28 +1,14 @@
 ﻿using Class_chat;
 using System;
 using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-//using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
-//using static System.Net.WebRequestMethods;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-//using System.Runtime.Serialization.Json;
-//using System.Runtime.Serialization.Json;
-//using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
-//using System.Runtime.InteropServices.ComTypes;
-//using System.Net.Http;
-//using static System.Net.Mime.MediaTypeNames;
-//using Newtonsoft.Json;
 
 
 namespace Client_chat

@@ -173,9 +173,8 @@ namespace ServersAccept
             {
                 Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(msg);
                 globalClass.Searh_Users(searh_Friends);
-                if (globalClass._Searh_Freind == true)
+                if (globalClass._Searh_Freind)
                 {
-
                     using (MemoryStream Byte_frends = new MemoryStream())
                     {
                         Searh_Friends searh = new Searh_Friends(globalClass.Searh_Friend, searh_Friends.User);
