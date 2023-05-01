@@ -3,8 +3,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using Class_chat;
-using System.Text.Json;
-using System.IO;
+//using System.Text.Json;
+//using System.IO;
 using System.Text;
 //using System.Net.NetworkInformation;
 //using static System.Net.WebRequestMethods;
@@ -37,7 +37,7 @@ namespace ServersAccept
                 int counter = 0;
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
-                Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString()); 
+                Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
                 //string Host = System.Net.Dns.GetHostName();
                 //string Ip_adres=      System.Net.Dns.Resolve();
                 Console.WriteLine($"Ip-адрес: {localAddr}");
@@ -46,7 +46,7 @@ namespace ServersAccept
                 server.Start();
                 while (true)
                 {
-                    Console.WriteLine("\nОжидание соединения...");              
+                    Console.WriteLine("\nОжидание соединения...");
                     ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());// QueueUserWorkItem             
                     // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
@@ -66,17 +66,17 @@ namespace ServersAccept
         {
             try
             {
-                Byte[] bytes = new Byte[99999999];
-                String data;
+                byte[] bytes = new Byte[99999999];
+                string data;
                 using (TcpClient client = client_obj as TcpClient)
                 {
                     GlobalClass globalClass = new GlobalClass();
-                    NetworkStream stream = client.GetStream();                   
-                    Command command = new Command();                  
+                    NetworkStream stream = client.GetStream();
+                    Command command = new Command();
                     int i;
                     while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
                     {
-                        data = Encoding.Default.GetString(bytes, 0, i);    
+                        data = Encoding.Default.GetString(bytes, 0, i);
                         string comand = data.Substring(0, 3);
                         string json = data.Substring(3, data.Length - 3);
                         byte[] msg = System.Text.Encoding.Default.GetBytes(json);
@@ -97,33 +97,33 @@ namespace ServersAccept
                                 command.Sampling_Users_Correspondence(msg, globalClass, stream);
                                 break;
                             case "005": //005-Выборка сообщений переписки с другом пользователя
-                                command.Sampling_Messages_Correspondence(msg, globalClass, stream);                          
+                                command.Sampling_Messages_Correspondence(msg, globalClass, stream);
                                 break;
                             case "006": //006-Проверяет сообщение для друга
                                 command.Select_Message_Friend(msg, globalClass, stream);
                                 break;
                             case "007"://007-Заготовки для отправки фото
-             /*                   //Use_Photo use_Photo = JsonSerializer.Deserialize<Use_Photo>(msg);
-                                //GlobalClass.Select_Image_Userss(use_Photo);
+                                /*                   //Use_Photo use_Photo = JsonSerializer.Deserialize<Use_Photo>(msg);
+                                                   //GlobalClass.Select_Image_Userss(use_Photo);
 
-                                //UseImage useTravels = GlobalClass.Use_image;
+                                                   //UseImage useTravels = GlobalClass.Use_image;
 
-                                //MemoryStream fsS = new MemoryStream();
-                                //using (MemoryStream fs = new MemoryStream())
-                                //{
-                                //    JsonSerializer.Serialize<UseImage>(fsS, useTravels);
-                                //}
+                                                   //MemoryStream fsS = new MemoryStream();
+                                                   //using (MemoryStream fs = new MemoryStream())
+                                                   //{
+                                                   //    JsonSerializer.Serialize<UseImage>(fsS, useTravels);
+                                                   //}
 
-                                //stream.Write(fsS.ToArray(), 0, fsS.ToArray().Length);*/
+                                                   //stream.Write(fsS.ToArray(), 0, fsS.ToArray().Length);*/
                                 break;
-                            case "008":
+                            case "008": //008 - Добавляет Друзей в чат
                                 command.Searh_Friends(msg, globalClass, stream);
                                 break;
                             case "009"://Добавление сообщения с обновлением
                                 command.Insert_Message(msg, globalClass, stream);
                                 break;
                             case "010":// 10- редактировать сообщение
-                                command.Update_Message(msg, globalClass, stream);                          
+                                command.Update_Message(msg, globalClass, stream);
                                 break;
                             case "011"://11 -Удаляет сообщение из чата 
                                 command.Delete_Message(msg, globalClass, stream);
@@ -145,21 +145,23 @@ namespace ServersAccept
                                 */
                                 break;
                             case "012": //получение списка сообщений (обновление)
-                                command.List_Friens_Message(msg, globalClass, stream);                              
+                                command.List_Friens_Message(msg, globalClass, stream);
                                 break;
-                                case "013": //получение списка друзей (обновление)                          
+                            case "013": //получение списка друзей (обновление)                          
                                 command.List_Friens(msg, globalClass, stream);
+                                break;
+                            default:
                                 break;
                         }
                     }
 
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-     
+
         }
     }
 }

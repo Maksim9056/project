@@ -1,12 +1,12 @@
 ﻿using Class_chat;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
+//using System.Runtime.InteropServices.ComTypes;
 using System.Net.Sockets;
 
 namespace ServersAccept
@@ -31,6 +31,7 @@ namespace ServersAccept
                 stream.Write(msgAnswe, 0, msgAnswe.Length);
             }
         }
+
         //003-Проверка логина и пароля
         async public void Checks_User_and_password(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -85,6 +86,7 @@ namespace ServersAccept
                 stream.Write(msgAnswe, 0, msgAnswe.Length);
             }
         }
+        
         //004-выборка друзей пользователя
         public void Sampling_Users_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -101,6 +103,7 @@ namespace ServersAccept
                 stream.Write(msgAnswe, 0, msgAnswe.Length);
             }
         }
+        
         //005-Выборка сообщений переписки с другом пользователя
         public void Sampling_Messages_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -119,6 +122,7 @@ namespace ServersAccept
                 stream.Write(msgAnswe, 0, msgAnswe.Length);
             }
         }
+        
         //006-Проверяет сообщение для друга
         public void Select_Message_Friend(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -150,6 +154,7 @@ namespace ServersAccept
                 stream.Write(msgAnswe, 0, msgAnswe.Length);
             }
         }
+        
         //008-Добавляет Друзей в чат
         public void Searh_Friends(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -190,6 +195,7 @@ namespace ServersAccept
                 stream.Write(Friens_Byte.ToArray(), 0, Friens_Byte.ToArray().Length);
             }
         }
+        
         // 010- редактировать сообщение
         public void Update_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -209,10 +215,6 @@ namespace ServersAccept
                 stream.Write(Friens_Byte1.ToArray(), 0, Friens_Byte1.ToArray().Length);
             }
         }
-
-
-
-
 
         //011 - удаление сообщения из чата
         public void Delete_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
@@ -235,7 +237,6 @@ namespace ServersAccept
                 stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
             }
         }
-
 
         //012 - получение списка сообщений (обновление)
         public void List_Friens_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
@@ -275,8 +276,9 @@ namespace ServersAccept
                 }
             }
         }
-            //013 - получение списка друзей (обновление)
-            public void List_Friens(byte[] msg,GlobalClass globalClass, NetworkStream stream)
+            
+        //013 - получение списка друзей (обновление)
+        public void List_Friens(byte[] msg,GlobalClass globalClass, NetworkStream stream)
         {
             using (MemoryStream tt = new MemoryStream())
             {
