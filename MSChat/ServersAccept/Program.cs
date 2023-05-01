@@ -3,13 +3,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using Class_chat;
-//using System.Text.Json;
-//using System.IO;
 using System.Text;
-//using System.Net.NetworkInformation;
-//using static System.Net.WebRequestMethods;
-//using System.IO.Pipes;
-//using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ServersAccept
@@ -24,15 +18,12 @@ namespace ServersAccept
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
             globalClass.CreateTable_Files();
-         //   ThreadPool.UnsafeRegisterWaitForSingleObject;
+
             TcpListener server = null;
             try
             {
                 int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-               
-                //Int32 port = 9595;
-
                 IPAddress localAddr = IPAddress.Parse(ConnectSettings.IP);
                 int counter = 0;
                 Console.WriteLine();
@@ -52,9 +43,12 @@ namespace ServersAccept
                 while (true)
                 {
                     Console.WriteLine("\nОжидание соединения...");
-                    ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());// QueueUserWorkItem             
+                    ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());
+                    /*
+                    // QueueUserWorkItem             
                     // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
+                    */
                     counter++;
                     Console.Write("\nСоединие№" + counter.ToString() + "!");            
                 }
@@ -74,7 +68,7 @@ namespace ServersAccept
            
                 using (TcpClient client = client_obj as TcpClient)
                 {
-                    byte[] bytes = new Byte[99999999];
+                    byte[] bytes = new byte[99999999];
                     string data;
                     GlobalClass globalClass = new GlobalClass();
                     NetworkStream stream = client.GetStream();
@@ -89,9 +83,11 @@ namespace ServersAccept
                         switch (comand)
                         {
                             case "001":
-                                /* UserLogin person = JsonSerializer.Deserialize<UserLogin>(msg);
+                                /* 
+                                UserLogin person = JsonSerializer.Deserialize<UserLogin>(msg);
                                 //Console.WriteLine(person.Name + " " + person.Pass + "\n");
-                                // GlobalClass.Insert_User(person.Name, person.Pass, dateTime);*/
+                                // GlobalClass.Insert_User(person.Name, person.Pass, dateTime);
+                                */
                                 break;
                             case "002": //002-Регистрация пользователей
                                 command.Registration_users(msg, globalClass, stream);

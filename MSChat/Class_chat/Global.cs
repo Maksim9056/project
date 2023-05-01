@@ -1,15 +1,6 @@
-﻿//using Class_chat;
-using System;
+﻿using System;
 using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
 using System.Runtime.Serialization;
-//using System.Text.Json;
-//using System.Threading.Tasks;
-//using System.Xml.Linq;
-//using System.Runtime.Serialization.Json;
-//using System.Text.Json.Serialization;
-//using System.Data;
 
 namespace Class_chat
 {
@@ -36,11 +27,6 @@ namespace Class_chat
         }
      }
 
-
-    //public class UseCompelete
-    //{
-    //    public static bool UC = true; 
-    //}
 
     [DataContract]
     public class UserLogin
@@ -116,7 +102,6 @@ namespace Class_chat
 
     public class User_photo_Travel
     {
-        //public static bool UC = true;
         public string Answe { get; }
         public int List_Mess { get; set; }
         public User_photo[] AClass { get; set; }
@@ -180,7 +165,6 @@ namespace Class_chat
     public class __User_regis
     {
         __User_regis() { }
-       // public string[] Key = {"Id","Name","Pass","Age","Photo"};
         public string Name { get; set; }
 
         public string  Pass { get; set; }
@@ -203,43 +187,23 @@ namespace Class_chat
     public class Searh_Friends
     {
         Searh_Friends() { }
-        // public string[] Key = {"Id","Name","Pass","Age","Photo"};
         public string Name { get; set; }
-
-        //public string Pass { get; set; }
-        //public string Age { get; set; }
-        //public byte[] Photo { get; set; }
-        //public int Id { get; set; }
         public string User { get; set; }
         public Searh_Friends(string name, string user)
         {
             Name = name;
             User = user;
-     
         }
 
     }
 
-    //public static bool UC = true;
-
-    //public class Use_Photo
-    //{
-    //    Use_Photo() { }
-    //public  string User { get; set; }
-    //    public Use_Photo(string user )
-    //    {
-    //       User = user;
-    //    }
-    //}
-
     public class UseImage
     {
         UseImage() { }
-          public byte [] Bytes { get; set; }
+        public byte[] Bytes { get; set; }
         public UseImage(byte[] bytes)
         {
             Bytes = bytes;
-
         }
     }
 }
