@@ -1,53 +1,73 @@
 ﻿using Class_chat;
 using Microsoft.Data.Sqlite;
-using Microsoft.SqlServer.Server;
+//using Microsoft.SqlServer.Server;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
+//using System.Collections.Generic;
+//using System.Data;
+//using System.Data.SqlClient;
+//using System.Linq;
+//using System.Runtime.InteropServices;
+//using System.Security.Cryptography.X509Certificates;
+//using System.Text;
+//using System.Threading.Tasks;
+//using System.Xml;
+//using System.Xml.Linq;
+//using static System.Net.Mime.MediaTypeNames;
 
 namespace ServersAccept
 {
     public class GlobalClass
     {
+        //Команда для создание базы даных в файле
         public static string connectionString = "Data Source=usersdata.db";
-        public  bool UserConnect { get; set; }
-        public  bool User_Insert { get; set; }
-        public  bool User_Select_Chats { get; set; }
-        public  bool Mess_Chats { get; set; }
-        public  string Current_User { get; set; } 
-        public  byte[] Image_User { get; set; }
-        public  User_photo AUser { get; set; }
-        public  User_photo[] List_Friend { get; set; }
-        public  MessСhat[] aChatss { get; set; }
-        public  MessСhat List_Mess { get; set; }
-        public  string Id_Users { get; set; }
-        public  int Frinds { get; set; }
-        public  int[] Frend { get; set; }
-        public  UseImage Use_image { get; set; }
+        //Проверка естли пользователей в  базы данных
+        public bool UserConnect { get; set; }
+        //Проверяет добавляеться пользователей в  базе данных
+        public bool User_Insert { get; set; }
+        //Проверяет есть-ли  пользователей в  базе данных
+        public bool User_Select_Chats { get; set; }
+        //Проверяет  есть-ли  Переписка у пользователей 
+        public bool Mess_Chats { get; set; }
+        //Дают id пользователю для проверки  
+        public string Current_User { get; set; }
+        //Заготовка для фото  добавление  
+        public byte[] Image_User { get; set; }
+        //Передает все аргументы пользователю даже id его изображениея
+        public User_photo AUser { get; set; }
+        //Передают значение друзей  у   пользователя
+        public User_photo[] List_Friend { get; set; }
+        //Передают чат  пользователям их сообщения
+        public MessСhat[] aChatss { get; set; }
+        //Заготовки 
+        public MessСhat List_Mess { get; set; }
+        //Передают id пользользователя для проверки сообщений
+        public string Id_Users { get; set; }
+        //Заготовки
+        public int Frinds { get; set; }
+        //Заготовки
 
-        public  string Frends_id { get; set; }
+        public int[] Frend { get; set; }
+        //Заготовки
+        public UseImage Use_image { get; set; }
+        //Заготовки
+        public string Frends_id { get; set; }
+        //Передают Имя  пользользователя и добавляет их список друзей
+        public string Searh_Friend { get; set; }
+        //Проверяет  Имя  пользользователя и есть ли он таблице пользователи
+        public bool  _Searh_Freind { get; set; }
+        //Передают 2 пользользователя  id 
+        public int Insert_Friend_by_id { get; set; }
+        //Заготовки
+        public int Id_Users_Name { get; set; }
+        //Передают сколько пользователей в чате  и их сообщения
+        public MessСhat[] Frends_Chat_Wath { get; set; }
+        //Передают id картин6ки для добавления пользователя картинки 
 
-        public  string Searh_Friend { get; set; } 
-         public  bool  _Searh_Freind { get; set; }
-        public  int Insert_Friend_by_id { get; set; }
+        public int Id_Image { get; set; }
+        //Проверяет если у данного пользователя друзья 
+        public bool Friends { get; set; }
 
-        public  int Id_Users_Name { get; set; }
-        public  MessСhat[] Frends_Chat_Wath { get; set; }
-
-        public  int Id_Image { get; set; }
-
-        public  bool Friends { get; set; }
-
-
+        //Создают таблицу пользователей 
         public void CreateTable_Users()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -67,21 +87,8 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
-        //public static void CreateTable_Friends()
-        //{
-
-        //    using (var connection = new SqliteConnection(GlobalClass.connectionString))
-        //    {
-        //        connection.Open();
-        //        SqliteCommand command = new SqliteCommand();
-        //        command.CommandText = "CREATE TABLE Friends (Id INTEGER NOT NULL UNIQUE,"+ 
-        //                              "IdUserFrom INTEGER NOT NULL ,"+ 
-        //                              "IdUserTo INTEGER NOT NULL ,"+ 
-        //                              " PRIMARY KEY(Id AUTOINCREMENT))";
-        //        command.Connection = connection;
-        //        command.ExecuteNonQuery();
-        //    }
-        //}
+ 
+        //Создают таблицу друзей 
         public void CreateTable_Friends()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -99,7 +106,8 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
-        public  void CreateTable_Chat()
+        //Создают таблицу Чат 
+        public void CreateTable_Chat()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
@@ -120,7 +128,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
-
+        //Создают таблицу Картинка 
         public void CreateTable_Files()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -136,7 +144,7 @@ namespace ServersAccept
             }
         }
 
-
+        //Заготовка
         async public void Insert_Friends()
         {
 
@@ -157,7 +165,9 @@ namespace ServersAccept
 
         }
 
-        //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";and Password='{pasword}
+       /* //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";and Password='{pasword}*/
+
+        //Добавляет пользователей и проверяет при  том что они там уже добавлены
         async public void Insert_User(string data, string pasword, string age, DateTime dateTime)
         {
             try
@@ -194,6 +204,7 @@ namespace ServersAccept
                 }
             }
         }
+        //Добавляет Какртинку в таблицу Files 
         async public void Insert_Image(byte[] buf)
         {
             try
@@ -219,6 +230,7 @@ namespace ServersAccept
             }
         }
 
+        //Проверяет  в таблицу Пользователи  пользователя и пароль 
         async public void Select_Users(string data, string pasword)
         {
             //string Name = "";
@@ -256,6 +268,7 @@ namespace ServersAccept
             }
         }
 
+        //Проверяет  в таблицу Друзья количество друзей 1 пользователя
         async public void Select_Friend(string curent_user)
         {
             int UserCount = 0;
@@ -266,7 +279,6 @@ namespace ServersAccept
                 SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
                 SqliteCommand commandS = new SqliteCommand(sqlExpressioCount, connection);
                 var n = await commandS.ExecuteReaderAsync();
-
 
                 SqliteDataReader sqReader = command.ExecuteReader();
                 if (n.HasRows == true)
@@ -281,15 +293,12 @@ namespace ServersAccept
                 else
                 {
                  Friends = false;
-
-
                 }
             }
 
-            if (Friends == true) 
-            { 
-
-                 string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
+            if (Friends == true)
+            {         //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
+                string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
                 int[] Frend = new int[UserCount];
                 int i = 0;
 
@@ -305,14 +314,16 @@ namespace ServersAccept
                         Console.WriteLine("У пользователя есть друзья");
                         while (sqReader.Read())
                         {
-
                             Frend[i] = sqReader.GetInt32(0);
                             i = i + 1;
                             //Проходим по созданию фильтра для таблицы Users
                         }
-                    //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
+                        //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
+                                
+                            
+                            //Проверяет  в таблицу Пользователи количество у id пользователей 
 
-                        sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
+                            sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
 
                       // using (var connections = new SqliteConnection(GlobalClass.connectionString))
                         //  {
@@ -356,7 +367,7 @@ namespace ServersAccept
 
             }
         }
-
+        //Проверяет  в таблицу пользователи по имени пользователя
         async public void Select_From_Users(string data)
         {
             string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data}'";
@@ -365,7 +376,6 @@ namespace ServersAccept
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressi, connection);
                 var n = await command.ExecuteReaderAsync();
-
                 //         // Заполняем Dataset
                 SqliteDataReader sqReader = command.ExecuteReader();
 
@@ -383,6 +393,7 @@ namespace ServersAccept
                 }  
             }
         }
+        //Проверяет  в таблицу Друзья  добавляет друзей по id 
         async public void Select_From_Users(string IdUserFrom, string IdUserTo)
         {
             Select_From_Users(IdUserFrom);
@@ -404,6 +415,7 @@ namespace ServersAccept
                 command.CommandText = sqй;
             }
         }
+        //Добавляет  в таблицу Чат  сообщение от пользователя 
         async public void Insert_Message(MessСhat messСhat)
         {        
             string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
@@ -414,9 +426,8 @@ namespace ServersAccept
                 await command.ExecuteNonQueryAsync();
                 command.CommandText = sq;
             }
-
-
             int UserCount = 0;
+            //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
             string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                                                      $"(IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -431,6 +442,7 @@ namespace ServersAccept
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
+            //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
             string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                               $"(IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -468,7 +480,7 @@ namespace ServersAccept
             }
         }
 
-
+        //Обновляет  редактирования сообщение в чате у  1 до 2 и от 2 до 1 и их передает 
         async public void Update_Message(MessСhat messСhat)
         {
             DateTime dateTime = DateTime.Now;
@@ -482,6 +494,7 @@ namespace ServersAccept
                 command.CommandText = sq;
             }
             int UserCount = 0;
+            //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
             string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                                                     $" (IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -493,6 +506,7 @@ namespace ServersAccept
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
+            //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
             string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{messСhat.IdUserFrom}' and IdUserTo = '{messСhat.IdUserTo}') or " +
                                                             $" (IdUserTo = '{messСhat.IdUserFrom}' and IdUserFrom = '{messСhat.IdUserTo}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -526,6 +540,7 @@ namespace ServersAccept
                 }
             }
         }
+        //Удаляет сообщение в чате  сообщение в чате у данного пользователя по 
         async public void Delete_Message_make_up(MessСhat messСhat)
         {
             string sqlExpression = $"DELETE   FROM Chat  WHERE Id = '{messСhat.Id}'";
@@ -580,6 +595,7 @@ namespace ServersAccept
                 }
             }
         }
+
         async public void Select_Message_Users(User_photo data)
         {
 
@@ -642,11 +658,10 @@ namespace ServersAccept
                     //сообщений нет 
                     Mess_Chats = false;
                 }
-
-
-
             }
         }
+
+
         async public void Searh_Users(Searh_Friends data)
         {
             string sqlExpressio = $"SELECT * FROM Users  WHERE Name = '{data.Name}'";
