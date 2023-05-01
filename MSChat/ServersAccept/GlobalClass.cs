@@ -723,7 +723,10 @@ namespace ServersAccept
 
             //Уже обработали ситуацию, когда _Searh_Freind=false т.е. не найден пользователь для добавления в друзья 
             //Проверяет друзей  у первого пользователя и у 2 пользователя 
-            string sqlE = $"SELECT * FROM Friends  WHERE IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users} and IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}";
+            
+            // SELECT * FROM Friends  WHERE IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users} and IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}           
+  string sqlE = $"SELECT * FROM Friends  WHERE ((IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users})" +
+                                             $"or (IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}))";
 
             using (var connections = new SqliteConnection(GlobalClass.connectionString))
             {
