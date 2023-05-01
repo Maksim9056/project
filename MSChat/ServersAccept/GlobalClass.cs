@@ -1,19 +1,6 @@
 ﻿using Class_chat;
 using Microsoft.Data.Sqlite;
-//using Microsoft.SqlServer.Server;
 using System;
-//using System.Collections.Generic;
-//using System.Data;
-//using System.Data.SqlClient;
-//using System.Linq;
-//using System.Runtime.InteropServices;
-//using System.Security.Cryptography.X509Certificates;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Xml;
-//using System.Xml.Linq;
-//using static System.Net.Mime.MediaTypeNames;
-
 namespace ServersAccept
 {
     public class GlobalClass
@@ -145,27 +132,27 @@ namespace ServersAccept
         }
 
         //Заготовка
-        async public void Insert_Friends()
+     /*   async public void Insert_Friends()
         {
 
-            string sq = " Select  " +
-                       "p.Id as 'Код', " +
-                       "c.name as 'Отправитель', " +
-                      "b.name as 'Получатель' " +
-                       "From Friends p " +
-                       "Join Users b ON p.IdUserFrom = b.id " +
-                       "Join Users c ON p.IdUserTo = c.id ";
-            using (var connection = new SqliteConnection(GlobalClass.connectionString))
-            {
-                await connection.OpenAsync();
-                SqliteCommand command = new SqliteCommand(sq, connection);
-                await command.ExecuteNonQueryAsync();
-                command.CommandText = sq;
-            }
+            //string sq = " Select  " +
+            //           "p.Id as 'Код', " +
+            //           "c.name as 'Отправитель', " +
+            //          "b.name as 'Получатель' " +
+            //           "From Friends p " +
+            //           "Join Users b ON p.IdUserFrom = b.id " +
+            //           "Join Users c ON p.IdUserTo = c.id ";
+            //using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            //{
+            //    await connection.OpenAsync();
+            //    SqliteCommand command = new SqliteCommand(sq, connection);
+            //    await command.ExecuteNonQueryAsync();
+            //    command.CommandText = sq;
+            //}
 
         }
 
-       /* //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";
+       //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";
          and Password='{pasword}*/
 
         //Добавляет пользователей и проверяет при  том что они там уже добавлены
@@ -326,8 +313,6 @@ namespace ServersAccept
                             //Проверяет  в таблицу Пользователи количество у id пользователей 
 
                             sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
-
-                            await connection.OpenAsync();
                             SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
                             SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
                             var _n = await commands_Fr.ExecuteReaderAsync();
@@ -623,7 +608,6 @@ namespace ServersAccept
             }
 
             //Проверяет чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
-
             string sqlExpressi = $"SELECT  * FROM Chat WHERE ((IdUserTo = '{data.Id}' and IdUserFrom = '{data.Current}') or " +
                                                            $"(IdUserFrom = '{data.Id}' and IdUserTo = '{data.Current}'))";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -637,7 +621,6 @@ namespace ServersAccept
                 if (n.HasRows == true)
                 {
                     //int k = 0;
-
                     int j = 0;
                     //MessСhat  aChat ; // пока 10
                     MessСhat[] aChats = new MessСhat[UserCount];
@@ -649,8 +632,7 @@ namespace ServersAccept
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                         DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
 
-                        MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string,
-                                                DataMess, Mark);
+                        MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
                         //aChat = mСhat;
                         aChats[j] = mСhat;
                         j++;
@@ -673,7 +655,6 @@ namespace ServersAccept
         async public void Searh_Users(Searh_Friends data)
         {
             string sqlExpressio = $"SELECT * FROM Users  WHERE Name = '{data.Name}'";
-
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connection.OpenAsync();
@@ -709,7 +690,7 @@ namespace ServersAccept
             //Проверяет по имени второго пользователя и передают его Id
             string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data.User}'";
             using (var connectio = new SqliteConnection(GlobalClass.connectionString))
-                {
+           {
                     await connectio.OpenAsync();
                     SqliteCommand _command = new SqliteCommand(sqlExpressi, connectio);
                     SqliteCommand __commandS = new SqliteCommand(sqlExpressi, connectio);
@@ -723,7 +704,6 @@ namespace ServersAccept
                         // Always call Read before accessing data.
                         while (sqReaders.Read())
                         {
-
                           //       Current_User = sqReader["Id"].ToString();
                            Id_Users = sqReaders["Id"].ToString() ;
                             //Еще будет нужна
@@ -739,63 +719,58 @@ namespace ServersAccept
                     {
 
                     }
-                }
+            }
 
             //Уже обработали ситуацию, когда _Searh_Freind=false т.е. не найден пользователь для добавления в друзья 
             //Проверяет друзей  у первого пользователя и у 2 пользователя 
             string sqlE = $"SELECT * FROM Friends  WHERE IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users} and IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}";
 
-                 using (var connections = new SqliteConnection(GlobalClass.connectionString))
-               {
-                        await connections.OpenAsync();
-                        SqliteCommand command_ = new SqliteCommand(sqlE, connections);
-                        var n1 = await command_.ExecuteReaderAsync();
+            using (var connections = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connections.OpenAsync();
+                SqliteCommand command_ = new SqliteCommand(sqlE, connections);
+                var n1 = await command_.ExecuteReaderAsync();
 
                 SqliteCommand commands_ = new SqliteCommand(sqlE, connections);
 
                 SqliteDataReader sqReader2 = commands_.ExecuteReader();
 
-                        // Always call Read before accessing data.
-                       if (n1.HasRows == true)
-                        {
-                            while (sqReader2.Read())
-                            {
+                // Always call Read before accessing data.
+                if (n1.HasRows == true)
+                {
+                    while (sqReader2.Read())
+                    {
 
-                                //   string questions = sqReader["Id"];
-                                //.Items.Add(questions);
-                                // Console.WriteLine(questions);
-                                //  Id_Users =  questions;
+                        //   string questions = sqReader["Id"];
+                        //.Items.Add(questions);
+                        // Console.WriteLine(questions);
+                        //  Id_Users =  questions;
 
-                            }
-                            Console.WriteLine("Друг уже добавлен");                            
-                       }
-                       else
-                       {
+                    }
+                    Console.WriteLine("Друг уже добавлен");
+                }
+                else
+                {
+
                     //Добавляет друзей  у первого пользователя и 1 пользователя 
                     string sq = $"INSERT INTO Friends ( IdUserFrom,IdUserTo) VALUES ('{Insert_Friend_by_id}','{Id_Users}')";
-                            using (var connecti = new SqliteConnection(GlobalClass.connectionString))
-                            {
-                                await connecti.OpenAsync();
-                                SqliteCommand comman = new SqliteCommand(sq, connecti);
-                                await comman.ExecuteNonQueryAsync();
-                                comman.CommandText = sq;
-                            }
+
+                    SqliteCommand command = new SqliteCommand(sq, connections);
+                    await command.ExecuteNonQueryAsync();
+                    command.CommandText = sq;
+
                     //Добавляет друзей  у второго пользователя и 1 пользователя 
                     string sq1 = $"INSERT INTO Friends ( IdUserFrom,IdUserTo) VALUES ('{Id_Users}','{Insert_Friend_by_id}')";
-                    using (var connecti = new SqliteConnection(GlobalClass.connectionString))
-                    {
-                        await connecti.OpenAsync();
-                        SqliteCommand comman = new SqliteCommand(sq1, connecti);
-                        await comman.ExecuteNonQueryAsync();
-                        comman.CommandText = sq1;
-                    }
+
+                    SqliteCommand comman = new SqliteCommand(sq1, connections);
+                    await comman.ExecuteNonQueryAsync();
+                    comman.CommandText = sq1;
+
                 }
                 Id_Users = "";
-         Insert_Friend_by_id = 0;
-                 }
+                Insert_Friend_by_id = 0;
+            } 
          }
-            
-        
     /*    //async static public void Select_Image_Userss(Use_Photo data)
         //{
         //    string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data.User}'";
