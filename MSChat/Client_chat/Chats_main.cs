@@ -93,7 +93,7 @@ namespace Client_chat
                 else
                 {
                     Entrance = false;
-                    MessageBox.Show("Ip_adres:Не заполнен");
+                    MessageBox.Show("Ip-адрес:Не заполнен");
                 }
             }
             catch

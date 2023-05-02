@@ -69,7 +69,8 @@
             this.toolStripButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1532, 50);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
+            this.toolStrip1.Size = new System.Drawing.Size(906, 47);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.UseWaitCursor = true;
@@ -80,7 +81,7 @@
             this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBox1.Margin = new System.Windows.Forms.Padding(2, 0, 8, 0);
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(300, 50);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(152, 29);
             this.toolStripTextBox1.ToolTipText = "Enter the IP address of the server";
             this.toolStripTextBox1.Click += new System.EventHandler(this.toolStripTextBox1_Click);
             // 
@@ -91,7 +92,7 @@
             this.toolStripButton1.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.SystemColors.ScrollBar;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 44);
             this.toolStripButton1.Tag = "";
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.ToolTipText = "Тут добавьте текст подсказки";
@@ -114,16 +115,17 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(46, 44);
+            this.toolStripButton2.Size = new System.Drawing.Size(36, 44);
             this.toolStripButton2.Text = "toolStripButton2";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click_1);
             // 
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.Location = new System.Drawing.Point(1359, 77);
+            this.button1.Location = new System.Drawing.Point(706, 32);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 46);
+            this.button1.Size = new System.Drawing.Size(80, 24);
             this.button1.TabIndex = 5;
             this.button1.Text = "Удалить";
             this.button1.UseVisualStyleBackColor = true;
@@ -134,9 +136,10 @@
             // 
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(1156, 77);
+            this.button2.Location = new System.Drawing.Point(608, 32);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(187, 46);
+            this.button2.Size = new System.Drawing.Size(94, 24);
             this.button2.TabIndex = 6;
             this.button2.Text = "Редактировать";
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -146,11 +149,12 @@
             // 
             // button3
             // 
-            this.button3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(1318, 1108);
+            this.button3.Location = new System.Drawing.Point(766, 463);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(202, 72);
+            this.button3.Size = new System.Drawing.Size(129, 61);
             this.button3.TabIndex = 7;
             this.button3.Text = "Отправить";
             this.button3.UseVisualStyleBackColor = true;
@@ -159,12 +163,12 @@
             // 
             // textBox2
             // 
-            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(11, 97);
+            this.textBox2.Location = new System.Drawing.Point(0, 49);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(158, 52);
+            this.textBox2.Size = new System.Drawing.Size(81, 29);
             this.textBox2.TabIndex = 11;
             this.toolTip1.SetToolTip(this.textBox2, "Ввидите имя друга");
             this.textBox2.UseWaitCursor = true;
@@ -176,13 +180,15 @@
             // 
             // dataGridViewUser
             // 
-            this.dataGridViewUser.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.dataGridViewUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridViewUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewUser.Location = new System.Drawing.Point(12, 155);
+            this.dataGridViewUser.Location = new System.Drawing.Point(8, 93);
+            this.dataGridViewUser.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewUser.Name = "dataGridViewUser";
             this.dataGridViewUser.RowHeadersWidth = 82;
             this.dataGridViewUser.RowTemplate.Height = 33;
-            this.dataGridViewUser.Size = new System.Drawing.Size(357, 1025);
+            this.dataGridViewUser.Size = new System.Drawing.Size(178, 431);
             this.dataGridViewUser.TabIndex = 8;
             this.dataGridViewUser.UseWaitCursor = true;
             this.dataGridViewUser.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUser_CellClick);
@@ -191,13 +197,16 @@
             // 
             // dataGridViewChat
             // 
-            this.dataGridViewChat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewChat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewChat.Location = new System.Drawing.Point(400, 155);
+            this.dataGridViewChat.Location = new System.Drawing.Point(224, 93);
+            this.dataGridViewChat.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewChat.Name = "dataGridViewChat";
             this.dataGridViewChat.RowHeadersWidth = 82;
             this.dataGridViewChat.RowTemplate.Height = 33;
-            this.dataGridViewChat.Size = new System.Drawing.Size(1120, 930);
+            this.dataGridViewChat.Size = new System.Drawing.Size(671, 349);
             this.dataGridViewChat.TabIndex = 9;
             this.dataGridViewChat.UseWaitCursor = true;
             this.dataGridViewChat.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewChat_CellClick);
@@ -207,23 +216,25 @@
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(400, 1108);
+            this.textBox1.Location = new System.Drawing.Point(224, 463);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(818, 72);
+            this.textBox1.Size = new System.Drawing.Size(517, 61);
             this.textBox1.TabIndex = 10;
             this.textBox1.UseWaitCursor = true;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button4
             // 
-            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.Location = new System.Drawing.Point(175, 97);
+            this.button4.Location = new System.Drawing.Point(85, 51);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(171, 52);
+            this.button4.Size = new System.Drawing.Size(86, 27);
             this.button4.TabIndex = 12;
             this.button4.Text = "Поиск друзей";
             this.button4.UseVisualStyleBackColor = true;
@@ -237,19 +248,19 @@
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 80);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(155, 48);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(250, 38);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(154, 22);
             this.toolStripMenuItem1.Text = "Редактировать";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(250, 38);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(154, 22);
             this.toolStripMenuItem2.Text = "Удалить";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -267,11 +278,11 @@
             // 
             // Chats_main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1532, 1209);
+            this.ClientSize = new System.Drawing.Size(906, 535);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -281,6 +292,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Chats_main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Чат";
