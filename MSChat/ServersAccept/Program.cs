@@ -6,6 +6,7 @@ using Class_chat;
 using System.Text;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace ServersAccept
 {
@@ -47,8 +48,10 @@ namespace ServersAccept
                    //string Ip_adres=      System.Net.Dns.Resolve();
                    Console.WriteLine($"Ip-адрес: {localAddr}");            
                    //127.0.0.1 System.Net.Sockets.AddressFamily family   */
+                //Console.WriteLine("\nСервер запушен");
+                RegisterCommands();
+                server.Start();
                 Console.WriteLine("\nСервер запушен");
-                    server.Start();
                 while (true)
                 {
                     Console.WriteLine("\nОжидание соединения...");
@@ -71,6 +74,26 @@ namespace ServersAccept
             Console.Read();
         }
 
+
+        static Dictionary<string, Action<byte[], GlobalClass, NetworkStream>> FDictCommands = new Dictionary<string, Action<byte[], GlobalClass, NetworkStream>>();
+        
+        static void RegisterCommands()
+        {
+            Command command = new Command();
+            FDictCommands.Add("002", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_users));
+            FDictCommands.Add("003", new Action<byte[], GlobalClass, NetworkStream>(command.Checks_User_and_password));
+        }
+
+        static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)
+        {
+            Action<byte[], GlobalClass, NetworkStream> actionCommand;
+            if (FDictCommands.TryGetValue(aCommand, out actionCommand)) actionCommand(data, cls, ns);
+            else
+            {                 
+                // Если не нашли, то обрабатываем это             }
+            }
+        }
+
         async static void ClientProcessing(object client_obj)
         {
             try
@@ -90,6 +113,10 @@ namespace ServersAccept
                         string comand = data.Substring(0, 3);
                         string json = data.Substring(3, data.Length - 3);
                         byte[] msg = System.Text.Encoding.Default.GetBytes(json);
+
+                        //Заменяет работу switch (comand)
+                        //HandleCommand(comand, msg, globalClass, stream);
+
                         switch (comand)
                         {
                             case "001":

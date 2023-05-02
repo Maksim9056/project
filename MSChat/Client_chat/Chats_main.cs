@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace Client_chat
 {
@@ -186,21 +187,21 @@ namespace Client_chat
 
 
 
-        //async public void Func_Read(Stream str, int length, TcpClient client)
-        //{
-        //    using (MemoryStream ms = new MemoryStream())
-        //    {
-        //        int cnt = 0;
-        //        Byte[] locbuffer = new byte[length];
-        //        do
-        //        {
-        //            cnt = await str.ReadAsync(locbuffer, 0, locbuffer.Length);
-        //            ms.Write(locbuffer, 0, cnt);
-        //        } while (client.Available > 0);
-
-        //        Respons = Encoding.Default.GetString(ms.ToArray());
-        //    }
-        //}
+        public string Func_Read(Stream str, int length, TcpClient client) 
+        { 
+            string Result = string.Empty; 
+            using (MemoryStream ms = new MemoryStream()) 
+            { 
+                int cnt = 0; 
+                Byte[] locbuffer = new byte[length]; 
+                do { 
+                    cnt = str.Read(locbuffer, 0, locbuffer.Length); 
+                    ms.Write(locbuffer, 0, cnt); } 
+                while (client.Available > 0); 
+                Result = Encoding.Default.GetString(ms.ToArray()); 
+            } 
+            return Result; 
+        }
 
 
 
@@ -216,6 +217,7 @@ namespace Client_chat
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
 
+                    /*
                     //TcpClient.Available
                     //// буфер ддя получения данных
                     //var responseData_New = new byte[1024];
@@ -234,10 +236,11 @@ namespace Client_chat
                     //Func_Read(stream,1024, client);
 
                     //String responseData = String.Empty;
+                    */
                     String responseDat = String.Empty;
-
+                    
                     //responseDat = Respons;
-                    // работает 
+                    /* работает 
                     using (MemoryStream ms = new MemoryStream())
                     {
                         int cnt = 0;
@@ -250,7 +253,12 @@ namespace Client_chat
 
                         responseDat = Encoding.Default.GetString(ms.ToArray());
                     }
-
+                    */
+                    
+                    responseDat = await Task<string>.Run(() =>
+                    {
+                        return Func_Read(stream, data.Length, client);
+                    });
 
                     //data = new Byte[99999909];
 
