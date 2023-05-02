@@ -1,23 +1,12 @@
 ﻿using Class_chat;
-//using Newtonsoft.Json;
 using System;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-//using System.Linq;
 using System.Net.Sockets;
-///using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Text.Json;
-//using System.Text.Json.Serialization;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
-//using System.Xml.Linq;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
 namespace Client_chat
 {
     public partial class User_create : Form
@@ -38,38 +27,6 @@ namespace Client_chat
             else
             { textBox1.Text = textBox1.Text; }
         }
-
-        private void textBox2_Click(object sender, EventArgs e)
-        {
-
-            if (textBox2.Text == "Пароль")
-            {
-                textBox2.Text = string.Empty;
-                textBox2.UseSystemPasswordChar = true;
-                textBox2.PasswordChar = '*';
-            }
-            else
-            {
-
-                textBox2.Text = textBox2.Text;
-            }
-        }
-
-        private void textBox3_Click(object sender, EventArgs e)
-        {
-            if (textBox3.Text == "Повторите пароль ")
-            {
-                textBox3.Text = string.Empty;
-                textBox3.UseSystemPasswordChar = true;
-                textBox3.PasswordChar = '*';
-            }
-            else
-            {
-
-                textBox3.Text = textBox3.Text;
-            }
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -105,7 +62,8 @@ namespace Client_chat
         {
             try
             {
-                //Int32 port = 9595;
+           
+
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
@@ -114,7 +72,6 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseData = String.Empty;
-                    //String responseDat = String.Empty;
 
                     using (MemoryStream ms = new MemoryStream())
                     {
@@ -149,8 +106,6 @@ namespace Client_chat
                         }
                     }
                 }
-                //stream.Close();
-                //client.Close();
             }
 
             catch (ArgumentNullException e)
@@ -191,6 +146,34 @@ namespace Client_chat
             if ((e.KeyChar <= 47 || e.KeyChar >= 58 || e.KeyChar == 127) && number != 8)
             {
                 e.Handled = true;
+            }
+        }
+
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (textBox2.Text == "Повторите пароль ")
+            {
+                textBox2.Text = string.Empty;
+                textBox2.UseSystemPasswordChar = true;
+            }
+            else
+            {
+                textBox2.Text = textBox3.Text;
+                textBox2.PasswordChar = '*';
+            }
+        }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (textBox3.Text == "Повторите пароль ")
+            {
+                textBox3.Text = string.Empty;
+                textBox3.UseSystemPasswordChar = true;
+            }
+            else
+            {
+                textBox3.Text = textBox3.Text;
+                textBox3.PasswordChar = '*';
             }
         }
     }

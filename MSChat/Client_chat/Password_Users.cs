@@ -1,28 +1,12 @@
 ﻿using System;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
-//using System.Drawing;
-//using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Class_chat;
-//using ServersAccept;
 using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
-//using System.Runtime.InteropServices.ComTypes;
-//using System.Runtime.CompilerServices;
-//using System.Runtime.Serialization;
-//using System.Runtime.Serialization.Formatters.Binary;
-//using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Json;
-//using System.Runtime.InteropServices;
-//using System.Linq;
-//using Newtonsoft.Json.Linq;
 
 namespace Client_chat
 {
@@ -40,23 +24,6 @@ namespace Client_chat
             User_create Регестрироваться = new User_create();
             Регестрироваться.Show();
             Hide();
-        }
-
-        private void textBox2_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(textBox2.Text))
-            {
-                if (textBox2.Text == "Пароль")
-                {
-                    textBox2.Text = string.Empty;
-                    textBox2.UseSystemPasswordChar = true;
-                    textBox2.PasswordChar = '*';
-                }
-                else
-                {
-                    textBox2.Text = textBox2.Text;
-                }
-            }
         }
 
         private void textBox1_Click(object sender, EventArgs e)
@@ -84,8 +51,7 @@ namespace Client_chat
         }
 
         async  void Connect(String server, string fs, string command, string user, Form userpass)
-        {     
-            //Int32 port = 9595;
+        {
             using (TcpClient client = new TcpClient(server, ConnectSettings.port))
             {
                 try
@@ -102,20 +68,6 @@ namespace Client_chat
                     data = new Byte[99999999];
                     String responseData = String.Empty;
                     String responseDat = String.Empty;
-
-                    //using (MemoryStream ms = new MemoryStream())
-                    //{
-                    //    int cnt = 0;
-                    //    Byte[] locbuffer = new byte[1024];
-                    //    do
-                    //    {
-                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                    //        ms.Write(locbuffer, 0, cnt);
-                    //    } while (client.Available > 0);
-
-                    //    responseDat = Encoding.Default.GetString(ms.ToArray());
-                    //}
-                    //MsgInfo person32 = JsonSerializer.Deserialize<MsgInfo>(responseDat);
                     Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
 
                     responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
@@ -139,12 +91,12 @@ namespace Client_chat
                             string result = responseDat.Trim(new char[] { '"', '0' });
                             Int32 it = Convert.ToInt32(result);
                             people = new User_photo[it];
-                            // int i =0;
+                
                             Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
                             //Друзья
                             result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
                             string rez2 = result.Substring(0, result.IndexOf("}"));
-                            //string rez2 = result.Insert(result.IndexOf("}") + 1, ",");
+
                             List<string> tokens = new List<string>(result.Split('}'));
 
                             for (int j = 0; j < tokens.Count - 1; j++)
@@ -179,6 +131,24 @@ namespace Client_chat
                 catch (Exception e)
                 {
                     Console.WriteLine("SocketException: {0}", e.Message);
+                }
+            }
+        }
+
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                if (textBox2.Text == "Пароль")
+                {
+                    textBox2.Text = string.Empty;
+                    textBox2.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    textBox2.Text = textBox2.Text;           
+                    textBox2.PasswordChar = '*';
+
                 }
             }
         }

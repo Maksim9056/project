@@ -66,13 +66,13 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(46, 217);
+            this.textBox2.Location = new System.Drawing.Point(46, 218);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(539, 44);
             this.textBox2.TabIndex = 9;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.textBox2, "Пароль");
-            this.textBox2.Click += new System.EventHandler(this.textBox2_Click);
+            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
             // 
             // textBox3
             // 
@@ -83,7 +83,7 @@
             this.textBox3.TabIndex = 10;
             this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.textBox3, "Повторите пароль ");
-            this.textBox3.Click += new System.EventHandler(this.textBox3_Click);
+            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             // 
             // pictureBox2
             // 

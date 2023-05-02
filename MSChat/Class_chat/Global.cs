@@ -8,14 +8,11 @@ namespace Class_chat
     public class ConnectSettings
     {
         public const Int32 port = 9595;
-        public const string IP = "192.168.0.113"; //127.0.0.1
+        public const string IP = "192.168.0.113"; 
     }
 
-
-    //[DataContract]
     public class UseTravel
     {
-        //public static bool UC = true;
         public  string Answe { get;}
         public int List_Mess    { get; set; }
         public MessСhat[] AClass { get; set; }    

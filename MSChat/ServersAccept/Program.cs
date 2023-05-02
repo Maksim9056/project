@@ -4,13 +4,16 @@ using System.Net;
 using System.Threading;
 using Class_chat;
 using System.Text;
-
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace ServersAccept
 {
     internal class Program
     {
         public bool Users = false;
+
+        //[Obsolete]
         static void Main(string[] args)
         {
             GlobalClass globalClass= new GlobalClass();
@@ -18,13 +21,12 @@ namespace ServersAccept
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
             globalClass.CreateTable_Files();
-
             TcpListener server = null;
             try
-            {
-                int MaxThreadsCount = Environment.ProcessorCount;
+            { 
+               int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-                IPAddress localAddr = IPAddress.Parse(ConnectSettings.IP);
+                IPAddress localAddr =IPAddress.Parse(ConnectSettings.IP);
                 int counter = 0;
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
@@ -33,24 +35,31 @@ namespace ServersAccept
                 Console.WriteLine(Environment.MachineName);
                 Console.WriteLine(Environment.CurrentDirectory);
                 Console.WriteLine(Environment.TickCount);
-                Console.WriteLine(Environment.WorkingSet);
-             /*   //string Host = System.Net.Dns.GetHostName();
-                //string Ip_adres=      System.Net.Dns.Resolve();
-                Console.WriteLine($"Ip-адрес: {localAddr}");            
-                //127.0.0.1 System.Net.Sockets.AddressFamily family   */         
-                Console.WriteLine("\nСервер запушен");             
-                server.Start();
+                /*   //  Console.WriteLine(Environment.WorkingSet);
+                 */
+                /* IPHostEntry ipEntry = Dns.GetHostByName(Dns.GetHostName());
+            foreach (var a in ipEntry.AddressList) {
+                Console.WriteLine(a);
+
+            }*/
+                /*   //string Host = System.Net.Dns.GetHostName();
+                   //string Ip_adres=      System.Net.Dns.Resolve();
+                   Console.WriteLine($"Ip-адрес: {localAddr}");            
+                   //127.0.0.1 System.Net.Sockets.AddressFamily family   */
+                Console.WriteLine("\nСервер запушен");
+                    server.Start();
                 while (true)
                 {
                     Console.WriteLine("\nОжидание соединения...");
                     ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());
+                
+                    counter++;
+                    Console.Write("\nСоединие№" + counter.ToString() + "!");  
                     /*
                     // QueueUserWorkItem             
                     // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
-                    */
-                    counter++;
-                    Console.Write("\nСоединие№" + counter.ToString() + "!");            
+                    */          
                 }
             }
             catch (SocketException e)
