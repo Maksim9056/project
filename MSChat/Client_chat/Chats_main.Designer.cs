@@ -81,7 +81,7 @@
             this.toolStripTextBox1.Margin = new System.Windows.Forms.Padding(2, 0, 8, 0);
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(300, 50);
-            this.toolStripTextBox1.Text = "192.168.0.113";
+            this.toolStripTextBox1.ToolTipText = "Enter the IP address of the server";
             this.toolStripTextBox1.Click += new System.EventHandler(this.toolStripTextBox1_Click);
             // 
             // toolStripButton1
