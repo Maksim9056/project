@@ -49,17 +49,29 @@ namespace Client_chat
                 if (toolStripTextBox1.Text != "")
                 {
                     Entrance = true;
-                    IPStatus status;
+                  //  IPStatus status;
                    try
                    {
                         IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
-                        Ping p = new Ping();
-                        PingReply pr = p.Send(IP_ADRES.Ip_adress );
-                        status = pr.Status;                  
-                        if (status == IPStatus.Success)
+                       /* Ping p = new Ping();
+                      //  PingReply pr = p.Send(IP_ADRES.Ip_adress );
+                        //status = pr.Status;                  
+                        //if (status != IPStatus.Success)
+                        //{
+                        //    MessageBox.Show("Сервер работает");
+                        //   //IPAddress.Loopback.ToString();
+      
+                        //}
+                        //else
+                        //{
+                        //   MessageBox.Show("Сервер временно недоступен!");
+                        //}*/
+                        string ipAddress = toolStripTextBox1.Text;
+                        Ping pingSender = new Ping();
+                        PingReply reply = pingSender.Send(ipAddress);
+                        if (reply.Status == IPStatus.Success)
                         {
-                            MessageBox.Show("Сервер работает");
-                           //IPAddress.Loopback.ToString();
+                            Console.WriteLine("Ping to {0} success.", ipAddress);
                             toolStripButton1.BackColor = Color.Gray;
                             //Подключения к сервуру
                             toolStripButton1.ForeColor = Color.Gray;
@@ -69,9 +81,9 @@ namespace Client_chat
                         }
                         else
                         {
-                           MessageBox.Show("Сервер временно недоступен!");
+                            Console.WriteLine("Ping to {0} failed.", ipAddress);
                         }
-                   } 
+                    } 
                    catch   
                    {
 
