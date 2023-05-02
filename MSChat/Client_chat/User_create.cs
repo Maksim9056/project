@@ -158,7 +158,7 @@ namespace Client_chat
             }
             else
             {
-                textBox2.Text = textBox3.Text;
+                textBox2.Text = textBox2.Text;
                 textBox2.PasswordChar = '*';
             }
         }

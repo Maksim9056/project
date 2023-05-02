@@ -43,10 +43,11 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(46, 81);
+            this.textBox1.Location = new System.Drawing.Point(23, 42);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(539, 49);
+            this.textBox1.Size = new System.Drawing.Size(272, 27);
             this.textBox1.TabIndex = 6;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.textBox1, "Имя");
@@ -55,9 +56,10 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(118, 894);
+            this.button1.Location = new System.Drawing.Point(59, 465);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(372, 58);
+            this.button1.Size = new System.Drawing.Size(186, 30);
             this.button1.TabIndex = 8;
             this.button1.Text = "Зарегистрироваться";
             this.button1.UseVisualStyleBackColor = true;
@@ -66,9 +68,10 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox2.Location = new System.Drawing.Point(46, 218);
+            this.textBox2.Location = new System.Drawing.Point(23, 113);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(539, 44);
+            this.textBox2.Size = new System.Drawing.Size(272, 26);
             this.textBox2.TabIndex = 9;
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.textBox2, "Пароль");
@@ -77,9 +80,10 @@
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox3.Location = new System.Drawing.Point(46, 353);
+            this.textBox3.Location = new System.Drawing.Point(23, 184);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(539, 44);
+            this.textBox3.Size = new System.Drawing.Size(272, 26);
             this.textBox3.TabIndex = 10;
             this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.textBox3, "Повторите пароль ");
@@ -89,9 +93,10 @@
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(93, 610);
+            this.pictureBox2.Location = new System.Drawing.Point(46, 317);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(452, 158);
+            this.pictureBox2.Size = new System.Drawing.Size(227, 83);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 12;
             this.pictureBox2.TabStop = false;
@@ -105,24 +110,26 @@
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox4.Location = new System.Drawing.Point(46, 478);
+            this.textBox4.Location = new System.Drawing.Point(23, 249);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(545, 44);
+            this.textBox4.Size = new System.Drawing.Size(274, 26);
             this.textBox4.TabIndex = 13;
             this.toolTip1.SetToolTip(this.textBox4, "Ввидите возраст");
             this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox4_KeyPress);
             // 
             // User_create
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 978);
+            this.ClientSize = new System.Drawing.Size(323, 512);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "User_create";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Регистрация";

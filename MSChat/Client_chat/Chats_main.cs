@@ -448,8 +448,8 @@ namespace Client_chat
 
         public void OpenMes(User_photo ruser, User_photo[] Friends)
         {
-
-            Na_me = ruser.Name;
+            toolStripTextBox1.Text =IP_ADRES.Ip_adress ;
+          Na_me = ruser.Name;
             //  int id = 0;
             toolStripLabel1.Text = Na_me;
             if (Friends == null)
