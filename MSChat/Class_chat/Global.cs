@@ -9,7 +9,7 @@ namespace Class_chat
     public class ConnectSettings
     {
         public const  Int32 port = 9595;
-        public const string IP = "127.0.0.1"; 
+   //     public const string IP = "127.0.0.1"; 
     }
 
     public class UseTravel

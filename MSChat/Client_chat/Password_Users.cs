@@ -131,6 +131,7 @@ namespace Client_chat
                 {
                  //   Console.WriteLine("SocketException: {0}", e.Message);
                 }
+                
             }
         }
 

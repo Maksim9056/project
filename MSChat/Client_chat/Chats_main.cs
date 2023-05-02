@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 
 namespace Client_chat
 {
@@ -48,14 +49,34 @@ namespace Client_chat
                 if (toolStripTextBox1.Text != "")
                 {
                     Entrance = true;
-                    IP_ADRES.Ip_adress =   toolStripTextBox1.Text;
-                    //IPAddress.Loopback.ToString();
-                    toolStripButton1.BackColor = Color.Gray;
-                    //Подключения к сервуру
-                    toolStripButton1.ForeColor = Color.Gray;
-                    Password_Users a = new Password_Users();
-                    a.Show();
-                    this.Hide();
+                    IPStatus status;
+                   try
+                   {
+                        IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
+                        Ping p = new Ping();
+                        PingReply pr = p.Send(IP_ADRES.Ip_adress );
+                        status = pr.Status;                  
+                        if (status == IPStatus.Success)
+                        {
+                            MessageBox.Show("Сервер работает");
+                           //IPAddress.Loopback.ToString();
+                            toolStripButton1.BackColor = Color.Gray;
+                            //Подключения к сервуру
+                            toolStripButton1.ForeColor = Color.Gray;
+                            Password_Users a = new Password_Users();
+                            a.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                           MessageBox.Show("Сервер временно недоступен!");
+                        }
+                   } 
+                   catch   
+                   {
+
+                   }
+              
                 }
                 else
                 {

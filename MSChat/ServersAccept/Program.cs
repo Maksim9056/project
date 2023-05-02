@@ -26,12 +26,13 @@ namespace ServersAccept
             { 
                int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-                IPAddress localAddr = IPAddress.Parse(ConnectSettings.IP);
+                IPAddress localAddr = IPAddress.Loopback;
                 int counter = 0;
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
                 Console.WriteLine("Пользователь:" + Environment.UserName.ToString());
+                Console.WriteLine("IP-адрес :" +  localAddr.ToString());
                 Console.WriteLine("Путь:" + Environment.CurrentDirectory.ToString());
                 //Console.WriteLine(Environment.MachineName);
                 //Console.WriteLine(Environment.WorkingSet);
