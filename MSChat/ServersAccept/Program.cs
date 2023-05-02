@@ -26,7 +26,7 @@ namespace ServersAccept
             { 
                int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-                IPAddress localAddr =IPAddress.Parse(ConnectSettings.IP);
+                IPAddress localAddr = IPAddress.Parse(ConnectSettings.IP);
                 int counter = 0;
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);

@@ -117,20 +117,19 @@ namespace Client_chat
                     else
                     {
                         MessageBox.Show("Пользователя нет");
-
                     }
                 }
-                catch (ArgumentNullException e)
+                catch (ArgumentNullException )
                 {
-                    Console.WriteLine("ArgumentNullException:{0}", e.Message);
+                    //Console.WriteLine("ArgumentNullException:{0}", e.Message);
                 }
-                catch (SocketException e)
+                catch (SocketException )
                 {
-                    Console.WriteLine("SocketException: {0}", e.Message);
+                    //Console.WriteLine("SocketException: {0}", e.Message);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
-                    Console.WriteLine("SocketException: {0}", e.Message);
+                 //   Console.WriteLine("SocketException: {0}", e.Message);
                 }
             }
         }

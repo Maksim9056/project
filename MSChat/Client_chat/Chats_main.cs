@@ -49,8 +49,7 @@ namespace Client_chat
                 {
                     Entrance = true;
                     IP_ADRES.Ip_adress =   toolStripTextBox1.Text;
-                                                        //IPAddress.Loopback.ToString();
-
+                    //IPAddress.Loopback.ToString();
                     toolStripButton1.BackColor = Color.Gray;
                     //Подключения к сервуру
                     toolStripButton1.ForeColor = Color.Gray;
