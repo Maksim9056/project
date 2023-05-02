@@ -283,7 +283,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "Chats_main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Chats_main";
+            this.Text = "Чат";
             this.UseWaitCursor = true;
             this.Load += new System.EventHandler(this.Chats_main_Load);
             this.toolStrip1.ResumeLayout(false);
