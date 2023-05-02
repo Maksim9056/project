@@ -31,10 +31,10 @@ namespace ServersAccept
                 Console.WriteLine();
                 server = new TcpListener(localAddr, ConnectSettings.port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
-                Console.WriteLine(Environment.UserName);
-                Console.WriteLine(Environment.MachineName);
-                Console.WriteLine(Environment.CurrentDirectory);
-                Console.WriteLine(Environment.TickCount);
+                Console.WriteLine("Пользователь:" + Environment.UserName.ToString());
+                Console.WriteLine("Путь:" + Environment.CurrentDirectory.ToString());
+                //Console.WriteLine(Environment.MachineName);
+                //Console.WriteLine(Environment.WorkingSet);
                 /*   //  Console.WriteLine(Environment.WorkingSet);
                  */
                 /* IPHostEntry ipEntry = Dns.GetHostByName(Dns.GetHostName());
