@@ -403,7 +403,7 @@ namespace Client_chat
                         }
 
                         sender.Columns.Insert(2, column);
-                        sender.Columns[0].HeaderText = "Друзья";
+                        //sender.Columns[0].HeaderText = "Друзья";
 
                         for (int i = 0; i < les.Count(); i++)
                         {
@@ -1016,6 +1016,11 @@ namespace Client_chat
 
                     Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
 
+
+
+                 //   searh_Friends.Name
+
+
                     /*                 //for (int i = 0; i < searh_Friends.Name i++)
                                      //{
                                      //    for (int j = 0; j < 1; j++)
@@ -1341,6 +1346,7 @@ namespace Client_chat
                     using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
                     {
                         NetworkStream stream = client.GetStream();
+
                         int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                         User_photo tt = Friend[selectedrowindex];
                         tt.Current = Users;

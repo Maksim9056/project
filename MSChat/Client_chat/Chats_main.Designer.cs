@@ -122,7 +122,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(298, 48);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(80, 24);
             this.button1.TabIndex = 5;
@@ -135,7 +135,7 @@
             // 
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.Location = new System.Drawing.Point(200, 48);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(94, 24);
             this.button2.TabIndex = 6;
@@ -150,7 +150,7 @@
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.Location = new System.Drawing.Point(590, 497);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(129, 44);
             this.button3.TabIndex = 7;
@@ -163,7 +163,7 @@
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox2.Location = new System.Drawing.Point(8, 46);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(81, 29);
@@ -182,7 +182,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridViewUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewUser.Location = new System.Drawing.Point(8, 83);
-            this.dataGridViewUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewUser.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewUser.Name = "dataGridViewUser";
             this.dataGridViewUser.RowHeadersWidth = 82;
             this.dataGridViewUser.RowTemplate.Height = 33;
@@ -200,7 +200,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewChat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewChat.Location = new System.Drawing.Point(200, 83);
-            this.dataGridViewChat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewChat.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewChat.Name = "dataGridViewChat";
             this.dataGridViewChat.RowHeadersWidth = 82;
             this.dataGridViewChat.RowTemplate.Height = 33;
@@ -218,7 +218,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox1.Location = new System.Drawing.Point(193, 497);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(393, 41);
@@ -230,7 +230,7 @@
             // 
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button4.Location = new System.Drawing.Point(92, 46);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(94, 27);
             this.button4.TabIndex = 12;
@@ -270,7 +270,6 @@
             // 
             // timer2
             // 
-            this.timer2.Enabled = true;
             this.timer2.Interval = 90000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
@@ -290,7 +289,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Chats_main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Чат";
