@@ -91,7 +91,7 @@ namespace ServersAccept
             FDictCommands.Add("009", new Action<byte[], GlobalClass, NetworkStream>(command.Insert_Message));
             FDictCommands.Add("010", new Action<byte[], GlobalClass, NetworkStream>(command.Update_Message));
             FDictCommands.Add("011", new Action<byte[], GlobalClass, NetworkStream>(command.Delete_Message));
-            FDictCommands.Add("012", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Users_Correspondence));
+            FDictCommands.Add("012", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens_Message));
             FDictCommands.Add("013", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens));
         }
 
@@ -109,11 +109,12 @@ namespace ServersAccept
         {
             try
             {
-           
+                
+              
+
                 using (TcpClient client = client_obj as TcpClient)
-                {
-                    byte[] bytes = new byte[99999999];
-                    string data;
+                {  byte[] bytes = new byte[99999999];
+                string data;
                     GlobalClass globalClass = new GlobalClass();
                     NetworkStream stream = client.GetStream();
                     Command command = new Command();
@@ -204,11 +205,13 @@ namespace ServersAccept
                         //        break;
                         //}*/
                     }
-
+                //    data = "";
                 }
+
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Source);
                 Console.WriteLine(e.Message);
             }
 

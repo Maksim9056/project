@@ -195,7 +195,7 @@ namespace Class_chat
 
     }
 
-    public class UseImage
+    public class User_photo
     {
         UseImage() { }
         public byte[] Bytes { get; set; }

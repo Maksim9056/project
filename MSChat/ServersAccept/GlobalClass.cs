@@ -388,9 +388,11 @@ namespace ServersAccept
             {
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressi, connection);
+
+                SqliteCommand commandS = new SqliteCommand(sqlExpressi, connection);
                 var n = await command.ExecuteReaderAsync();
                 //         // Заполняем Dataset
-                SqliteDataReader sqReader = command.ExecuteReader();
+                SqliteDataReader sqReader = commandS.ExecuteReader();
 
                 if (n.HasRows == true)
                 {
@@ -756,17 +758,16 @@ namespace ServersAccept
             //Проверяет друзей  у первого пользователя и у 2 пользователя 
             
             // SELECT * FROM Friends  WHERE IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users} and IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}           
-  string sqlE = $"SELECT * FROM Friends  WHERE ((IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users})" +
+            string sqlE = $"SELECT * FROM Friends  WHERE ((IdUserFrom = {Insert_Friend_by_id} and IdUserTo ={Id_Users})" +
                                              $"or (IdUserFrom = {Id_Users} and IdUserTo ={Insert_Friend_by_id}))";
 
             using (var connections = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connections.OpenAsync();
-                SqliteCommand command_ = new SqliteCommand(sqlE, connections);
-                var n1 = await command_.ExecuteReaderAsync();
-
+                SqliteCommand command_ = new SqliteCommand(sqlE, connections);              
                 SqliteCommand commands_ = new SqliteCommand(sqlE, connections);
 
+                var n1 = await command_.ExecuteReaderAsync();
                 SqliteDataReader sqReader2 = commands_.ExecuteReader();
 
                 // Always call Read before accessing data.

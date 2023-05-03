@@ -7,6 +7,8 @@ using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
+using System.Drawing;
+using System.Linq;
 
 namespace Client_chat
 {
@@ -16,7 +18,9 @@ namespace Client_chat
         {
             InitializeComponent();
         }
-
+        private const int ButtonSizeIncrease = 20;
+        private Point _originalButtonLocation;
+        private Size _originalButtonSize;
         public  User_regis[] List_Friend { get; set; }
 
         private void button2_Click(object sender, EventArgs e)
@@ -55,19 +59,46 @@ namespace Client_chat
                     data = new Byte[99999999];
                     String responseData = String.Empty;
                     String responseDat = String.Empty;
-                    Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
-
-                    responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
-                    User_photo person3 = JsonSerializer.Deserialize<User_photo>(responseData);
-
-                    if (person3.Name == user)
+                    // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        //MessageBox.Show("Подключение пользователя разрешено");
-                        //получить перечень друзей
-                        Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
-                        responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                        User_photo[] people = null;
-                        if (responseDat == "false")
+                        int cnt = 0;
+                        Byte[] locbuffer = new byte[1024];
+                        do
+                        {
+                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                            ms.Write(locbuffer, 0, cnt);
+                        } while (client.Available > 0);
+
+                        responseData = Encoding.Default.GetString(ms.ToArray());
+                    }
+                    if (responseData == "false")
+                    {
+
+
+
+                    }
+                    else
+                    {
+
+
+                        User_photo person3 = JsonSerializer.Deserialize<User_photo>(responseData);
+
+
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            int cnt = 0;
+                            Byte[] locbuffer = new byte[1024];
+                            do
+                            {
+                                cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                                ms.Write(locbuffer, 0, cnt);
+                            } while (client.Available > 0);
+
+                            responseDat = Encoding.Default.GetString(ms.ToArray());
+                        }
+
+                        if (responseData == "false")
                         {
 
 
@@ -75,48 +106,73 @@ namespace Client_chat
                         }
                         else
                         {
-                            string result = responseDat.Trim(new char[] { '"', '0' });
-                            Int32 it = Convert.ToInt32(result);
-                            people = new User_photo[it];
-                
-                            Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
-                            //Друзья
-                            result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
-                            string rez2 = result.Substring(0, result.IndexOf("}"));
 
-                            List<string> tokens = new List<string>(result.Split('}'));
+                            MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
 
-                            for (int j = 0; j < tokens.Count - 1; j++)
-                            {
-                                string tt = tokens[j] + "}";
-                                people[j] = JsonSerializer.Deserialize<User_photo>(tt);
-                            }
+
+                            //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+
+
+
+                            //if (person3.Name == user)
+                            //{
+                            //    //MessageBox.Show("Подключение пользователя разрешено");
+                            //    //получить перечень друзей
+                            //    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
+                            //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
+                            //    User_photo[] people = null;
+                            //    if (responseDat == "false")
+                            //    {
+
+
+
+                            //    }
+                            //    else
+                            //    {
+                            //        string result = responseDat.Trim(new char[] { '"', '0' });
+                            //        Int32 it = Convert.ToInt32(result);
+                            //        people = new User_photo[it];
+
+                            //        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
+                            //        //Друзья
+                            //        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
+                            //        string rez2 = result.Substring(0, result.IndexOf("}"));
+
+                            //        List<string> tokens = new List<string>(result.Split('}'));
+
+                            //        for (int j = 0; j < tokens.Count - 1; j++)
+                            //        {
+                            //            string tt = tokens[j] + "}";
+                            //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
+                            //        }
+                            //    }
+                            Chats_main a = new Chats_main();
+
+                            a.Show();
+                            a.OpenMes(person3, msgFriends);
+                            userpass.Hide();
+
+
+                            //}
+                            //else
+                            //{
+                            //    MessageBox.Show("Пользователя нет");
+                            //}
                         }
-                        Chats_main a = new Chats_main();
-
-                        a.Show();
-                        a.OpenMes(person3, people);
-                        userpass.Hide();
-
-
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Пользователя нет");
                     }
                 }
-                catch (ArgumentNullException )
+
+                catch (ArgumentNullException)
                 {
                     //Console.WriteLine("ArgumentNullException:{0}", e.Message);
                 }
-                catch (SocketException )
+                catch (SocketException)
                 {
                     //Console.WriteLine("SocketException: {0}", e.Message);
                 }
-                catch (Exception )
+                catch (Exception)
                 {
-                 //   Console.WriteLine("SocketException: {0}", e.Message);
+                    //   Console.WriteLine("SocketException: {0}", e.Message);
                 }
                 
             }
@@ -142,20 +198,35 @@ namespace Client_chat
 
         private void button1_MouseMove(object sender, MouseEventArgs e)
         {
-            string FileFS = "";
-            using (MemoryStream fs = new MemoryStream())
-            {
-                UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
-
-                JsonSerializer.Serialize<UserLogin>(fs, tom);
-                FileFS = Encoding.Default.GetString(fs.ToArray());
-            }
-            Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+            button1.Width = _originalButtonSize.Width + ButtonSizeIncrease;
+            button1.Height = _originalButtonSize.Height + ButtonSizeIncrease;
+            button1.Location = new Point(_originalButtonLocation.X - ButtonSizeIncrease / 2,
+                                          _originalButtonLocation.Y - ButtonSizeIncrease / 2);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            using (MemoryStream fs = new MemoryStream())
+            {         
+                string FileFS = "";
+                UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                JsonSerializer.Serialize<UserLogin>(fs, tom);
+                FileFS = Encoding.Default.GetString(fs.ToArray());   
+                Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
 
+            }
+        }
+
+        private void Password_Users_Load(object sender, EventArgs e)
+        {
+            _originalButtonLocation = button1.Location;
+            _originalButtonSize = button1.Size;
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            button1.Size = _originalButtonSize;
+            button1.Location = _originalButtonLocation;
         }
     }
 }

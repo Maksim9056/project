@@ -454,10 +454,10 @@ namespace Client_chat
             }
         }
 
-        public void OpenMes(User_photo ruser, User_photo[] Friends)
+        public void OpenMes(User_photo ruser, MsgFriends Friends)
         {
             toolStripTextBox1.Text =IP_ADRES.Ip_adress ;
-          Na_me = ruser.Name;
+            Na_me = ruser.Name;
             //  int id = 0;
             toolStripLabel1.Text = Na_me;
             if (Friends == null)
@@ -477,7 +477,15 @@ namespace Client_chat
                 // toolStripButton1.Image = Image.FromFile();
             }
             toolStripButton1.Image = Image.FromFile("Зеленый.png");
-            Friend = Friends;
+           
+            User_photo [] A = new User_photo [Friends.List_Mess];
+        
+            for (int I = 0; I < Friends.AClass.Count(); I++)
+            {
+                    A = Friends.AClass.ToArray();
+            }
+            Friend = A;
+
             try
             {
                 //   int h = 0;
@@ -489,7 +497,7 @@ namespace Client_chat
                 }
                 else
                 {
-                    dataGridViewUser.RowCount = Friends.Count();
+                    dataGridViewUser.RowCount = Friend.Count();
                     dataGridViewUser.ColumnCount = 1;
                     for (int i = 0; i < Friend.Count(); i++)
                     {
@@ -619,7 +627,7 @@ namespace Client_chat
                 if (selectedrowindex < 0)
                 {
 
-                }
+                }else
                 {
                     User_photo tt = Friend[selectedrowindex];
 
@@ -1274,67 +1282,27 @@ namespace Client_chat
 
         }
 
-        async private void timer1_Tick(object sender, EventArgs e)
-        {
+         private void timer1_Tick(object sender, EventArgs e)
+         {
             try
             {
-                if (toolStripLabel1.Text != "")
+                if (toolStripLabel1.Text == "")
                 {
 
-                    int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
-                    User_photo tt = Friend[selectedrowindex];
-                    tt.Current = Users;
-                    string person = JsonSerializer.Serialize<User_photo>(tt);
-
-                    using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
-                    {
-                        Byte[] data = System.Text.Encoding.Default.GetBytes("012" + person);
-                        NetworkStream stream = client.GetStream();
-                        await stream.WriteAsync(data, 0, data.Length);
-
-                        data = new Byte[99999999];
-                        //String responseData = String.Empty;
-                        String responseDat = String.Empty;
-
-                        Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
-
-                        responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                        User_photo[] people = null;
-                        if (responseDat == "false")
-                        {
-
-
-
-                        }
-                        else
-                        {
-                            string result = responseDat.Trim(new char[] { '"', '0' });
-                            Int32 it = Convert.ToInt32(result);
-                            people = new User_photo[it];
-                            // int i =0;
-                            Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
-                            //Друзья
-                            result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
-                            string rez2 = result.Substring(0, result.IndexOf("}"));
-                            //string rez2 = result.Insert(result.IndexOf("}") + 1, ",");
-                            List<string> tokens = new List<string>(result.Split('}'));
-
-                            for (int j = 0; j < tokens.Count - 1; j++)
-                            {
-                                string ttw = tokens[j] + "}";
-                                people[j] = JsonSerializer.Deserialize<User_photo>(ttw);
-                            }
-                            view_mess();
-                        }
-                    }
+             
+                }
+                else
+                {
+                
+                    view_mess();
+             
                 }
             }
             catch
             {
 
             }
-        }
-
+         }
 
         async private void timer2_Tick(object sender, EventArgs e)
         {
@@ -1416,7 +1384,7 @@ namespace Client_chat
                                             //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
                                         }
                                     }
-                                    dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                                  //  dataGridViewUser.Columns[0].HeaderText = "Друзья";
                                 }
                             }
                             catch (Exception ex)
