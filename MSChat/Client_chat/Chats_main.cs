@@ -454,7 +454,7 @@ namespace Client_chat
             }
         }
 
-        public void OpenMes(User_photo ruser, MsgFriends Friends)
+        public void OpenMes(User_photo ruser, User_Logins Friends)
         {
             toolStripTextBox1.Text =IP_ADRES.Ip_adress ;
             Na_me = ruser.Name;
@@ -489,7 +489,7 @@ namespace Client_chat
             try
             {
                 //   int h = 0;
-                if (Friends == null)
+                if (Friends.Answe == "false")
                 {
 
 

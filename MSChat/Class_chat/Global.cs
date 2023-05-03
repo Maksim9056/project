@@ -111,6 +111,22 @@ namespace Class_chat
         }
     }
 
+    public class User_Logins
+    {
+        public string Answe { get; }
+        public User_photo User_ { get; set; }
+
+        public int List_Mess { get; set; }
+        public User_photo[] AClass { get; set; }
+        public User_Logins(string answe, User_photo user, int count, User_photo[] aclass)
+        {
+            Answe = answe;
+            User_ = user;
+            List_Mess = count;
+            AClass = aclass;
+        }
+    }
+
     public class MsgFriends
     {
         public string Answe { get; set; }
@@ -195,9 +211,9 @@ namespace Class_chat
 
     }
 
-    public class User_photo
+    public class UseImage
     {
-        UseImage() { }
+       // UseImage() { }
         public byte[] Bytes { get; set; }
         public UseImage(byte[] bytes)
         {
