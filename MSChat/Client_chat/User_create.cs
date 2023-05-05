@@ -99,11 +99,14 @@ namespace Client_chat
                     else
                     {
                         MessageBox.Show("Добавление пользователя разрешено");
-                        using (Password_Users a = new Password_Users())
-                        {
-                            userpass.Hide();
-                            a.ShowDialog();
-                        }
+                        //using (Password_Users a = new Password_Users())
+                        //{
+                           //Chats_main parent = (Chats_main)this.Owner;
+                           //parent.Show();
+                           userpass.Close();
+                            
+                            //a.ShowDialog();
+                        //}
                     }
                 }
             }

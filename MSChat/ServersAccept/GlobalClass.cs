@@ -288,27 +288,32 @@ namespace ServersAccept
         async public void Select_Friend(string curent_user)
         {
             int UserCount = 0;
-            string sqlExpressioCount = $"SELECT COUNT(*)  FROM Friends  WHERE IdUserFrom = {curent_user}";
+
+
+            string sqlExpressioCount = $"SELECT COUNT(*)  FROM Friends  WHERE IdUserFrom = '{curent_user}'";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
                 SqliteCommand commandS = new SqliteCommand(sqlExpressioCount, connection);
-                var n = await commandS.ExecuteReaderAsync();
+                var n = await command.ExecuteReaderAsync();
 
-                SqliteDataReader sqReader = command.ExecuteReader();
+                SqliteDataReader sqReader = commandS.ExecuteReader();
                 if (n.HasRows == true)
                 {
-                    Friends = true;
 
-                    while (sqReader.Read())
+                 while (sqReader.Read())
                     {
                         UserCount = sqReader.GetInt32(0);
-                    }
+                    }  
+                    Friends = true;
+
                 }
-                else
-                {
-                 Friends = false;
+                else  
+                {  
+                    Friends = false;
+                    
+               
                 }
             }
 
@@ -335,50 +340,57 @@ namespace ServersAccept
                             //Проходим по созданию фильтра для таблицы Users
                         }
                         //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
-                                
-                            
-                            //Проверяет  в таблицу Пользователи количество у id пользователей 
 
-                            sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
-                            SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
-                            SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
-                            var _n = await commands_Fr.ExecuteReaderAsync();
-                            SqliteDataReader sqReaders_Fr = _commandS_Fr.ExecuteReader();
-                            if (_n.HasRows == true)
-                            { //sqReader["Image"] as byte[]
-                                int j = 0;
-                                User_photo[] UserRG = new User_photo[UserCount];
-                                while (sqReaders_Fr.Read())
-                                {
-                                    int Id = Convert.ToInt32(sqReaders_Fr["Id"].ToString());
-                                    //  byte[] image = null;
-                                    int Image = Convert.ToInt32(sqReaders_Fr["Image"].ToString());
 
-                                    User_photo User = new User_photo(sqReaders_Fr["Name"] as string, "", sqReaders_Fr["Age"] as string, Image, Id, 0);
-                                    UserRG[j] = User;
-                                    j++;
-                                }
-                                List_Friend = UserRG;
-                                Friends = true;          
-                                Console.WriteLine(curent_user);
+                        //Проверяет  в таблицу Пользователи количество у id пользователей 
 
-                            }
-                            else
+                        sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
+                        SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
+                        SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
+                        var _n = await commands_Fr.ExecuteReaderAsync();
+                        SqliteDataReader sqReaders_Fr = _commandS_Fr.ExecuteReader();
+                        if (_n.HasRows == true)
+                        { //sqReader["Image"] as byte[]
+                            int j = 0;
+                            User_photo[] UserRG = new User_photo[UserCount];
+                            while (sqReaders_Fr.Read())
                             {
-                                //друзей нет 
-                                Friends = false;
+                                int Id = Convert.ToInt32(sqReaders_Fr["Id"].ToString());
+                                //  byte[] image = null;
+                                int Image = Convert.ToInt32(sqReaders_Fr["Image"].ToString());
+
+                                User_photo User = new User_photo(sqReaders_Fr["Name"] as string, "", sqReaders_Fr["Age"] as string, Image, Id, 0);
+                                UserRG[j] = User;
+                                j++;
                             }
-                       // }
+                            Friends = true;
+
+                            List_Friend = UserRG;
+                            Friends = true;
+                            Console.WriteLine(UserRG);
+
+
+                        }
+                        else
+                        {
+                            //друзей нет 
+
+                            Friends = false;
+
+
+
+                        }
+
                     }
                     else
                     {
-                        //друзей нет 
                         Friends = false;
                     }
                 }
 
             }
         }
+        
         
         //Проверяет  в таблицу пользователи по имени пользователя
         async public void Select_From_Users(string data)

@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace Client_chat
 {
@@ -41,6 +42,11 @@ namespace Client_chat
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void NotifyMe(MsgUser_Logins s)
+        {
+            OpenMes(s);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -76,9 +82,12 @@ namespace Client_chat
                             toolStripButton1.BackColor = Color.Gray;
                             //Подключения к сервуру
                             toolStripButton1.ForeColor = Color.Gray;
-                            Password_Users a = new Password_Users();
-                            a.Show();
-                            this.Hide();
+                            using (Password_Users a = new Password_Users())
+                            {
+                                a.ShowDialog(this);
+                                
+                                //this.Hide();
+                            }
                         }
                         else
                         {
@@ -161,15 +170,17 @@ namespace Client_chat
                     {
                         using (MemoryStream fs = new MemoryStream())
                         {
+                            /*
                             //string serialized = buf.ToString();
-                            //Searh_Friends New_Friend = new Searh_Friends(textBox2.Text);
+                            //Searh_Friends New_Friend = new Searh_Friends(textBox2.Text);*/
                             DateTime dateTime = DateTime.Now;
 
                             MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1);
 
-                            //        JsonSerializer.SerializeToDefaultBytes(fs,);
                             JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
+                          /*
+                            //        JsonSerializer.SerializeToDefaultBytes(fs,);
 
                             //Console.WriteLine("Data has been saved to file");*/
                         }
@@ -454,72 +465,81 @@ namespace Client_chat
             }
         }
 
-        public void OpenMes(User_photo ruser, User_Logins Friends)
-        {
+        public void OpenMes(MsgUser_Logins Friends)
+        { //MemoryStream ms = new MemoryStream(ruser.Photo);
+          //Image returnImage = Image.FromStream(ms);
+          //toolStripButton2.Image = returnImage;
+
+            //User_photo ruser = JsonSerializer.Deserialize<User_photo>(Friends.User_);
+
             toolStripTextBox1.Text =IP_ADRES.Ip_adress ;
-            Na_me = ruser.Name;
+            Na_me = Friends.User_.Name;
             //  int id = 0;
             toolStripLabel1.Text = Na_me;
-            if (Friends == null)
+
+            if (Friends.List_Mess == 0)
             {
 
             }
             else
             {
-                //MemoryStream ms = new MemoryStream(ruser.Photo);
-                //Image returnImage = Image.FromStream(ms);
-                //toolStripButton2.Image = returnImage;
+
+                User_photo[] A = new User_photo[Friends.List_Mess];
 
 
+
+
+
+
+                for (int I = 0; I < Friends.AClass.Count(); I++)
+                {
+                    A = Friends.AClass[I];
+                }
+                Friend = A;
+
+                try
+                {
+                    if (Friends.Answe == "false")
+                    {
+
+
+
+                    }
+                    else
+                    {
+                        dataGridViewUser.RowCount = Friend.Count();
+                        dataGridViewUser.ColumnCount = 1;
+                        for (int i = 0; i < Friend.Count(); i++)
+                        {
+                            for (int j = 0; j < 1; j++)
+                            {
+
+                                dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
+                            }
+                        }
+                        dataGridViewUser.Columns[0].HeaderText = "Друзья";
+
+                    }
+                    Users = Friends.User_.Id;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
-            if (toolStripButton2.Image == null)
-            {
-                // toolStripButton1.Image = Image.FromFile();
-            }
+
             toolStripButton1.Image = Image.FromFile("Зеленый.png");
            
-            User_photo [] A = new User_photo [Friends.List_Mess];
-        
-            for (int I = 0; I < Friends.AClass.Count(); I++)
-            {
-                    A = Friends.AClass.ToArray();
-            }
-            Friend = A;
-
-            try
-            {
+      
+        }               //if (toolStripButton2.Image == null)
+            //{
+            //    // toolStripButton1.Image = Image.FromFile();
+            //}                         //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
                 //   int h = 0;
-                if (Friends.Answe == "false")
-                {
 
-
-
-                }
-                else
-                {
-                    dataGridViewUser.RowCount = Friend.Count();
-                    dataGridViewUser.ColumnCount = 1;
-                    for (int i = 0; i < Friend.Count(); i++)
-                    {
-                        for (int j = 0; j < 1; j++)
-                        {
-                            // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
+ // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
                             //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;
-                            dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
-                            //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
-                        }
-                    }
-                    dataGridViewUser.Columns[0].HeaderText = "Друзья";
-
-                }
-                Users = ruser.Id;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         /*       //  dataGridViewUser.Visible = true;
 
                  /*На будущее заготовка для картинки

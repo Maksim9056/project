@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Class_chat
 {
@@ -12,18 +13,6 @@ namespace Class_chat
    //     public const string IP = "127.0.0.1"; 
     }
 
-    public class UseTravel
-    {
-        public  string Answe { get;}
-        public int List_Mess    { get; set; }
-        public MessСhat[] AClass { get; set; }    
-        public UseTravel(string answe, int count, MessСhat[] aclass) 
-        {
-            Answe=answe;
-            List_Mess = count;
-            AClass=aclass;
-        }
-     }
 
 
     [DataContract]
@@ -78,7 +67,7 @@ namespace Class_chat
 
     public class User_photo
     {
-        //User_regis() { }
+        User_photo() { }
         public string Name { get; set; }
         public string Pass { get; set; }
         public string Age { get; set; }
@@ -100,6 +89,7 @@ namespace Class_chat
 
     public class User_photo_Travel
     {
+        User_photo_Travel() { }
         public string Answe { get; }
         public int List_Mess { get; set; }
         public User_photo[] AClass { get; set; }
@@ -113,31 +103,45 @@ namespace Class_chat
 
     public class User_Logins
     {
+        User_Logins() { }
         public string Answe { get; }
         public User_photo User_ { get; set; }
-
         public int List_Mess { get; set; }
         public User_photo[] AClass { get; set; }
-        public User_Logins(string answe, User_photo user, int count, User_photo[] aclass)
+
+        public User_Logins (string answe, User_photo user_, int list_Mess, User_photo[] aClass)
         {
             Answe = answe;
-            User_ = user;
-            List_Mess = count;
-            AClass = aclass;
+            User_ = user_;
+            List_Mess = list_Mess;
+            AClass = aClass;
         }
     }
 
+
+
+    public class MsgUser_Logins
+    {
+        public string Answe { get; }
+        public User_photo User_ { get; set; }
+        public int List_Mess { get; set; }
+        public List< User_photo[]> AClass { get; set; } = new List<User_photo[]>();    
+
+    }
+
+
+
+
     public class MsgFriends
     {
+        
+        MsgFriends() { }
         public string Answe { get; set; }
         public int List_Mess { get; set; }
         public List<User_photo> AClass { get; set; } = new List<User_photo>();
 
     }
 
-
-
-    [DataContract]
     public class _Name
     {
         public string __Name { get; set; }
@@ -149,8 +153,7 @@ namespace Class_chat
 
     public class MessСhat
     {
-        public MessСhat()
-        { }
+        public MessСhat() { }
         public int Id { get; set; }
         public int IdUserFrom { get; set; }
         public int IdUserTo { get; set; }
@@ -168,12 +171,25 @@ namespace Class_chat
         }
     }
 
+    public class UseTravel
+    {
+        UseTravel() { }
+        public string Answe { get; }
+        public int List_Mess { get; set; }
+        public MessСhat[] AClass { get; set; }
+        public UseTravel(string answe, int count, MessСhat[] aclass)
+        {
+            Answe = answe;
+            List_Mess = count;
+            AClass = aclass;
+        }
+    }
+
     public class MsgInfo
     {
         public string Answe { get; set; }
         public int List_Mess { get; set; }
         public List<MessСhat> AClass { get; set; } = new List<MessСhat>();
-
     }
 
     public class __User_regis

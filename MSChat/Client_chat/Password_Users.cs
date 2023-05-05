@@ -25,9 +25,11 @@ namespace Client_chat
 
         private void button2_Click(object sender, EventArgs e)
         {
-            User_create Регестрироваться = new User_create();
-            Регестрироваться.Show();
-            Hide();
+            using (User_create Регестрироваться = new User_create())
+            {
+                Регестрироваться.ShowDialog(this);
+                //this.Hide();
+            }
         }
 
         private void textBox1_Click(object sender, EventArgs e)
@@ -47,10 +49,7 @@ namespace Client_chat
             {
                 try
                 {
-
                     //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));
-
-
                     byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     string Host = System.Net.Dns.GetHostName();
                     NetworkStream stream = client.GetStream();
@@ -82,7 +81,7 @@ namespace Client_chat
                     else
                     {
 
-                        User_Logins person3 = JsonSerializer.Deserialize<User_Logins>(responseData);
+                        MsgUser_Logins person3 =   JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
 
 
 
@@ -147,9 +146,13 @@ namespace Client_chat
                                             //    }*/
                         Chats_main a = new Chats_main();
 
-                        a.Show();
-                        a.OpenMes(person3.User_, person3);
-                        userpass.Hide();
+                        //a.Show();
+                        Chats_main parent = (Chats_main)this.Owner;
+                        parent.NotifyMe(person3);
+                        userpass.Close();
+
+                        //a.OpenMes(person3.User_, person3);
+                        //userpass.Hide();
 
 
                         //}

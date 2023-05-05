@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace ServersAccept
 {
@@ -47,22 +48,23 @@ namespace ServersAccept
                     //    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                     //}
 
-                    globalClass.Select_Friend(globalClass.Current_User);                      
-                    User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+                    globalClass.Select_Friend(globalClass.Current_User);
 
                     if (globalClass.Friends == true)
                     {
+                        User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+
 
                         for (int k = 0; k < globalClass.List_Friend.Length; k++)
                         {
                             json_List_Friends[k] = globalClass.List_Friend[k];
                         }
-                                          
+
                         //   User_photo_Travel json_List_Friends_after = new User_photo_Travel(, json_List_Friends.Length, json_List_Friends);
                         using (MemoryStream ms = new MemoryStream())
                         {
                             User_Logins user_Logins = new User_Logins("true", globalClass.AUser, json_List_Friends.Length, json_List_Friends);
-
+                            //User_Logins user_Logins = new User_Logins("true", globalClass.List_Friend.Length, json_List_Friends);
                             JsonSerializer.Serialize<User_Logins>(ms, user_Logins);
                             stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                         }
@@ -71,66 +73,73 @@ namespace ServersAccept
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
+                            //List<User_photo[]> json_List_Friends = new List<User_photo[]>();
+                            //json_List_Friends.Add(globalClass.List_Friend);
+
+                            User_photo[] json_List_Friends = new User_photo[] { };
                             User_Logins user_Logins = new User_Logins("false", globalClass.AUser, json_List_Friends.Length, json_List_Friends);
+                            //User_Logins user_Logins = new User_Logins("false", json_List_Friends.Length, json_List_Friends);
+
                             JsonSerializer.Serialize<User_Logins>(ms, user_Logins);
                             stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                            
                         }
                     }
-                }
-                //else
-                //{
-                //    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                //    stream.Write(msgAnswe, 0, msgAnswe.Length);
-                //}
-                ////Thread.Sleep(100);
-                //using (MemoryStream tt = new MemoryStream())
-                //{
-                //    //   User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
-                   
-                //    /*         
-                //                   //        await stream.FlushAsync();
-                //                   //        globalClass.Select_Friend(globalClass.Current_User);
-                //                   //        User_photo AUser;                                //Обработана ситуацию когда нет друзей
-                //                   //        if (globalClass.Friends == false)
-                //                   //        {
-                //                   //            byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                //                   //            stream.Write(msgAnswe, 0, msgAnswe.Length);
-                //                   //        }
-                //                   //        else
-                //                   //        {
-                //                   //            using (MemoryStream ms_count = new MemoryStream())
-                //                   //            {
+                    /*                //else
+                                    //{
+                                    //    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
+                                    //    stream.Write(msgAnswe, 0, msgAnswe.Length);
+                                    //}
+                                    ////Thread.Sleep(100);
+                                    //using (MemoryStream tt = new MemoryStream())
+                                    //{
+                                    //    //   User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
 
-                //                   //                var Countuser = globalClass.List_Friend.Length;
-                //                   //                JsonSerializer.Serialize(ms_count, Countuser.ToString().PadLeft(3, '0'));
-                //                   //                //   byte[] ms_count_Answe = ms_count.ToArray();
-                //                   //                stream.Write(ms_count.ToArray(), 0, ms_count.ToArray().Length);
-                //                   //            }
-                //                   //            //stream.Flush();
-                //                   //            var options = new JsonSerializerOptions
-                //                   //            {
-                //                   //                AllowTrailingCommas = true
-                //                   //            };
-                //                   //            //что то не очень
-                //                   //            int tt = globalClass.List_Friend.Length;
-                //                   //            for (int k = 0; k < tt; k++)
-                //                   //            {
-                //                   //                using (MemoryStream ms_Friend_Answe = new MemoryStream())
-                //                   //                {
-                //                   //                    AUser = globalClass.List_Friend[k];
-                //                   //                    JsonSerializer.Serialize<User_photo>(ms_Friend_Answe, AUser, options);
-                //                   //                    stream.Write(ms_Friend_Answe.ToArray(), 0, ms_Friend_Answe.ToArray().Length);
-                //                   //                }
-                //                   //            }
-                //                   //        }
-                //                   //    }
-                //                   //    else
-                //                   //    {
-                //                   //        byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                //                   //        stream.Write(msgAnswe, 0, msgAnswe.Length);
-                //                   //    }
-                //                   //}*/
-                //}
+                                    //    /*         
+                                    //                   //        await stream.FlushAsync();
+                                    //                   //        globalClass.Select_Friend(globalClass.Current_User);
+                                    //                   //        User_photo AUser;                                //Обработана ситуацию когда нет друзей
+                                    //                   //        if (globalClass.Friends == false)
+                                    //                   //        {
+                                    //                   //            byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
+                                    //                   //            stream.Write(msgAnswe, 0, msgAnswe.Length);
+                                    //                   //        }
+                                    //                   //        else
+                                    //                   //        {
+                                    //                   //            using (MemoryStream ms_count = new MemoryStream())
+                                    //                   //            {
+
+                                    //                   //                var Countuser = globalClass.List_Friend.Length;
+                                    //                   //                JsonSerializer.Serialize(ms_count, Countuser.ToString().PadLeft(3, '0'));
+                                    //                   //                //   byte[] ms_count_Answe = ms_count.ToArray();
+                                    //                   //                stream.Write(ms_count.ToArray(), 0, ms_count.ToArray().Length);
+                                    //                   //            }
+                                    //                   //            //stream.Flush();
+                                    //                   //            var options = new JsonSerializerOptions
+                                    //                   //            {
+                                    //                   //                AllowTrailingCommas = true
+                                    //                   //            };
+                                    //                   //            //что то не очень
+                                    //                   //            int tt = globalClass.List_Friend.Length;
+                                    //                   //            for (int k = 0; k < tt; k++)
+                                    //                   //            {
+                                    //                   //                using (MemoryStream ms_Friend_Answe = new MemoryStream())
+                                    //                   //                {
+                                    //                   //                    AUser = globalClass.List_Friend[k];
+                                    //                   //                    JsonSerializer.Serialize<User_photo>(ms_Friend_Answe, AUser, options);
+                                    //                   //                    stream.Write(ms_Friend_Answe.ToArray(), 0, ms_Friend_Answe.ToArray().Length);
+                                    //                   //                }
+                                    //                   //            }
+                                    //                   //        }
+                                    //                   //    }
+                                    //                   //    else
+                                    //                   //    {
+                                    //                   //        byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
+                                    //                   //        stream.Write(msgAnswe, 0, msgAnswe.Length);
+                                    //                   //    }
+                                    //                   //}*/
+                    //}
+                }
             }
         }
 
