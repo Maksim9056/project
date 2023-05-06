@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Data;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Client_chat
 {
@@ -41,12 +42,14 @@ namespace Client_chat
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
-
         }
+        //MsgUser_Logins s
+        public void NotifyMe(MsgUser_Logins responseDat)
+        {//JToken s
 
-        public void NotifyMe(MsgUser_Logins s)
-        {
-            OpenMes(s);
+            //JObject details = JObject.Parse(responseDat);
+
+            OpenMes(responseDat);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -270,7 +273,8 @@ namespace Client_chat
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-
+ /*
+  * 
                     //data = new Byte[99999909];
 
 
@@ -278,7 +282,7 @@ namespace Client_chat
 
                     //Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
 
-                    //responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
+                    //responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);*/
 
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
@@ -466,73 +470,90 @@ namespace Client_chat
         }
 
         public void OpenMes(MsgUser_Logins Friends)
-        { //MemoryStream ms = new MemoryStream(ruser.Photo);
-          //Image returnImage = Image.FromStream(ms);
-          //toolStripButton2.Image = returnImage;
+        {//JToken s Friends, string responseDat)
+            { //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
+              //Image returnImage = Image.FromStream(ms);
+              //toolStripButton2.Image = returnImage;
 
-            //User_photo ruser = JsonSerializer.Deserialize<User_photo>(Friends.User_);
+                //User_photo ruser = JsonSerializer.Deserialize<User_photo>(Friends.User_);
+                //JToken Answe = Friends.SelectToken("Answe");
+                //JToken List_Mess = Friends.SelectToken("User_");
+                //JToken AClass = Friends.SelectToken("List_Mess");
+                //JToken AClassы = Friends.SelectToken("AClass");
+                toolStripTextBox1.Text = IP_ADRES.Ip_adress;
+                //  MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseDat);
+             //   User_photo user_Photo = null;
 
-            toolStripTextBox1.Text =IP_ADRES.Ip_adress ;
-            Na_me = Friends.User_.Name;
-            //  int id = 0;
-            toolStripLabel1.Text = Na_me;
+                //string Numbers_Friends = Convert.ToString(AClass);
+                //user_Photo
 
-            if (Friends.List_Mess == 0)
-            {
+                toolStripLabel1.Text = Friends.User_.Name;
 
-            }
-            else
-            {
+                // Answe
+                Na_me = Friends.User_.Name;
+                // Na_me = Friends.User_.Name;
+                //  int id = 0;
+                //    toolStripLabel1.Text = Na_me;
 
-                User_photo[] A = new User_photo[Friends.List_Mess];
-
-
-
-
-
-
-                for (int I = 0; I < Friends.AClass.Count(); I++)
+                if (Friends.List_Mess == 0)
                 {
-                    A = Friends.AClass[I];
+
                 }
-                Friend = A;
-
-                try
+                else
                 {
-                    if (Friends.Answe == "false")
+
+                    User_photo[] A = new User_photo[Friends.List_Mess];
+
+
+
+
+
+
+                    for (int I = 0; I < Friends.AClass.Count(); I++)
                     {
-
-
-
+                        A[I] = Friends.AClass[I];
                     }
-                    else
+                    Friend = A;
+
+                    try
                     {
-                        dataGridViewUser.RowCount = Friend.Count();
-                        dataGridViewUser.ColumnCount = 1;
-                        for (int i = 0; i < Friend.Count(); i++)
+                        if (Friends.Answe == "false")
                         {
-                            for (int j = 0; j < 1; j++)
-                            {
 
-                                dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
-                            }
+
+
                         }
-                        dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                        else
+                        {
+                            dataGridViewUser.RowCount = Friend.Count();
+                            dataGridViewUser.ColumnCount = 1;
+                            for (int i = 0; i < Friend.Count(); i++)
+                            {
+                                for (int j = 0; j < 1; j++)
+                                {
 
+                                    dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
+                                }
+                            }
+                            dataGridViewUser.Columns[0].HeaderText = "Друзья";
+
+                        }
+                        Users = Friends.User_.Id;
                     }
-                    Users = Friends.User_.Id;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
                 }
 
-            }
+                toolStripButton1.Image = Image.FromFile("Зеленый.png");
 
-            toolStripButton1.Image = Image.FromFile("Зеленый.png");
-           
-      
-        }               //if (toolStripButton2.Image == null)
+
+            } 
+        }      
+            //if (toolStripButton2.Image == null)
             //{
             //    // toolStripButton1.Image = Image.FromFile();
             //}                         //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);

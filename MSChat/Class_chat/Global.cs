@@ -125,7 +125,7 @@ namespace Class_chat
         public string Answe { get; }
         public User_photo User_ { get; set; }
         public int List_Mess { get; set; }
-        public List< User_photo[]> AClass { get; set; } = new List<User_photo[]>();    
+        public List<User_photo> AClass { get; set; } = new List<User_photo>();    
 
     }
 

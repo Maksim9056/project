@@ -25,8 +25,8 @@ namespace ServersAccept
             globalClass.CreateTable_Files();
             TcpListener server = null;
             try
-            { 
-               int MaxThreadsCount = Environment.ProcessorCount;
+            {
+                int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
                 IPAddress localAddr = IPAddress.Loopback;
                 int counter = 0;

@@ -47,6 +47,10 @@ namespace ServersAccept
                     //    JsonSerializer.Serialize<User_photo>(ms, globalClass.AUser);
                     //    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                     //}
+                    var options1 = new JsonSerializerOptions
+                    {
+                        AllowTrailingCommas = true
+                    };
 
                     globalClass.Select_Friend(globalClass.Current_User);
 
@@ -59,13 +63,13 @@ namespace ServersAccept
                         {
                             json_List_Friends[k] = globalClass.List_Friend[k];
                         }
+                            //User_Logins user_Logins = new User_Logins("true", globalClass.List_Friend.Length, json_List_Friends);
 
                         //   User_photo_Travel json_List_Friends_after = new User_photo_Travel(, json_List_Friends.Length, json_List_Friends);
                         using (MemoryStream ms = new MemoryStream())
                         {
                             User_Logins user_Logins = new User_Logins("true", globalClass.AUser, json_List_Friends.Length, json_List_Friends);
-                            //User_Logins user_Logins = new User_Logins("true", globalClass.List_Friend.Length, json_List_Friends);
-                            JsonSerializer.Serialize<User_Logins>(ms, user_Logins);
+                            JsonSerializer.Serialize<User_Logins>(ms, user_Logins, options1);
                             stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                         }
                     }
@@ -80,7 +84,7 @@ namespace ServersAccept
                             User_Logins user_Logins = new User_Logins("false", globalClass.AUser, json_List_Friends.Length, json_List_Friends);
                             //User_Logins user_Logins = new User_Logins("false", json_List_Friends.Length, json_List_Friends);
 
-                            JsonSerializer.Serialize<User_Logins>(ms, user_Logins);
+                            JsonSerializer.Serialize<User_Logins>(ms, user_Logins, options1);
                             stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                             
                         }

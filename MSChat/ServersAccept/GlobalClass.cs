@@ -301,8 +301,8 @@ namespace ServersAccept
                 SqliteDataReader sqReader = commandS.ExecuteReader();
                 if (n.HasRows == true)
                 {
-
-                 while (sqReader.Read())
+                   // UserCount = null;
+                    while (sqReader.Read())
                     {
                         UserCount = sqReader.GetInt32(0);
                     }  

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 using System.Drawing;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Client_chat
 {
@@ -42,23 +43,23 @@ namespace Client_chat
                 { textBox1.Text = textBox1.Text; }
             }
         }
-
+  /*
+                    // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+                    //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));*/
         async void Connect(String server, string fs, string command, string user, Form userpass)
         {
             using (TcpClient client = new TcpClient(server, ConnectSettings.port))
             {
                 try
                 {
-                    //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));
+                  
                     byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     string Host = System.Net.Dns.GetHostName();
                     NetworkStream stream = client.GetStream();
-
                     await stream.WriteAsync(data, 0, data.Length);
-                    data = new Byte[99999999];
+                    //data = new Byte[99999999];
                     String responseData = String.Empty;
-                    String responseDat = String.Empty;
-                    // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+                    //String responseDat = String.Empty;                    
                     using (MemoryStream ms = new MemoryStream())
                     {
                         int cnt = 0;
@@ -68,8 +69,8 @@ namespace Client_chat
                             cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
                             ms.Write(locbuffer, 0, cnt);
                         } while (client.Available > 0);
-
-                        responseData = Encoding.Default.GetString(ms.ToArray());
+                        responseData = Encoding.Default.GetString(ms.ToArray());  
+                       Clas(responseData);
 
                     }
                     if (responseData == "false")
@@ -81,10 +82,15 @@ namespace Client_chat
                     else
                     {
 
-                        MsgUser_Logins person3 =   JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
 
+                        MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
+                        //        responseData
 
-
+                        Chats_main a = new Chats_main();
+                        Chats_main parent = (Chats_main)this.Owner;
+                        parent.NotifyMe(person3);
+                        userpass.Close();
+                        /*
                         //using (MemoryStream ms = new MemoryStream())
                         //{
                         //    int cnt = 0;
@@ -143,23 +149,17 @@ namespace Client_chat
                                             //            string tt = tokens[j] + "}";
                                             //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
                                             //        }
-                                            //    }*/
-                        Chats_main a = new Chats_main();
-
+                                            //    }*/                 
                         //a.Show();
-                        Chats_main parent = (Chats_main)this.Owner;
-                        parent.NotifyMe(person3);
-                        userpass.Close();
-
+                        /*
                         //a.OpenMes(person3.User_, person3);
                         //userpass.Hide();
-
-
                         //}
                         //else
                         //{
                         //    MessageBox.Show("Пользователя нет");
                         //}
+                        */
                     }
                 }
                 catch (ArgumentNullException)
@@ -178,6 +178,13 @@ namespace Client_chat
             }
         }
         
+        public void Clas( string responseDat)
+        {
+
+
+
+
+        }
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
