@@ -657,6 +657,7 @@ namespace Client_chat
                 // Ищем файл с настройками подключения
                 string path = Environment.CurrentDirectory.ToString();
                 FileInfo fileInfo = new FileInfo(path+"\\Client.json");
+                MessageBox.Show(path + "\\Client.json");
                 if (fileInfo.Exists)
                 {
                     using (FileStream fs = new FileStream("Client.json", FileMode.OpenOrCreate))
@@ -665,6 +666,7 @@ namespace Client_chat
                         IP_ADRES.Ip_adress = aFile.IP;
                         Connect_Client.UserName = aFile.UserName;
                         toolStripTextBox1.Text = aFile.IP;
+                        MessageBox.Show(aFile.IP);
                     }
                     //Console.WriteLine($"Имя файла: {fileInfo.Name}");
                     //Console.WriteLine($"Время создания: {fileInfo.CreationTime}");
