@@ -6,11 +6,37 @@ using System.Text.Json.Serialization;
 
 namespace Class_chat
 {
+    public static class Connect_Client
+    {
+        public static Int32 Port { get; set; }
+        public static string IP  { get; set; }
+        public static string UserName { get; set; }
+        //public Connect_Client(Int32 port, string ip,string userName) 
+        //{
+        //    Port=port;
+        //    IP = ip;
+        //    UserName=userName;
+        //}
+    }
+
+    public class Connect_Client_
+    {
+        public  Int32 Port { get; set; }
+        public  string IP { get; set; }
+        public  string UserName { get; set; }
+        public Connect_Client_(Int32 port, string ip, string userName)
+        {
+            Port = port;
+            IP = ip;
+            UserName = userName;
+        }
+    }
+
 
     public class ConnectSettings
     {
         public const  Int32 port = 9595;
-   //     public const string IP = "127.0.0.1"; 
+     //  public const string IP = "127.0.0.1"; 
     }
 
 

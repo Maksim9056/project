@@ -81,6 +81,7 @@ namespace ServersAccept
         static void RegisterCommands()
         {
             Command command = new Command();
+            FDictCommands.Add("001", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_users));
             FDictCommands.Add("002", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_users));
             FDictCommands.Add("003", new Action<byte[], GlobalClass, NetworkStream>(command.Checks_User_and_password));
             FDictCommands.Add("004", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Users_Correspondence));

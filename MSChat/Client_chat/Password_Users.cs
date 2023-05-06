@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Drawing;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Client_chat
 {
@@ -75,20 +76,15 @@ namespace Client_chat
                     }
                     if (responseData == "false")
                     {
-
-
-
                     }
                     else
                     {
-
-
                         MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
                         //        responseData
-
                         Chats_main a = new Chats_main();
                         Chats_main parent = (Chats_main)this.Owner;
                         parent.NotifyMe(person3);
+                        parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, person3.User_.Name);
                         userpass.Close();
                         /*
                         //using (MemoryStream ms = new MemoryStream())
@@ -229,6 +225,8 @@ namespace Client_chat
         {
             _originalButtonLocation = button1.Location;
             _originalButtonSize = button1.Size;
+            textBox1.Text = Connect_Client.UserName;
+            
         }
 
         private void button1_MouseLeave(object sender, EventArgs e)

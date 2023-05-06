@@ -14,6 +14,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Data;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Net.WebRequestMethods;
 
 namespace Client_chat
 {
@@ -52,8 +53,41 @@ namespace Client_chat
             OpenMes(responseDat);
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+
+        //async public void Connect_Servis(String server, string fs, string command)
+        //{
+        //    try
+        //    {
+        //        using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //        {
+        //            byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            string Host = System.Net.Dns.GetHostName();
+        //            NetworkStream stream = client.GetStream();
+        //            await stream.WriteAsync(data, 0, data.Length);
+
+
+        //        }
+        //    }
+        //    catch
+        //    {
+
+        //    }
+
+
+        // }
+
+        public void SaveConfig(Int32 Port, string ipAddress,string Name)
         {
+            using (FileStream file = new FileStream("Client.json", FileMode.OpenOrCreate))
+            {
+                Connect_Client_ connect_Client = new Connect_Client_(Port, ipAddress, Name);
+                JsonSerializer.Serialize<Connect_Client_>(file,connect_Client);
+            }
+        }
+
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+            {
             try
             {
                 if (toolStripTextBox1.Text != "")
@@ -61,8 +95,8 @@ namespace Client_chat
                     Entrance = true;
                   //  IPStatus status;
                    try
-                   {
-                        IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
+                   {   
+                       //IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
                        /* Ping p = new Ping();
                       //  PingReply pr = p.Send(IP_ADRES.Ip_adress );
                         //status = pr.Status;                  
@@ -81,7 +115,7 @@ namespace Client_chat
                         PingReply reply = pingSender.Send(ipAddress);
                         if (reply.Status == IPStatus.Success)
                         {
-                            Console.WriteLine("Ping to {0} success.", ipAddress);
+                            SaveConfig(ConnectSettings.port, ipAddress,"");
                             toolStripButton1.BackColor = Color.Gray;
                             //Подключения к сервуру
                             toolStripButton1.ForeColor = Color.Gray;
@@ -618,6 +652,23 @@ namespace Client_chat
 
                 button2.Visible = false;
                 button1.Visible = false;
+
+                // Ищем файл с настройками подключения
+                string path = Environment.CurrentDirectory.ToString();
+                FileInfo fileInfo = new FileInfo(path+"\\Client.json");
+                if (fileInfo.Exists)
+                {
+                    using (FileStream fs = new FileStream("Client.json", FileMode.OpenOrCreate))
+                    {
+                        Connect_Client_ aFile = JsonSerializer.Deserialize<Connect_Client_>(fs);
+                        IP_ADRES.Ip_adress = aFile.IP;
+                        Connect_Client.UserName = aFile.UserName;
+                        toolStripTextBox1.Text = aFile.IP;
+                    }
+                    //Console.WriteLine($"Имя файла: {fileInfo.Name}");
+                    //Console.WriteLine($"Время создания: {fileInfo.CreationTime}");
+                    //Console.WriteLine($"Размер: {fileInfo.Length}");
+                }
             }
             catch
             {
@@ -1370,8 +1421,6 @@ namespace Client_chat
                             responseDat = Encoding.Default.GetString(ms.ToArray());
                         }
                         MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
-                        dataGridViewUser.RowCount = msgFriends.AClass.Count();
-                        dataGridViewUser.ColumnCount = 1;
 
                         User_photo[] A = new User_photo[msgFriends.AClass.Count];
                         for (int i = 0; i < Friend.Count(); i++)
@@ -1394,6 +1443,8 @@ namespace Client_chat
                                 }
                                 else
                                 {
+                                    //dataGridViewUser.RowCount = msgFriends.AClass.Count();
+                                    //dataGridViewUser.ColumnCount = 1;
                                     dataGridViewUser.RowCount = msgFriends.AClass.Count();
                                     dataGridViewUser.ColumnCount = 1;
                                     for (int i = 0; i < msgFriends.AClass.Count(); i++)
@@ -1404,7 +1455,7 @@ namespace Client_chat
                                             //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
                                         }
                                     }
-                                  //  dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                                    //  dataGridViewUser.Columns[0].HeaderText = "Друзья";
                                 }
                             }
                             catch (Exception ex)

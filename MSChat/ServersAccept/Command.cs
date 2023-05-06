@@ -10,6 +10,9 @@ namespace ServersAccept
 {
     internal class Command
     {
+
+
+        
         //002-Регистрация пользователей
         public void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
