@@ -497,31 +497,19 @@ namespace Client_chat
 
                 if (Friends.List_Mess == 0)
                 {
-
                 }
                 else
                 {
-
                     User_photo[] A = new User_photo[Friends.List_Mess];
-
-
-
-
-
-
                     for (int I = 0; I < Friends.AClass.Count(); I++)
                     {
                         A[I] = Friends.AClass[I];
                     }
                     Friend = A;
-
                     try
                     {
                         if (Friends.Answe == "false")
                         {
-
-
-
                         }
                         else
                         {
@@ -1329,14 +1317,10 @@ namespace Client_chat
             {
                 if (toolStripLabel1.Text == "")
                 {
-
-             
                 }
                 else
                 {
-                
                     view_mess();
-             
                 }
             }
             catch
@@ -1356,9 +1340,10 @@ namespace Client_chat
                     {
                         NetworkStream stream = client.GetStream();
 
-                        int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
-                        User_photo tt = Friend[selectedrowindex];
-                        tt.Current = Users;
+                        //int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
+                        //User_photo tt = Friend[selectedrowindex];
+                        User_photo tt = new User_photo("","","",0,0, Users);
+                        //tt.Current = Users;
 
                         string person = JsonSerializer.Serialize<User_photo>(tt);
 
@@ -1384,23 +1369,21 @@ namespace Client_chat
 
                             responseDat = Encoding.Default.GetString(ms.ToArray());
                         }
-
-
                         MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
-
-
-
-
                         dataGridViewUser.RowCount = msgFriends.AClass.Count();
                         dataGridViewUser.ColumnCount = 1;
+
+                        User_photo[] A = new User_photo[msgFriends.AClass.Count];
                         for (int i = 0; i < Friend.Count(); i++)
                         {
-
+                            A[i] = msgFriends.AClass[i];
                         }
-                    /*    //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                        //User_photo[] people = null;
-                        // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
-                        //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;*/
+                        Friend = A;
+
+                        /*    //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
+                            //User_photo[] people = null;
+                            // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
+                            //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;*/
                         if (msgFriends.Answe == "true")
                         {
                             //}   
@@ -1408,9 +1391,6 @@ namespace Client_chat
                             {
                                 if (msgFriends.AClass == null)
                                 {
-
-
-
                                 }
                                 else
                                 {
@@ -1420,7 +1400,6 @@ namespace Client_chat
                                     {
                                         for (int j = 0; j < 1; j++)
                                         {
-
                                             dataGridViewUser.Rows[i].Cells[j].Value = msgFriends.AClass[i].Name;
                                             //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
                                         }
@@ -1432,8 +1411,6 @@ namespace Client_chat
                             {
                                 MessageBox.Show(ex.Message);
                             }
-
-
                         }
                         else
                         {

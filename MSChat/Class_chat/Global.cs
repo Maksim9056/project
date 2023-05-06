@@ -87,6 +87,7 @@ namespace Class_chat
 
     }
 
+    // класс отправки 
     public class User_photo_Travel
     {
         User_photo_Travel() { }
@@ -101,6 +102,19 @@ namespace Class_chat
         }
     }
 
+    // класс приема User_photo_Travel
+    public class MsgFriends
+    {
+
+        //MsgFriends() { }
+        public string Answe { get; set; }
+        public int List_Mess { get; set; }
+        public List<User_photo> AClass { get; set; } = new List<User_photo>();
+
+    }
+
+
+    // класс отправки MsgUser_Logins
     public class User_Logins
     {
         User_Logins() { }
@@ -119,7 +133,7 @@ namespace Class_chat
     }
 
 
-
+    // класс приема User_Logins
     public class MsgUser_Logins
     {
         public string Answe { get; }
@@ -132,15 +146,7 @@ namespace Class_chat
 
 
 
-    public class MsgFriends
-    {
-        
-        MsgFriends() { }
-        public string Answe { get; set; }
-        public int List_Mess { get; set; }
-        public List<User_photo> AClass { get; set; } = new List<User_photo>();
 
-    }
 
     public class _Name
     {
@@ -171,6 +177,7 @@ namespace Class_chat
         }
     }
 
+    // класс отправки MsgInfo
     public class UseTravel
     {
         UseTravel() { }
@@ -185,6 +192,7 @@ namespace Class_chat
         }
     }
 
+    // класс приема UseTravel
     public class MsgInfo
     {
         public string Answe { get; set; }

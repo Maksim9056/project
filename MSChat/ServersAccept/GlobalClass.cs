@@ -301,24 +301,22 @@ namespace ServersAccept
                 SqliteDataReader sqReader = commandS.ExecuteReader();
                 if (n.HasRows == true)
                 {
-                   // UserCount = null;
+                    // UserCount = null;
                     while (sqReader.Read())
                     {
                         UserCount = sqReader.GetInt32(0);
-                    }  
+                    }
                     Friends = true;
-
                 }
-                else  
-                {  
+                else
+                {
                     Friends = false;
-                    
-               
                 }
             }
 
             if (Friends == true)
-            {         //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
+            {         
+                //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
                 string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
                 int[] Frend = new int[UserCount];
                 int i = 0;
@@ -368,19 +366,12 @@ namespace ServersAccept
                             List_Friend = UserRG;
                             Friends = true;
                             Console.WriteLine(UserRG);
-
-
                         }
                         else
                         {
                             //друзей нет 
-
                             Friends = false;
-
-
-
                         }
-
                     }
                     else
                     {
