@@ -42,7 +42,7 @@ namespace Client_chat
                         JsonSerializer.Serialize<User_regis>(fs, tom);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
                     }
-                    Connect(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
+                    Reg_User(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
 
                 }
                 else
@@ -58,7 +58,8 @@ namespace Client_chat
             }
         }
 
-        async  void Connect(String server, string fs, string command, string user, Form userpass)
+        // Процедура отправки регистрации пользователей 002
+        async  void Reg_User(String server, string fs, string command, string user, Form userpass)
         {
             try
             {

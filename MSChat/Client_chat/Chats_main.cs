@@ -253,7 +253,7 @@ namespace Client_chat
         }
 
 
-
+        // Процедура отправки 009
         async void Insert_Message(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -393,7 +393,7 @@ namespace Client_chat
 
 
 
-
+        // Процедура отправки 010
         async void Update_Message_make_up(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -729,7 +729,7 @@ namespace Client_chat
                         User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
                         Friends = Id_Friend.Id;
 
-                        Connect(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
+                        Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
                     }
 
                     //OpenChat(dataGridViewChat);
@@ -773,7 +773,8 @@ namespace Client_chat
 
         //}
 
-        async void Connect(String server, string fs, string command, DataGridView sender)
+        // Процедура отправки 006
+        async void Check_Mess_Friend(String server, string fs, string command, DataGridView sender)
         {
             try
             {
@@ -1068,7 +1069,7 @@ namespace Client_chat
             }
         }
 
-
+        // Проццедура отправки 008
         async void Connect_Friends(String server, string fs, string command)
         {
             try
@@ -1163,7 +1164,7 @@ namespace Client_chat
         }
 
 
-
+        // Процедура отправки 011
         async void Delete_message_make_up(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -1351,6 +1352,7 @@ namespace Client_chat
 
             }
         }
+
         private void dataGridViewUser_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

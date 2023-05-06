@@ -47,7 +47,9 @@ namespace Client_chat
   /*
                     // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
                     //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));*/
-        async void Connect(String server, string fs, string command, string user, Form userpass)
+
+        // Передача 003
+        async void Check_User_Possword(String server, string fs, string command, string user, Form userpass)
         {
             using (TcpClient client = new TcpClient(server, ConnectSettings.port))
             {
@@ -216,7 +218,7 @@ namespace Client_chat
                 UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
                 JsonSerializer.Serialize<UserLogin>(fs, tom);
                 FileFS = Encoding.Default.GetString(fs.ToArray());
-                Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+                Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
 
             }
         }
