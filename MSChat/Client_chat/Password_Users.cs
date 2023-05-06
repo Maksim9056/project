@@ -5,12 +5,12 @@ using System.Windows.Forms;
 using Class_chat;
 using System.Text.Json;
 using System.IO;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Json;
+//using System.Collections.Generic;
+//using System.Runtime.Serialization.Json;
 using System.Drawing;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using System.Net;
+//using System.Linq;
+//using Newtonsoft.Json.Linq;
+//using System.Net;
 
 namespace Client_chat
 {

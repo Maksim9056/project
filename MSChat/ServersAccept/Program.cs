@@ -4,12 +4,12 @@ using System.Net;
 using System.Threading;
 using Class_chat;
 using System.Text;
-using System.Diagnostics;
-using System.Security.Cryptography;
+//using System.Diagnostics;
+//using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using static System.Net.WebRequestMethods;
+//using static System.Net.WebRequestMethods;
 
 namespace ServersAccept
 {

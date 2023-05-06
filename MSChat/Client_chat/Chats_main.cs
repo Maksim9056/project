@@ -1,6 +1,6 @@
 ﻿using Class_chat;
 using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,12 +9,12 @@ using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using System.Net;
+//using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using System.Data;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Net.WebRequestMethods;
+//using System.Data;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+//using static System.Net.WebRequestMethods;
 
 namespace Client_chat
 {
