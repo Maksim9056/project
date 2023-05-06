@@ -82,6 +82,7 @@ namespace Client_chat
             {
                 Connect_Client_ connect_Client = new Connect_Client_(Port, ipAddress, Name);
                 JsonSerializer.Serialize<Connect_Client_>(file,connect_Client);
+                IP_ADRES.Ip_adress = ipAddress;
             }
         }
 

@@ -32,6 +32,27 @@ namespace Class_chat
         }
     }
 
+    public class Connect_server
+    {
+
+        public string Ip_address { get; set; }
+        public Int32 Port { get; set; }
+
+        
+    }
+    public class Connect_server_
+    {
+        public string Ip_address { get; set; }
+        public Int32 Port { get; set; }
+        public  Connect_server_(string ip, Int32 port)
+        {
+            Ip_address=ip;
+            Port = port;
+
+
+        }
+    }
+
 
     public class ConnectSettings
     {

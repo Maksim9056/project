@@ -215,7 +215,7 @@ namespace Client_chat
                 string FileFS = "";
                 UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
                 JsonSerializer.Serialize<UserLogin>(fs, tom);
-                FileFS = Encoding.Default.GetString(fs.ToArray());   
+                FileFS = Encoding.Default.GetString(fs.ToArray());
                 Connect(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
 
             }

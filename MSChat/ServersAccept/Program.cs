@@ -8,17 +8,20 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using static System.Net.WebRequestMethods;
 
 namespace ServersAccept
 {
     internal class Program
     {
         public bool Users = false;
-
+        static public string Ip_Adress { get; set; }
+        static public Int32 port { get; set; }
         //[Obsolete]
         static void Main(string[] args)
         {
-            GlobalClass globalClass= new GlobalClass();
+            GlobalClass globalClass = new GlobalClass();
             globalClass.CreateTable_Users();
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
@@ -28,13 +31,14 @@ namespace ServersAccept
             {
                 int MaxThreadsCount = Environment.ProcessorCount;
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
-                IPAddress localAddr = IPAddress.Loopback;
+                SaveOpen();
+                IPAddress localAddr = IPAddress.Parse(Ip_Adress);
                 int counter = 0;
                 Console.WriteLine();
-                server = new TcpListener(localAddr, ConnectSettings.port);
+                server = new TcpListener(localAddr,port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
                 Console.WriteLine("Пользователь:" + Environment.UserName.ToString());
-                Console.WriteLine("IP-адрес :" +  localAddr.ToString());
+                Console.WriteLine("IP-адрес :" + Ip_Adress.ToString());
                 Console.WriteLine("Путь:" + Environment.CurrentDirectory.ToString());
                 //Console.WriteLine(Environment.MachineName);
                 //Console.WriteLine(Environment.WorkingSet);
@@ -57,14 +61,13 @@ namespace ServersAccept
                 {
                     Console.WriteLine("\nОжидание соединения...");
                     ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());
-                
                     counter++;
-                    Console.Write("\nСоединие№" + counter.ToString() + "!");  
+                    Console.Write("\nСоединие№" + counter.ToString() + "!");
                     /*
                     // QueueUserWorkItem             
                     // ThreadPool.QueueUserWorkItem;   
                     //      Thread.MemoryBarrier();
-                    */          
+                    */
                 }
             }
             catch (SocketException e)
@@ -73,11 +76,12 @@ namespace ServersAccept
             }
             Console.WriteLine("\nНажмите Enter");
             Console.Read();
+
         }
 
 
         static Dictionary<string, Action<byte[], GlobalClass, NetworkStream>> FDictCommands = new Dictionary<string, Action<byte[], GlobalClass, NetworkStream>>();
-        
+
         static void RegisterCommands()
         {
             Command command = new Command();
@@ -87,7 +91,7 @@ namespace ServersAccept
             FDictCommands.Add("004", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Users_Correspondence));
             FDictCommands.Add("005", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Messages_Correspondence));
             FDictCommands.Add("006", new Action<byte[], GlobalClass, NetworkStream>(command.Select_Message_Friend));
-          //  FDictCommands.Add("007", new Action<byte[], GlobalClass, NetworkStream>(command.Select_Message_Friend));
+            //  FDictCommands.Add("007", new Action<byte[], GlobalClass, NetworkStream>(command.Select_Message_Friend));
             FDictCommands.Add("008", new Action<byte[], GlobalClass, NetworkStream>(command.Searh_Friends));
             FDictCommands.Add("009", new Action<byte[], GlobalClass, NetworkStream>(command.Insert_Message));
             FDictCommands.Add("010", new Action<byte[], GlobalClass, NetworkStream>(command.Update_Message));
@@ -101,7 +105,7 @@ namespace ServersAccept
             Action<byte[], GlobalClass, NetworkStream> actionCommand;
             if (FDictCommands.TryGetValue(aCommand, out actionCommand)) actionCommand(data, cls, ns);
             else
-            {                 
+            {
                 // Если не нашли, то обрабатываем это             }
             }
         }
@@ -110,12 +114,13 @@ namespace ServersAccept
         {
             try
             {
-                
-              
+
+
 
                 using (TcpClient client = client_obj as TcpClient)
-                {  byte[] bytes = new byte[99999999];
-                string data;
+                {
+                    byte[] bytes = new byte[99999999];
+                    string data;
                     GlobalClass globalClass = new GlobalClass();
                     NetworkStream stream = client.GetStream();
                     Command command = new Command();
@@ -217,7 +222,41 @@ namespace ServersAccept
             }
 
         }
+
+        static public void SaveOpen()
+        {
+            string path = Environment.CurrentDirectory.ToString();
+            FileInfo fileInfo = new FileInfo(path + "\\Server.json");
+            if (fileInfo.Exists)
+            {
+                using (FileStream fs = new FileStream("Server.json", FileMode.Open))
+                {
+                    Connect_server _aFile = JsonSerializer.Deserialize<Connect_server>(fs);
+                    Ip_Adress = _aFile.Ip_address;
+                    port = _aFile.Port;
+                }
+            }
+            else
+            {
+                using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
+                {
+                    Connect_server_ connect_Server_ = new Connect_server_(IPAddress.Loopback.ToString(), ConnectSettings.port);
+
+                    JsonSerializer.Serialize<Connect_server_>(fileStream, connect_Server_);
+                }
+
+
+                using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
+                {
+
+                    Connect_server aFile = JsonSerializer.Deserialize<Connect_server>(fileStream);
+
+                    Ip_Adress = aFile.Ip_address;
+                    port = aFile.Port;
+                }
+            }
+
+        }
     }
 }
 
-       
