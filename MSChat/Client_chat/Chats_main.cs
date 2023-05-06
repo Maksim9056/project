@@ -570,8 +570,8 @@ namespace Client_chat
                     }
 
                 }
-
-                toolStripButton1.Image = Image.FromFile("Зеленый.png");
+                string pathImage = Environment.CurrentDirectory.ToString();
+                toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
 
 
             } 
@@ -624,7 +624,7 @@ namespace Client_chat
         //{
 
         //    if(s!= true)
-        //   // toolStripButton1.Image = Image.FromFile("Красный.png");
+        //    toolStripButton1.Image = Image.FromFile("Красный.png");
 
         //}
 
@@ -642,7 +642,11 @@ namespace Client_chat
 
 
                 }
-                else { toolStripButton1.Image = Image.FromFile("Красный.png"); }
+                else 
+                {
+                    string pathImage = Environment.CurrentDirectory.ToString();
+                    toolStripButton1.Image = Image.FromFile(pathImage+"\\Resources\\Images\\Красный..png"); 
+                }
 
                 dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                 dataGridViewUser.RowHeadersVisible = false;
@@ -657,7 +661,6 @@ namespace Client_chat
                 // Ищем файл с настройками подключения
                 string path = Environment.CurrentDirectory.ToString();
                 FileInfo fileInfo = new FileInfo(path+"\\Client.json");
-                MessageBox.Show(path + "\\Client.json");
                 if (fileInfo.Exists)
                 {
                     using (FileStream fs = new FileStream("Client.json", FileMode.OpenOrCreate))
@@ -666,17 +669,15 @@ namespace Client_chat
                         IP_ADRES.Ip_adress = aFile.IP;
                         Connect_Client.UserName = aFile.UserName;
                         toolStripTextBox1.Text = aFile.IP;
-                        MessageBox.Show(aFile.IP);
                     }
                     //Console.WriteLine($"Имя файла: {fileInfo.Name}");
                     //Console.WriteLine($"Время создания: {fileInfo.CreationTime}");
                     //Console.WriteLine($"Размер: {fileInfo.Length}");
                 }
             }
-            catch
+            catch (Exception a)
             {
-
-
+                MessageBox.Show(a.Message);
             }
         }
 
