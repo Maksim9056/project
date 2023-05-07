@@ -784,7 +784,8 @@ namespace Client_chat
             {
                 MessageBox.Show("SocketException: {0}", e.Message);
             }
-        }  /*
+        }  
+        /*
                     //    if (Answe.ToString() == "true")
                     //    {
                     //        MessСhat[] les = new MessСhat[AClass.Count()];

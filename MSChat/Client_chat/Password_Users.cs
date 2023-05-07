@@ -225,7 +225,7 @@ namespace Client_chat
                     UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
                     JsonSerializer.Serialize<UserLogin>(fs, tom);
                     FileFS = Encoding.Default.GetString(fs.ToArray());
-
+             /*
                     //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
 
                     //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
@@ -234,11 +234,11 @@ namespace Client_chat
 
                     //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
                     //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                    //task.Wait();
+                    //task.Wait();*/
                     Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
 
-                    //if (CommandCL.User_Logins_and_Friends != null)
-                    //    {
+                    if (CommandCL.User_Logins_and_Friends != null)
+                    {
                             Chats_main a = new Chats_main();
                             Chats_main parent = (Chats_main)this.Owner;
                             parent.NotifyMe(CommandCL.User_Logins_and_Friends);
@@ -247,7 +247,7 @@ namespace Client_chat
                             //чтобы не запоминал после передачи
                             CommandCL.User_Logins_and_Friends = null;
                             this.Close();
-                        //}
+                    }
 
                 }
                 Form.Close();

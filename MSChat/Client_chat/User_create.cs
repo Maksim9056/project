@@ -37,7 +37,7 @@ namespace Client_chat
 
                 if (textBox2.Text == textBox3.Text)
                 {
-                    using (MemoryStream Reg_user_Dispons= new MemoryStream())
+                    using (MemoryStream Reg_user_Dispons = new MemoryStream())
                     {
                         CommandCL command = new CommandCL();
                         string FileFS = "";
@@ -49,25 +49,27 @@ namespace Client_chat
                         }
                         //command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
                         Task.Run(async () => await command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002")).Wait();
+                        if (User_reg.UserName != null)
+                        {
+                            if (User_reg.UserName == textBox1.Text)
+                            {
+                                MessageBox.Show("Пользователь уже есть");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Добавление пользователя разрешено");
+                                this.Close();
+                                //using (Password_Users a = new Password_Users())
+                                //{
+                                //Chats_main parent = (Chats_main)this.Owner;
+                                //parent.Show(); 
+                                //a.ShowDialog();
+                                //}
 
-                        if (User_reg.UserName == textBox1.Text)
-                        {
-                            MessageBox.Show("Пользователь уже есть");
+                            }
+                            User_reg.UserName = null;
                         }
-                        else
-                        {
-                            MessageBox.Show("Добавление пользователя разрешено");                      
-                            this.Close(); 
-                            //using (Password_Users a = new Password_Users())
-                            //{
-                            //Chats_main parent = (Chats_main)this.Owner;
-                            //parent.Show(); 
-                            //a.ShowDialog();
-                            //}
-                           
-                        }
-                        User_reg.UserName = null;                                         
-                    } 
+                    }
                 }
                 else
                 {

@@ -194,7 +194,9 @@ namespace Client_chat
                     CommandCL command = new CommandCL();
 
                     if (Update_Message == true)
-                    {using (MemoryStream _Update_Message = new MemoryStream())
+                    {    
+                        
+                        using (MemoryStream _Update_Message = new MemoryStream())
                         {
                             using (MemoryStream Update = new MemoryStream())
                             {
@@ -206,67 +208,69 @@ namespace Client_chat
 
                             //command.Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010");
                             Task.Run(async () => await command.Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010")).Wait();
-
-                            if (command.___Answe.ToString() == "true")
+                            if (command.___Answe != null)
                             {
-                                MessСhat[] les = new MessСhat[command.___AClass.Count()];
-
-                                for (int i = 0; i < command.___AClass.Count(); i++)
+                                if (command.___Answe.ToString() == "true")
                                 {
-                                    string yu = command.___AClass[i].ToString();
-                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                                    les[i] = useTravel;
-                                }
-                                dataGridViewChat.Rows.Clear();
-                                dataGridViewChat.RowCount = les.Count();
-                                dataGridViewChat.ColumnCount = 2;
-                                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                                {
-                                }
+                                    MessСhat[] les = new MessСhat[command.___AClass.Count()];
 
-                                dataGridViewChat.Columns.Insert(2, column);
-                                //sender.Columns[0].HeaderText = "Друзья";
-
-                                for (int i = 0; i < les.Count(); i++)
-                                {
-                                    for (int j = 0; j < 1; j++)
+                                    for (int i = 0; i < command.___AClass.Count(); i++)
                                     {
-                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
-                                        if (les[i].IdUserFrom != Users)
+                                        string yu = command.___AClass[i].ToString();
+                                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                        les[i] = useTravel;
+                                    }
+                                    dataGridViewChat.Rows.Clear();
+                                    dataGridViewChat.RowCount = les.Count();
+                                    dataGridViewChat.ColumnCount = 2;
+                                    DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                                    {
+                                    }
+
+                                    dataGridViewChat.Columns.Insert(2, column);
+                                    //sender.Columns[0].HeaderText = "Друзья";
+
+                                    for (int i = 0; i < les.Count(); i++)
+                                    {
+                                        for (int j = 0; j < 1; j++)
                                         {
-                                            dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
-                                        }
+                                            dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                            if (les[i].IdUserFrom != Users)
+                                            {
+                                                dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                            }
 
-                                    }
-                                    for (int k = 1; k < 2; k++)
-                                    {
-                                        dataGridViewChat.Rows[i].Cells[k].Value = les[i].DataMess;
-                                    }
-                                    for (int b = 2; b < 3; b++)
-                                    {
-                                        bool aMark = false;
-                                        if (les[i].Mark.ToString() == "1")
-                                        {
-                                            aMark = true;
                                         }
-                                        dataGridViewChat.Rows[i].Cells[b].Value = aMark;
+                                        for (int k = 1; k < 2; k++)
+                                        {
+                                            dataGridViewChat.Rows[i].Cells[k].Value = les[i].DataMess;
+                                        }
+                                        for (int b = 2; b < 3; b++)
+                                        {
+                                            bool aMark = false;
+                                            if (les[i].Mark.ToString() == "1")
+                                            {
+                                                aMark = true;
+                                            }
+                                            dataGridViewChat.Rows[i].Cells[b].Value = aMark;
+                                        }
                                     }
+                                    dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                                    allChat = les;
+                                    dataGridViewChat.Visible = true;
                                 }
-                                dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                                allChat = les;
-                                dataGridViewChat.Visible = true;
+                                else
+                                {
+                                    dataGridViewChat.Rows.Clear();
+                                    //MessageBox.Show("Сообщений нет");
+                                }
+                                command.___Answe = null;
+                                command.___AClass = null;
+                                command.___List_Mess_count = null;
+                                Update_Message = false;
+                                Update_id = 0;
+                                textBox1.Text = "";
                             }
-                            else
-                            {
-                                dataGridViewChat.Rows.Clear();
-                                //MessageBox.Show("Сообщений нет");
-                            }
-                            command.___Answe = null;
-                            command.___AClass = null;
-                            command.___List_Mess_count = null;
-                            Update_Message = false;
-                            Update_id = 0;
-                            textBox1.Text = "";
                         }
                       //  Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010",dataGridViewChat);
                     }
@@ -289,69 +293,72 @@ namespace Client_chat
 
                            // чтение данных
                            textBox1.Text = "";
-                         // Добавляем сообщение в чат !
+                        // Добавляем сообщение в чат !
                         //Освобождаем ресурсы!
                         using (MemoryStream New_message = new MemoryStream())
                         {
                             //command.Insert_Message(IP_ADRES.Ip_adress, FileFS,"009");
                             Task.Run(async () => await command.Insert_Message(IP_ADRES.Ip_adress, FileFS, "009")).Wait();
 
-
-                            if (command.__Answe.ToString() == "true")
+                            if (command.__Answe != null)
                             {
-                                MessСhat[] les = new MessСhat[command.__AClass.Count()];
-                                for (int i = 0;i < command.__AClass.Count();i++)
+                                if (command.__Answe.ToString() == "true")
                                 {
-                                    string yu = command.__AClass[i].ToString();
-                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                                    les[i] = useTravel;
-                                }
-                                dataGridViewChat.Rows.Clear();
-                                dataGridViewChat.RowCount = les.Count();
-                                dataGridViewChat.ColumnCount = 2;
-                                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                                {
-                                }
-
-                                dataGridViewChat.Columns.Insert(2, column);
-
-                                for (int i = 0; i < les.Count(); i++)
-                                {
-                                    for (int j = 0; j < 1; j++)
+                                    MessСhat[] les = new MessСhat[command.__AClass.Count()];
+                                    for (int i = 0; i < command.__AClass.Count(); i++)
                                     {
-                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
-                                        if (les[i].IdUserFrom != Users)
-                                        { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; 
-                                        }
+                                        string yu = command.__AClass[i].ToString();
+                                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                        les[i] = useTravel;
                                     }
-                                    for (int j = 1; j < 2; j++)
+                                    dataGridViewChat.Rows.Clear();
+                                    dataGridViewChat.RowCount = les.Count();
+                                    dataGridViewChat.ColumnCount = 2;
+                                    DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
                                     {
-                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
                                     }
-                                    for (int j = 2; j < 3; j++)
+
+                                    dataGridViewChat.Columns.Insert(2, column);
+
+                                    for (int i = 0; i < les.Count(); i++)
                                     {
-                                        bool aMark = false;
-                                        if (les[i].Mark.ToString() == "1")
+                                        for (int j = 0; j < 1; j++)
                                         {
-                                            aMark = true;
+                                            dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                            if (les[i].IdUserFrom != Users)
+                                            {
+                                                dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                            }
                                         }
-                                        dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                        for (int j = 1; j < 2; j++)
+                                        {
+                                            dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                        }
+                                        for (int j = 2; j < 3; j++)
+                                        {
+                                            bool aMark = false;
+                                            if (les[i].Mark.ToString() == "1")
+                                            {
+                                                aMark = true;
+                                            }
+                                            dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                        }
                                     }
+                                    allChat = les;
+                                    dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                                    dataGridViewChat.Visible = true;
                                 }
-                                allChat = les;
-                                dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                                dataGridViewChat.Visible = true;
-                            }
-                            else
-                            {
-                                dataGridViewChat.Rows.Clear();
-                            }
+                                else
+                                {
+                                    dataGridViewChat.Rows.Clear();
+                                }
 
 
-                            command.__Answe = null;
-                            command.__AClass = null;
-                            command.__List_Mess_count = null;
-                            // Insert_Message(IP_ADRES.Ip_adress, FileFS, "009", dataGridViewChat);
+                                command.__Answe = null;
+                                command.__AClass = null;
+                                command.__List_Mess_count = null;
+                                // Insert_Message(IP_ADRES.Ip_adress, FileFS, "009", dataGridViewChat);
+                            }
                         }
                     }
                 }
@@ -524,7 +531,7 @@ namespace Client_chat
 
 
         // Процедура отправки 010
-                                      /*
+                                                                                /*
         async void Update_Message_make_up(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -558,7 +565,7 @@ namespace Client_chat
                     Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
                     responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
                     */
-                                              /*
+                                                                                       /*
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
                     JObject details = JObject.Parse(responseDat);
@@ -634,7 +641,7 @@ namespace Client_chat
             }
         }
         */
-                                                     /*
+                                                                                              /*
             //JToken s Friends, string responseDat)
       //  MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseDat);
              //   User_photo user_Photo = null;
@@ -653,13 +660,14 @@ namespace Client_chat
         {
            
                 toolStripTextBox1.Text = IP_ADRES.Ip_adress;
-          
 
+            if (Friends != null)
+            {
                 toolStripLabel1.Text = Friends.User_.Name;
                 //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
-              //Image returnImage = Image.FromStream(ms);
-              //toolStripButton2.Image = returnImage;
-             
+                //Image returnImage = Image.FromStream(ms);
+                //toolStripButton2.Image = returnImage;
+
                 Na_me = Friends.User_.Name;
                 // Na_me = Friends.User_.Name;
                 //  int id = 0;   // Answe
@@ -707,10 +715,11 @@ namespace Client_chat
                 }
                 string pathImage = Environment.CurrentDirectory.ToString();
                 toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
-
+            }
 
             
         }      
+
             //if (toolStripButton2.Image == null)
             //{
             //    // toolStripButton1.Image = Image.FromFile();
@@ -1593,69 +1602,72 @@ namespace Client_chat
                     //command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011");
                     Task.Run(async () => await command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011")).Wait();
 
-                    if (command.____Answe.ToString() == "true")
+                    if (command.____Answe != null)
                     {
-                        MessСhat[] les = new MessСhat[command.____AClass.Count()];
-
-                        for (int i = 0; i < command.____AClass.Count(); i++)
+                        if (command.____Answe.ToString() == "true")
                         {
-                            string yu = command.____AClass[i].ToString();
-                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                            les[i] = useTravel;
-                        }
-                        dataGridViewChat.Rows.Clear();
-                        dataGridViewChat.RowCount = les.Count();
-                        dataGridViewChat.ColumnCount = 2;
+                            MessСhat[] les = new MessСhat[command.____AClass.Count()];
 
-
-                        allChat = les;
-                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                        {
-                        }
-
-                        dataGridViewChat.Columns.Insert(2, column);
-
-                        for (int i = 0; i < les.Count(); i++)
-                        {
-                            for (int j = 0; j < 1; j++)
+                            for (int i = 0; i < command.____AClass.Count(); i++)
                             {
-                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
-                                if (les[i].IdUserFrom != Users)
-                                { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
-
+                                string yu = command.____AClass[i].ToString();
+                                MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                les[i] = useTravel;
                             }
-                            for (int j = 1; j < 2; j++)
+                            dataGridViewChat.Rows.Clear();
+                            dataGridViewChat.RowCount = les.Count();
+                            dataGridViewChat.ColumnCount = 2;
+
+
+                            allChat = les;
+                            DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
                             {
-                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
                             }
-                            for (int j = 2; j < 3; j++)
+
+                            dataGridViewChat.Columns.Insert(2, column);
+
+                            for (int i = 0; i < les.Count(); i++)
                             {
-                                bool aMark = false;
-                                if (les[i].Mark.ToString() == "1")
+                                for (int j = 0; j < 1; j++)
                                 {
-                                    aMark = true;
+                                    dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                    if (les[i].IdUserFrom != Users)
+                                    { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
                                 }
+                                for (int j = 1; j < 2; j++)
+                                {
+                                    dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                }
+                                for (int j = 2; j < 3; j++)
+                                {
+                                    bool aMark = false;
+                                    if (les[i].Mark.ToString() == "1")
+                                    {
+                                        aMark = true;
+                                    }
 
 
-                                dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                    dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                }
                             }
+                            dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                            dataGridViewChat.Visible = true;
                         }
-                        dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        else
+                        {
+                            dataGridViewChat.Rows.Clear();
+                            //MessageBox.Show("Сообщений нет");
+                        }
 
-                        dataGridViewChat.Visible = true;
-                    }
-                    else
-                    {
-                        dataGridViewChat.Rows.Clear();
-                        //MessageBox.Show("Сообщений нет");
-                    }
+                        command.____Answe = null;
+                        command.____List_Mess_count = null;
+                        command.____AClass = null;
 
-                     command.____Answe = null;
-                     command.____List_Mess_count= null;
-                     command.____AClass = null;
-                   
-                    
-                    //   Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);}
+
+                        //   Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);}
+                    }
                 }
             }
             catch
