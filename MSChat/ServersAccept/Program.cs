@@ -91,7 +91,7 @@ namespace ServersAccept
             FDictCommands.Add("004", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Users_Correspondence));
             FDictCommands.Add("005", new Action<byte[], GlobalClass, NetworkStream>(command.Sampling_Messages_Correspondence));
             FDictCommands.Add("006", new Action<byte[], GlobalClass, NetworkStream>(command.Select_Message_Friend));
-            //  FDictCommands.Add("007", new Action<byte[], GlobalClass, NetworkStream>(command.Select_Message_Friend));
+            FDictCommands.Add("007", new Action<byte[], GlobalClass, NetworkStream>(command.Search_Image));
             FDictCommands.Add("008", new Action<byte[], GlobalClass, NetworkStream>(command.Searh_Friends));
             FDictCommands.Add("009", new Action<byte[], GlobalClass, NetworkStream>(command.Insert_Message));
             FDictCommands.Add("010", new Action<byte[], GlobalClass, NetworkStream>(command.Update_Message));

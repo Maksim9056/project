@@ -258,6 +258,47 @@ namespace Class_chat
         public List<MessСhat> AClass { get; set; } = new List<MessСhat>();
     }
 
+
+    public class Photo
+    {
+        Photo() { }
+        public int Id { get; set; }
+        public int Current { get; set; }
+
+        public Photo(int id, int current)
+        {
+            Id = id;
+            Current = current;
+        }
+
+    }
+
+
+
+    // класс для отправки UseImage_OutPut
+    public class UseImage
+    {
+        UseImage() { }
+        public string Answe { get; set; }
+        public int List_Mess { get; set; }
+        public string[] Image { get; set; }
+        public UseImage(string[] image, string answe, int list_Mess)
+        {
+            Image = image;
+            Answe = answe;
+            List_Mess = list_Mess;
+        }
+    }
+
+    // класс для приема UseImage
+    public class UseImage_OutPut
+    {
+        public string Answe { get; set; }
+        public int List_Mess { get; set; }
+        public List<UseImage> Image { get; set; } = new List<UseImage>();
+    }
+
+
     public class __User_regis
     {
         __User_regis() { }
@@ -293,15 +334,6 @@ namespace Class_chat
 
     }
 
-    public class UseImage
-    {
-       // UseImage() { }
-        public byte[] Bytes { get; set; }
-        public UseImage(byte[] bytes)
-        {
-            Bytes = bytes;
-        }
-    }
 }
 
 //}   Friends[] UserRG = new Friends[] {

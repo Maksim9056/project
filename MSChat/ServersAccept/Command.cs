@@ -228,7 +228,29 @@ namespace ServersAccept
                 }
             }
         }
-        
+
+        //007- Получение картинки по ID
+        public void Search_Image(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            using (MemoryStream tt2 = new MemoryStream())
+            {
+                Photo Search_Image = JsonSerializer.Deserialize<Photo>(msg);
+                globalClass.Select_Image(Search_Image);
+                if (globalClass.UserConnect)
+                {
+                    using (MemoryStream Byte_Image = new MemoryStream())
+                    {
+                        JsonSerializer.Serialize<UseImage>(Byte_Image, globalClass.Items_Image);
+                        stream.Write(Byte_Image.ToArray(), 0, Byte_Image.ToArray().Length);
+                    }
+                }
+                else
+                {
+
+                }
+            }
+        }
+
         //008-Добавляет Друзей в чат
         public void Searh_Friends(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {

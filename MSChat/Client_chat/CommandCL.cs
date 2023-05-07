@@ -29,14 +29,12 @@ namespace Client_chat
         public  JToken _List_Mess_count  { get; set; }
         //Класс с друзьями и сообщениями
         public  JToken _AClass  { get; set; }
-    
         //Проверка
         public JToken __Answe { get; set; }
         //Количество друзей
         public JToken __List_Mess_count { get; set; }
         //Класс с друзьями и сообщениями
         public JToken __AClass { get; set; }
-
         // Проверка редактированых 
         public JToken ___Answe { get; set; }
         //Количество друзей редактированых
@@ -51,6 +49,17 @@ namespace Client_chat
         //Класс с друзьями и сообщениями редактированых
         public JToken ____AClass { get; set; }
 
+        // Проверка редактированых 
+        public JToken AnsweIm { get; set; }
+        //Количество картинок редактированых
+        public JToken List_Mess_countIm { get; set; }
+        //Класс картинок редактированых
+        public JToken AClassIm { get; set; }
+
+
+
+        //Класс с картинками
+        public UseImage_OutPut UserImage { get; set; }
 
 
         //Функция 
@@ -112,8 +121,8 @@ namespace Client_chat
                     //else
                     //{
                     //    MessageBox.Show("Добавление пользователя разрешено");
-                    //    //using (Password_Users a = new Password_Users())
                     //    //{
+                    //    //using (Password_Users a = new Password_Users())
                     //    //Chats_main parent = (Chats_main)this.Owner;
                     //    //parent.Show();
                     //   userpass.Close();
@@ -279,8 +288,80 @@ namespace Client_chat
             }
 
         }
-        
 
+
+        // Передача 007 получение картинки
+        async public Task Get_Image(String server, string fs, string command)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    await stream.WriteAsync(data, 0, data.Length);
+                    data = new Byte[1024];
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
+
+                    //Byte[] dataReceive = new Byte[256];
+                    //String txtReceive = String.Empty;
+                    //Int32 bytes;
+                    //while ((bytes = stream.Read(dataReceive, 0, dataReceive.Length)) != 0)
+                    //{
+                    //    responseData = System.Text.Encoding.ASCII.GetString(dataReceive, 0, bytes);
+                    //    txtReceive += responseData;
+                    //}
+
+
+                    //responseData = await Task<string>.Run(() =>
+                    //{
+                    //    return Func_Read(stream, data.Length, client);
+                    //});
+                    if (responseData == "false")
+                    {
+                    }
+                    else
+                    {
+                        JObject details = JObject.Parse(responseData);
+                        JToken Answe = details.SelectToken("Answe");
+                        JToken List_Mess = details.SelectToken("List_Mess");
+                        JToken AClass = details.SelectToken("Image");
+                        AnsweIm = Answe;
+                        List_Mess_countIm = List_Mess;
+                        AClassIm = AClass;
+
+                        //UseImage_OutPut msgImage = JsonSerializer.Deserialize<UseImage_OutPut>(responseData);
+                        //UserImage = AClass;
+
+
+                    }
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException e)
+            {
+                MessageBox.Show("SocketException: {0}", e.Message);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+        }
 
 
 

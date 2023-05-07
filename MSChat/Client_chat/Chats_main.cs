@@ -41,7 +41,78 @@ namespace Client_chat
         public bool Entrance { get; set; }
         public string Respons { get; set; }
 
+        //Отображает Сообщения из чата
 
+        public void Chat(CommandCL command)
+        {
+            using (MemoryStream Chats = new MemoryStream())
+            {
+                if (command._Answe != null)
+                {
+                    if (command._Answe.ToString() == "true")
+                    {
+                        MessСhat[] les = new MessСhat[command._AClass.Count()];
+
+                        for (int i = 0; i < command._AClass.Count(); i++)
+                        {
+                            string yu = command._AClass[i].ToString();
+                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                            les[i] = useTravel;
+                        }
+                        dataGridViewChat.Rows.Clear();
+                        dataGridViewChat.RowCount = les.Count();
+                        dataGridViewChat.ColumnCount = 2;
+                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                        {
+                        }
+                        allChat = les;
+                        dataGridViewChat.Columns.Insert(2, column);
+                        for (int i = 0; i < les.Count(); i++)
+                        {
+                            for (int j = 0; j < 1; j++)
+                            {
+                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                dataGridViewChat.Columns[j].HeaderText = "Сообщения";
+                                if (les[i].IdUserFrom != Users)
+                                {
+                                    dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                }
+                            }
+                            for (int j = 1; j < 2; j++)
+                            {
+                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                dataGridViewChat.Columns[j].HeaderText = "Дата отправки";
+                            }
+                            for (int j = 2; j < 3; j++)
+                            {
+                                bool aMark = false;
+                                if (les[i].Mark.ToString() == "1")
+                                {
+                                    aMark = true;
+                                }
+                                dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                            }
+                        }
+                        dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dataGridViewChat.Visible = true;
+                    }
+                    else
+                    {
+                        dataGridViewChat.Rows.Clear();
+                    }
+                }
+                else
+                {
+                    dataGridViewChat.Rows.Clear();
+                    //MessageBox.Show("Сообщений нет");
+                }
+            }
+        }
+
+        /*//MessageBox.Show("Сообщений нет");   
+                        //sender.Columns[2].ValueType = typeof(bool);
+                                //sender.Columns[2].DefaultCellStyle. = 
+                                //  sender.Columns[j].HeaderText = "";*/
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
         }
@@ -151,6 +222,10 @@ namespace Client_chat
             }
 
         }
+
+
+
+
 
 
         private void toolStripLabel1_Click(object sender, EventArgs e)
@@ -352,8 +427,6 @@ namespace Client_chat
                                 {
                                     dataGridViewChat.Rows.Clear();
                                 }
-
-
                                 command.__Answe = null;
                                 command.__AClass = null;
                                 command.__List_Mess_count = null;
@@ -664,6 +737,24 @@ namespace Client_chat
             if (Friends != null)
             {
                 toolStripLabel1.Text = Friends.User_.Name;
+                using (MemoryStream fs = new MemoryStream())
+                {
+                    CommandCL command = new CommandCL();
+                    string FileFS = "";
+                    Photo tom = new Photo(Friends.User_.Photo, Friends.User_.Current);
+                    JsonSerializer.Serialize<Photo>(fs, tom);
+                    FileFS = Encoding.Default.GetString(fs.ToArray());
+
+                    Task.Run(async () => await command.Get_Image(IP_ADRES.Ip_adress, FileFS, "007")).Wait();
+
+                    //string Im = command.UserImage.Image.First().ToString(); //AClassIm
+                    string Im = command.AClassIm.First().ToString(); 
+                    byte[] ByteImege = Convert.FromBase64String(Im);
+                    MemoryStream ms = new MemoryStream(ByteImege);
+                    Image returnImage = Image.FromStream(ms);
+                    toolStripButton2.Image = returnImage;
+
+                }
                 //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
                 //Image returnImage = Image.FromStream(ms);
                 //toolStripButton2.Image = returnImage;
@@ -883,6 +974,10 @@ namespace Client_chat
                             //command.Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006");
                             Task.Run(async () => await command.Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006")).Wait();
 
+                            //Chat метод посмотреть ! вместо 3 таких же!
+                            Chat(command);
+
+                            // Это уже не надо!
                             if (command._Answe != null)
                             {
                                 if (command._Answe.ToString() == "true")

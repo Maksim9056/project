@@ -71,9 +71,12 @@ namespace ServersAccept
         //Проверяет если у данного пользователя друзья 
         public bool Friends { get; set; }
 
+        // Для картинки
+        public UseImage Items_Image { get; set; }
+
 
         /// <Блок процедур >
-       
+
 
         //Создают таблицу пользователей 
         public void CreateTable_Users()
@@ -283,6 +286,44 @@ namespace ServersAccept
                 }
             }
         }
+
+        // Поиск и выборка картинки по ID 
+        async public void Select_Image(Photo data)
+        {
+            //string Name = "";
+            string sqlExpressio = $"SELECT * FROM Files  WHERE Id = '{data.Id}'";
+
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                var n = await command.ExecuteReaderAsync();
+                SqliteDataReader sqReader = commandS.ExecuteReader();
+
+                if (n.HasRows == true)
+                {
+                    //Console.WriteLine("Такое имя уже есть");
+                    UserConnect = true;
+                    // Always call Read before accessing data.
+                    while (sqReader.Read())
+                    {
+                        object Im = sqReader["Image"];
+                        //byte[] Image = Convert.FromBase64String(Im.ToString());
+                        string StringImage = Convert.ToBase64String(Im as Byte[]);
+                        string[] strings = new string[1];
+                        strings[0] = StringImage;
+                        UseImage useImage = new UseImage(strings,"true",1);
+                        Items_Image = useImage;
+                    }
+                }
+                else
+                {
+                    UserConnect = false;
+                }
+            }
+        }
+
 
         //Проверяет  в таблицу Друзья количество друзей 1го пользователя
         async public void Select_Friend(string curent_user)
