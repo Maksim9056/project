@@ -1532,12 +1532,15 @@ namespace Client_chat
         {
             //MessageBox.Show("Редактировать запись "+ selectedBiodataId.ToString());
             try
-            {
-                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                MessСhat tt = allChat[selectedrowindexs];
-                textBox1.Text = tt.Message;
-                Update_id = tt.Id;
-                Update_Message = true;
+            {      //
+                using (MemoryStream Update = new MemoryStream())
+                {
+                    int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                    MessСhat tt = allChat[selectedrowindexs];
+                    textBox1.Text = tt.Message;
+                    Update_id = tt.Id;
+                    Update_Message = true;
+                }
             }
             catch (ArgumentNullException B)
             {
@@ -1566,12 +1569,10 @@ namespace Client_chat
                     FileFS = Encoding.Default.GetString(fs.ToArray());
                 }
                 textBox1.Text = "";
-
                 using (MemoryStream Delete_dispons = new MemoryStream())
                 {
                     CommandCL command = new CommandCL();
-
-
+                    command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011");
                     if (command.____Answe.ToString() == "true")
                     {
                         MessСhat[] les = new MessСhat[command.____AClass.Count()];
@@ -1628,6 +1629,12 @@ namespace Client_chat
                         dataGridViewChat.Rows.Clear();
                         //MessageBox.Show("Сообщений нет");
                     }
+
+                     command.____Answe = null;
+                     command.____List_Mess_count= null;
+                     command.____AClass = null;
+                   
+                    
                     //   Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);}
                 }
             }

@@ -826,7 +826,7 @@ namespace Client_chat
           */
 
         // Процедура отправки 011
-        async public void Delete_message_make_up(String server, string fs, string command, DataGridView sender)
+        async public void Delete_message_make_up(String server, string fs, string command)
         {
             try
             {
