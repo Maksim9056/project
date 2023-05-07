@@ -18,6 +18,16 @@ namespace Class_chat
         //    UserName=userName;
         //}
     }
+    public  class  User_reg
+    {
+        public static string UserName { get; set; }
+        public User_reg(string userName)
+        {
+        
+            UserName=userName;
+        }
+}
+
 
     public class Connect_Client_
     {

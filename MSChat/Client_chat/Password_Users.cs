@@ -8,6 +8,7 @@ using System.IO;
 //using System.Collections.Generic;
 //using System.Runtime.Serialization.Json;
 using System.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 //using System.Linq;
 //using Newtonsoft.Json.Linq;
 //using System.Net;
@@ -48,133 +49,133 @@ namespace Client_chat
                     // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
                     //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));*/
 
-        // Передача 003
-        async void Check_User_Possword(String server, string fs, string command, string user, Form userpass)
-        {
-            using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-            {
-                try
-                {
+        //// Передача 003
+        //async void Check_User_Possword(String server, string fs, string command)
+        //{
+        //    using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //    {
+        //        try
+        //        {
                   
-                    byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    string Host = System.Net.Dns.GetHostName();
-                    NetworkStream stream = client.GetStream();
-                    await stream.WriteAsync(data, 0, data.Length);
-                    //data = new Byte[99999999];
-                    String responseData = String.Empty;
-                    //String responseDat = String.Empty;                    
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
-                        responseData = Encoding.Default.GetString(ms.ToArray());  
-                       Clas(responseData);
+        //            byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            string Host = System.Net.Dns.GetHostName();
+        //            NetworkStream stream = client.GetStream();
+        //            await stream.WriteAsync(data, 0, data.Length);
+        //            //data = new Byte[99999999];
+        //            String responseData = String.Empty;
+        //            //String responseDat = String.Empty;                    
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int cnt = 0;
+        //                Byte[] locbuffer = new byte[1024];
+        //                do
+        //                {
+        //                    cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                    ms.Write(locbuffer, 0, cnt);
+        //                } while (client.Available > 0);
+        //                responseData = Encoding.Default.GetString(ms.ToArray());  
+        //               Clas(responseData);
 
-                    }
-                    if (responseData == "false")
-                    {
-                    }
-                    else
-                    {
-                        MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
-                        //        responseData
-                        Chats_main a = new Chats_main();
-                        Chats_main parent = (Chats_main)this.Owner;
-                        parent.NotifyMe(person3);
-                        parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, person3.User_.Name);
-                        userpass.Close();
-                        /*
-                        //using (MemoryStream ms = new MemoryStream())
-                        //{
-                        //    int cnt = 0;
-                        //    Byte[] locbuffer = new byte[1024];
-                        //    do
-                        //    {
-                        //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                        //        ms.Write(locbuffer, 0, cnt);
-                        //    } while (client.Available > 0);
+        //            }
+        //            if (responseData == "false")
+        //            {
+        //            }
+        //            else
+        //            {
+        //                MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
+        //                //        responseData
+        //                Chats_main a = new Chats_main();
+        //                Chats_main parent = (Chats_main)this.Owner;
+        //                parent.NotifyMe(person3);
+        //                parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, person3.User_.Name);
+        //               // userpass.Close();
+        //                /*
+        //                //using (MemoryStream ms = new MemoryStream())
+        //                //{
+        //                //    int cnt = 0;
+        //                //    Byte[] locbuffer = new byte[1024];
+        //                //    do
+        //                //    {
+        //                //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                //        ms.Write(locbuffer, 0, cnt);
+        //                //    } while (client.Available > 0);
 
-                        //    responseDat = Encoding.Default.GetString(ms.ToArray());
-                        //}          
-
-
-                        //if (responseData == "false")
-                        //{
+        //                //    responseDat = Encoding.Default.GetString(ms.ToArray());
+        //                //}          
 
 
-
-                        //}
-                        //else
-                        //{
-                        //  User_Logins msgFriends = JsonSerializer.Deserialize<User_Logins>(responseDat);
-                        /*                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+        //                //if (responseData == "false")
+        //                //{
 
 
 
-                                            //if (person3.Name == user)
-                                            //{
-                                            //    //MessageBox.Show("Подключение пользователя разрешено");
-                                            //    //получить перечень друзей
-                                            //    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
-                                            //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                                            //    User_photo[] people = null;
-                                            //    if (responseDat == "false")
-                                            //    {
+        //                //}
+        //                //else
+        //                //{
+        //                //  User_Logins msgFriends = JsonSerializer.Deserialize<User_Logins>(responseDat);
+        //                /*                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
 
 
 
-                                            //    }
-                                            //    else
-                                            //    {
-                                            //        string result = responseDat.Trim(new char[] { '"', '0' });
-                                            //        Int32 it = Convert.ToInt32(result);
-                                            //        people = new User_photo[it];
+        //                                    //if (person3.Name == user)
+        //                                    //{
+        //                                    //    //MessageBox.Show("Подключение пользователя разрешено");
+        //                                    //    //получить перечень друзей
+        //                                    //    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
+        //                                    //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
+        //                                    //    User_photo[] people = null;
+        //                                    //    if (responseDat == "false")
+        //                                    //    {
 
-                                            //        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
-                                            //        //Друзья
-                                            //        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
-                                            //        string rez2 = result.Substring(0, result.IndexOf("}"));
 
-                                            //        List<string> tokens = new List<string>(result.Split('}'));
 
-                                            //        for (int j = 0; j < tokens.Count - 1; j++)
-                                            //        {
-                                            //            string tt = tokens[j] + "}";
-                                            //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
-                                            //        }
-                                            //    }*/                 
-                        //a.Show();
-                        /*
-                        //a.OpenMes(person3.User_, person3);
-                        //userpass.Hide();
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show("Пользователя нет");
-                        //}
-                        */
-                    }
-                }
-                catch (ArgumentNullException)
-                {
-                    //Console.WriteLine("ArgumentNullException:{0}", e.Message);
-                }
-                catch (SocketException)
-                {
-                    //Console.WriteLine("SocketException: {0}", e.Message);
-                }
-                catch (Exception)
-                {
-                    //   Console.WriteLine("SocketException: {0}", e.Message);
-                }
+        //                                    //    }
+        //                                    //    else
+        //                                    //    {
+        //                                    //        string result = responseDat.Trim(new char[] { '"', '0' });
+        //                                    //        Int32 it = Convert.ToInt32(result);
+        //                                    //        people = new User_photo[it];
 
-            }
-        }
+        //                                    //        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
+        //                                    //        //Друзья
+        //                                    //        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
+        //                                    //        string rez2 = result.Substring(0, result.IndexOf("}"));
+
+        //                                    //        List<string> tokens = new List<string>(result.Split('}'));
+
+        //                                    //        for (int j = 0; j < tokens.Count - 1; j++)
+        //                                    //        {
+        //                                    //            string tt = tokens[j] + "}";
+        //                                    //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
+        //                                    //        }
+        //                                    //    }*/                 
+        //                //a.Show();
+        //                /*
+        //                //a.OpenMes(person3.User_, person3);
+        //                //userpass.Hide();
+        //                //}
+        //                //else
+        //                //{
+        //                //    MessageBox.Show("Пользователя нет");
+        //                //}
+        //                */
+        //            }
+        //        }
+        //        catch (ArgumentNullException)
+        //        {
+        //            //Console.WriteLine("ArgumentNullException:{0}", e.Message);
+        //        }
+        //        catch (SocketException)
+        //        {
+        //            //Console.WriteLine("SocketException: {0}", e.Message);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            //   Console.WriteLine("SocketException: {0}", e.Message);
+        //        }
+
+        //    }
+        //}
         
         public void Clas( string responseDat)
         {
@@ -211,15 +212,27 @@ namespace Client_chat
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            using (MemoryStream fs = new MemoryStream())
-            {         
-                string FileFS = "";
-                UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
-                JsonSerializer.Serialize<UserLogin>(fs, tom);
-                FileFS = Encoding.Default.GetString(fs.ToArray());
-                Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+        {  using (Password_Users Form = new Password_Users())
+            {
 
+                using (MemoryStream fs = new MemoryStream())
+                {
+                    CommandCL command = new CommandCL();
+                    string FileFS = "";
+                    UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                    JsonSerializer.Serialize<UserLogin>(fs, tom);
+                    FileFS = Encoding.Default.GetString(fs.ToArray());
+                    command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                    Chats_main a = new Chats_main();
+                    Chats_main parent = (Chats_main)this.Owner;
+                    parent.NotifyMe(CommandCL.User_Logins_and_Friends);
+                    parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
+                    // Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+                    //чтобы не запоминал после передачи
+                    CommandCL.User_Logins_and_Friends = null;
+                    this.Close();
+                }
+                Form.Close();
             }
         }
 

@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 namespace Client_chat
 {
     public partial class User_create : Form
@@ -34,98 +36,120 @@ namespace Client_chat
 
                 if (textBox2.Text == textBox3.Text)
                 {
-                    string FileFS = "";
-
-                    using (MemoryStream fs = new MemoryStream())
+                    using (MemoryStream Reg_user_Dispons= new MemoryStream())
                     {
-                        User_regis tom = new User_regis(textBox1.Text, textBox2.Text, textBox4.Text, buf, 0);
-                        JsonSerializer.Serialize<User_regis>(fs, tom);
-                        FileFS = Encoding.Default.GetString(fs.ToArray());
-                    }
-                    Reg_User(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
-
+                        CommandCL command = new CommandCL();
+                        string FileFS = "";
+                        using (MemoryStream fs = new MemoryStream())
+                        {
+                            User_regis tom = new User_regis(textBox1.Text, textBox2.Text, textBox4.Text, buf, 0);
+                            JsonSerializer.Serialize<User_regis>(fs, tom);
+                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                        }
+                        command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
+                        if (User_reg.UserName == textBox1.Text)
+                        {
+                            MessageBox.Show("Пользователь уже есть");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Добавление пользователя разрешено");                      
+                            this.Close(); 
+                            //using (Password_Users a = new Password_Users())
+                            //{
+                            //Chats_main parent = (Chats_main)this.Owner;
+                            //parent.Show(); 
+                            //a.ShowDialog();
+                            //}
+                           
+                        }
+                        User_reg.UserName = null;                                         
+                    } 
                 }
                 else
                 {
                     MessageBox.Show($"Пароли не совпадают !");
                 }
-
+               
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Пароли не совпадают !", ex.Message);
 
             }
+            //  Reg_User(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
         }
 
+
+        /*
         // Процедура отправки регистрации пользователей 002
-        async  void Reg_User(String server, string fs, string command, string user, Form userpass)
-        {
-            try
-            {
+        //async  void Reg_User(String server, string fs, string command, string user, Form userpass)
+        //{
+        //    try
+        //    {
            
 
-                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
-                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    NetworkStream stream = client.GetStream();
+        //        using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //        {
+        //            Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            NetworkStream stream = client.GetStream();
 
-                    await stream.WriteAsync(data, 0, data.Length);
+        //            await stream.WriteAsync(data, 0, data.Length);
 
-                    String responseData = String.Empty;
+        //            String responseData = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int cnt = 0;
+        //                Byte[] locbuffer = new byte[1024];
+        //                do
+        //                {
+        //                    cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                    ms.Write(locbuffer, 0, cnt);
+        //                } while (client.Available > 0);
 
-                        responseData = Encoding.Default.GetString(ms.ToArray());
-                    }
+        //                responseData = Encoding.Default.GetString(ms.ToArray());
+        //            }
 
-                    /*
-                    data = new Byte[999999990];
-                    Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
-                    responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
-                    */
-
-                    if (responseData == user)
-                    {
-                        MessageBox.Show("Пользователь уже есть");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Добавление пользователя разрешено");
-                        //using (Password_Users a = new Password_Users())
-                        //{
-                           //Chats_main parent = (Chats_main)this.Owner;
-                           //parent.Show();
-                           userpass.Close();
+        //            /*
+        //            data = new Byte[999999990];
+        //            Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+        //            responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+        //            */
+        /*
+         * 
+        //            if (responseData == user)
+        //            {
+        //                MessageBox.Show("Пользователь уже есть");
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("Добавление пользователя разрешено");
+        //                //using (Password_Users a = new Password_Users())
+        //                //{
+        //                   //Chats_main parent = (Chats_main)this.Owner;
+        //                   //parent.Show();
+        //                   userpass.Close();
                             
-                            //a.ShowDialog();
-                        //}
-                    }
-                }
-            }
-
-            catch (ArgumentNullException e)
-            {
-                Console.WriteLine("ArgumentNullException:{0}", e.Message);
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("SocketException: {0}", e.Message);
-            }
-
-        }
+        //                    //a.ShowDialog();
+        //                //}
+        //            }
+        //        }
+        //    }
+        */
+    /*    //    catch (ArgumentNullException e)
+        //    {
+        //        Console.WriteLine("ArgumentNullException:{0}", e.Message);
+        //    }
+        //    catch (SocketException e)
+        //    {
+        //        Console.WriteLine("SocketException: {0}", e.Message);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("SocketException: {0}", e.Message);
+        //    }
+        //}*/
 
 
         private void pictureBox2_Click(object sender, EventArgs e)

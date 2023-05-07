@@ -190,19 +190,83 @@ namespace Client_chat
                 }
                 else
                 {
+                    CommandCL command = new CommandCL();
+
                     if (Update_Message == true)
-                    {
-                        using (MemoryStream Update = new MemoryStream())
+                    {using (MemoryStream _Update_Message = new MemoryStream())
                         {
-                            DateTime dateTime = DateTime.Now;
-                            MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
-                            JsonSerializer.Serialize<MessСhat>(Update, Mes_chat);
-                            FileFS = Encoding.Default.GetString(Update.ToArray());
+                            using (MemoryStream Update = new MemoryStream())
+                            {
+                                DateTime dateTime = DateTime.Now;
+                                MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                                JsonSerializer.Serialize<MessСhat>(Update, Mes_chat);
+                                FileFS = Encoding.Default.GetString(Update.ToArray());
+                            }
+
+                           command.Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010");
+
+                            if (command.___Answe.ToString() == "true")
+                            {
+                                MessСhat[] les = new MessСhat[command.___AClass.Count()];
+
+                                for (int i = 0; i < command.___AClass.Count(); i++)
+                                {
+                                    string yu = command.___AClass[i].ToString();
+                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                    les[i] = useTravel;
+                                }
+                                dataGridViewChat.Rows.Clear();
+                                dataGridViewChat.RowCount = les.Count();
+                                dataGridViewChat.ColumnCount = 2;
+                                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                                {
+                                }
+
+                                dataGridViewChat.Columns.Insert(2, column);
+                                //sender.Columns[0].HeaderText = "Друзья";
+
+                                for (int i = 0; i < les.Count(); i++)
+                                {
+                                    for (int j = 0; j < 1; j++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                        if (les[i].IdUserFrom != Users)
+                                        {
+                                            dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                        }
+
+                                    }
+                                    for (int k = 1; k < 2; k++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[k].Value = les[i].DataMess;
+                                    }
+                                    for (int b = 2; b < 3; b++)
+                                    {
+                                        bool aMark = false;
+                                        if (les[i].Mark.ToString() == "1")
+                                        {
+                                            aMark = true;
+                                        }
+                                        dataGridViewChat.Rows[i].Cells[b].Value = aMark;
+                                    }
+                                }
+                                dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                                allChat = les;
+                                dataGridViewChat.Visible = true;
+                            }
+                            else
+                            {
+                                dataGridViewChat.Rows.Clear();
+                                //MessageBox.Show("Сообщений нет");
+                            }
+                            command.___Answe = null;
+                            command.___AClass = null;
+                            command.___List_Mess_count = null;
+                            Update_Message = false;
+                            Update_id = 0;
+                            textBox1.Text = "";
                         }
-                        Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010", dataGridViewChat);
-                        Update_Message = false;
-                        Update_id = 0;
-                        textBox1.Text = "";
+                      //  Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010",dataGridViewChat);
                     }
                     else
                     {
@@ -210,21 +274,80 @@ namespace Client_chat
                         {
                             /*
                             //string serialized = buf.ToString();
-                            //Searh_Friends New_Friend = new Searh_Friends(textBox2.Text);*/
+                            //Searh_Friends New_Friend = new Searh_Friends(textBox2.Text);*/ 
+                                    /*
+                              //        JsonSerializer.SerializeToDefaultBytes(fs,);
+
+                              //Console.WriteLine("Data has been saved to file");*/
                             DateTime dateTime = DateTime.Now;
-
                             MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1);
-
                             JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
-                            FileFS = Encoding.Default.GetString(fs.ToArray());
-                          /*
-                            //        JsonSerializer.SerializeToDefaultBytes(fs,);
-
-                            //Console.WriteLine("Data has been saved to file");*/
+                            FileFS = Encoding.Default.GetString(fs.ToArray());                       
                         }
-                        // чтение данных
-                        textBox1.Text = "";
-                        Insert_Message(IP_ADRES.Ip_adress, FileFS, "009", dataGridViewChat);
+
+                           // чтение данных
+                           textBox1.Text = "";
+                         // Добавляем сообщение в чат !
+                        //Освобождаем ресурсы!
+                        using (MemoryStream New_message = new MemoryStream())
+                        {
+                            command.Insert_Message(IP_ADRES.Ip_adress, FileFS,"009");
+                            if (command.__Answe.ToString() == "true")
+                            {
+                                MessСhat[] les = new MessСhat[command.__AClass.Count()];
+                                for (int i = 0;i < command.__AClass.Count();i++)
+                                {
+                                    string yu = command.__AClass[i].ToString();
+                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                    les[i] = useTravel;
+                                }
+                                dataGridViewChat.Rows.Clear();
+                                dataGridViewChat.RowCount = les.Count();
+                                dataGridViewChat.ColumnCount = 2;
+                                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                                {
+                                }
+
+                                dataGridViewChat.Columns.Insert(2, column);
+
+                                for (int i = 0; i < les.Count(); i++)
+                                {
+                                    for (int j = 0; j < 1; j++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                        if (les[i].IdUserFrom != Users)
+                                        { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; 
+                                        }
+                                    }
+                                    for (int j = 1; j < 2; j++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                    }
+                                    for (int j = 2; j < 3; j++)
+                                    {
+                                        bool aMark = false;
+                                        if (les[i].Mark.ToString() == "1")
+                                        {
+                                            aMark = true;
+                                        }
+                                        dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                    }
+                                }
+                                allChat = les;
+                                dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                                dataGridViewChat.Visible = true;
+                            }
+                            else
+                            {
+                                dataGridViewChat.Rows.Clear();
+                            }
+
+
+                            command.__Answe = null;
+                            command.__AClass = null;
+                            command.__List_Mess_count = null;
+                            // Insert_Message(IP_ADRES.Ip_adress, FileFS, "009", dataGridViewChat);
+                        }
                     }
                 }
             }
@@ -236,164 +359,167 @@ namespace Client_chat
 
 
 
-        public string Func_Read(Stream str, int length, TcpClient client) 
-        { 
-            string Result = string.Empty; 
-            using (MemoryStream ms = new MemoryStream()) 
-            { 
-                int cnt = 0; 
-                Byte[] locbuffer = new byte[length]; 
-                do { 
-                    cnt = str.Read(locbuffer, 0, locbuffer.Length); 
-                    ms.Write(locbuffer, 0, cnt); } 
-                while (client.Available > 0); 
-                Result = Encoding.Default.GetString(ms.ToArray()); 
-            } 
-            return Result; 
-        }
-
+        //public string Func_Read(Stream str, int length, TcpClient client) 
+        //{ 
+        //    string Result = string.Empty; 
+        //    using (MemoryStream ms = new MemoryStream()) 
+        //    { 
+        //        int cnt = 0; 
+        //        Byte[] locbuffer = new byte[length]; 
+        //        do { 
+        //            cnt = str.Read(locbuffer, 0, locbuffer.Length); 
+        //            ms.Write(locbuffer, 0, cnt); } 
+        //        while (client.Available > 0); 
+        //        Result = Encoding.Default.GetString(ms.ToArray()); 
+        //    } 
+        //    return Result; 
+        //}
 
         // Процедура отправки 009
-        async void Insert_Message(String server, string fs, string command, DataGridView sender)
-        {
-            try
-            {
-                //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
-                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    NetworkStream stream = client.GetStream();
-                    await stream.WriteAsync(data, 0, data.Length);
+        
+    //    async void Insert_Message(String server, string fs, string command, DataGridView sender)
+    //    {
+    //        try
+    //        {
+    //            //Int32 port = 9595;
 
-                    /*
-                    //TcpClient.Available
-                    //// буфер ддя получения данных
-                    //var responseData_New = new byte[1024];
-                    //// StringBuilder для склеивания полученных данных в одну строку
-                    //var response = new StringBuilder();
-                    //int bytes;  // количество полученных байтов
-                    //do
-                    //{
-                    //    // получаем данные
-                    //    bytes = await stream.ReadAsync(responseData_New, 0, responseData_New.Length);
-                    //    // преобразуем в строку и добавляем ее в StringBuilder
-                    //    response.Append(Encoding.Default.GetString(responseData_New, 0, bytes));
-                    //}
-                    //while (bytes > 0); // пока данные есть в потоке 
+    //            using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+    //            {
+    //                Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+    //                NetworkStream stream = client.GetStream();
+    //                await stream.WriteAsync(data, 0, data.Length);
 
-                    //Func_Read(stream,1024, client);
-
-                    //String responseData = String.Empty;
-                    */
-                    String responseDat = String.Empty;
+                 
+    //                String responseDat = String.Empty;
                     
-                    //responseDat = Respons;
-                    /* работает 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
-
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
-                    */
+    //                //responseDat = Respons;
+                 
                     
-                    responseDat = await Task<string>.Run(() =>
-                    {
-                        return Func_Read(stream, data.Length, client);
-                    });
- /*
-  * 
-                    //data = new Byte[99999909];
+    //                responseDat = await Task<string>.Run(() =>
+    //                {
+    //                    return Func_Read(stream, data.Length, client);
+    //                }); 
+
+    //                MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
+
+    //                JObject details = JObject.Parse(responseDat);
+    //                JToken Answe = details.SelectToken("Answe");
+    //                JToken List_Mess = details.SelectToken("List_Mess");
+    //                JToken AClass = details.SelectToken("AClass");
+    //                if (Answe.ToString() == "true")
+    //                {
+    //                    MessСhat[] les = new MessСhat[AClass.Count()];
+
+    //                    for (int i = 0; i < AClass.Count(); i++)
+    //                    {
+    //                        string yu = AClass[i].ToString();
+    //                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+    //                        les[i] = useTravel;
+    //                    }
+    //                    sender.Rows.Clear();
+    //                    sender.RowCount = les.Count();
+    //                    sender.ColumnCount = 2;
+    //                    DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+    //                    {
+    //                    }
+
+    //                    sender.Columns.Insert(2, column);
+
+    //                    for (int i = 0; i < les.Count(); i++)
+    //                    {
+    //                        for (int j = 0; j < 1; j++)
+    //                        {
+    //                            sender.Rows[i].Cells[j].Value = les[i].Message;
+    //                            if (les[i].IdUserFrom != Users)
+    //                            { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
+    //                        }
+    //                        for (int j = 1; j < 2; j++)
+    //                        {
+    //                            sender.Rows[i].Cells[j].Value = les[i].DataMess;
+    //                        }
+    //                        for (int j = 2; j < 3; j++)
+    //                        {
+    //                            bool aMark = false;
+    //                            if (les[i].Mark.ToString() == "1")
+    //                            {
+    //                                aMark = true;
+    //                            }
+    //                            sender.Rows[i].Cells[j].Value = aMark;
+    //                        }
+    //                    }
+    //                    allChat = les;
+    //                    sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+    //                    sender.Visible = true;
+    //                }
+    //                else
+    //                {
+    //                    sender.Rows.Clear();
+    //                }
+    //            }
+    //            //stream.Close();
+    //            //client.Close();
+
+    //        }
+    //        catch (ArgumentNullException e)
+    //        {
+    //            MessageBox.Show("ArgumentNullException:{0}", e.Message);
+    //        }
+    //        catch (SocketException e)
+    //        {
+    //            MessageBox.Show("SocketException: {0}", e.Message);
+    //        }
+    //        /* работает 
+    //using (MemoryStream ms = new MemoryStream())
+    //{
+    //    int cnt = 0;
+    //    Byte[] locbuffer = new byte[1024];
+    //    do
+    //    {
+    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+    //        ms.Write(locbuffer, 0, cnt);
+    //    } while (client.Available > 0);
+
+    //    responseDat = Encoding.Default.GetString(ms.ToArray());
+    //}
+    //*/
+    //        /*
+    //  *
+    //                    //data = new Byte[99999909];
 
 
-                    //Byte[] data2 = new Byte[client.ReceiveBufferSize];
+    //                    //Byte[] data2 = new Byte[client.ReceiveBufferSize];
 
-                    //Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
+    //                    //Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
 
-                    //responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);*/
+    //                    //responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);*/
+    //        
+    //                           //TcpClient.Available
+    //                           //// буфер ддя получения данных
+    //                           //var responseData_New = new byte[1024];
+    //                           //// StringBuilder для склеивания полученных данных в одну строку
+    //                           //var response = new StringBuilder();
+    //                           //int bytes;  // количество полученных байтов
+    //                           //do
+    //                           //{
+    //                           //    // получаем данные
+    //                           //    bytes = await stream.ReadAsync(responseData_New, 0, responseData_New.Length);
+    //                           //    // преобразуем в строку и добавляем ее в StringBuilder
+    //                           //    response.Append(Encoding.Default.GetString(responseData_New, 0, bytes));
+    //                           //}
+    //                           //while (bytes > 0); // пока данные есть в потоке 
 
-                    MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
+    //                           //Func_Read(stream,1024, client);
 
-                    JObject details = JObject.Parse(responseDat);
-                    JToken Answe = details.SelectToken("Answe");
-                    JToken List_Mess = details.SelectToken("List_Mess");
-                    JToken AClass = details.SelectToken("AClass");
-                    if (Answe.ToString() == "true")
-                    {
-                        MessСhat[] les = new MessСhat[AClass.Count()];
+    //                           //String responseData = String.Empty;
+    //                           
 
-                        for (int i = 0; i < AClass.Count(); i++)
-                        {
-                            string yu = AClass[i].ToString();
-                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                            les[i] = useTravel;
-                        }
-                        sender.Rows.Clear();
-                        sender.RowCount = les.Count();
-                        sender.ColumnCount = 2;
-                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                        {
-                        }
-
-                        sender.Columns.Insert(2, column);
-
-                        for (int i = 0; i < les.Count(); i++)
-                        {
-                            for (int j = 0; j < 1; j++)
-                            {
-                                sender.Rows[i].Cells[j].Value = les[i].Message;
-                                if (les[i].IdUserFrom != Users)
-                                { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
-
-                            }
-                            for (int j = 1; j < 2; j++)
-                            {
-                                sender.Rows[i].Cells[j].Value = les[i].DataMess;
-                            }
-                            for (int j = 2; j < 3; j++)
-                            {
-                                bool aMark = false;
-                                if (les[i].Mark.ToString() == "1")
-                                {
-                                    aMark = true;
-                                }
-                                sender.Rows[i].Cells[j].Value = aMark;
-                            }
-                        }
-                        allChat = les;
-                        sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        sender.Visible = true;
-                    }
-                    else
-                    {
-                        sender.Rows.Clear();
-                    }
-                }
-                //stream.Close();
-                //client.Close();
-
-            }
-            catch (ArgumentNullException e)
-            {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
-            }
-            catch (SocketException e)
-            {
-                MessageBox.Show("SocketException: {0}", e.Message);
-            }
-
-        }
-
+    //    }*/
 
 
         // Процедура отправки 010
+                                      /*
         async void Update_Message_make_up(String server, string fs, string command, DataGridView sender)
         {
             try
@@ -421,14 +547,13 @@ namespace Client_chat
 
                         responseDat = Encoding.Default.GetString(ms.ToArray());
                     }
-
                     /*
                     data = new Byte[99999909];
                     Byte[] data2 = new Byte[99999909];
                     Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
                     responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
                     */
-
+                                              /*
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
                     JObject details = JObject.Parse(responseDat);
@@ -503,31 +628,36 @@ namespace Client_chat
                 MessageBox.Show("SocketException: {0}", e.Message);
             }
         }
-
-        public void OpenMes(MsgUser_Logins Friends)
-        {//JToken s Friends, string responseDat)
-            { //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
-              //Image returnImage = Image.FromStream(ms);
-              //toolStripButton2.Image = returnImage;
-
-                //User_photo ruser = JsonSerializer.Deserialize<User_photo>(Friends.User_);
-                //JToken Answe = Friends.SelectToken("Answe");
-                //JToken List_Mess = Friends.SelectToken("User_");
-                //JToken AClass = Friends.SelectToken("List_Mess");
-                //JToken AClassы = Friends.SelectToken("AClass");
-                toolStripTextBox1.Text = IP_ADRES.Ip_adress;
-                //  MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseDat);
+        */
+                                                     /*
+            //JToken s Friends, string responseDat)
+      //  MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseDat);
              //   User_photo user_Photo = null;
 
                 //string Numbers_Friends = Convert.ToString(AClass);
                 //user_Photo
 
-                toolStripLabel1.Text = Friends.User_.Name;
+         
 
-                // Answe
+                //User_photo ruser = JsonSerializer.Deserialize<User_photo>(Friends.User_);
+                //JToken Answe = Friends.SelectToken("Answe");
+                //JToken List_Mess = Friends.SelectToken("User_");
+                //JToken AClass = Friends.SelectToken("List_Mess");
+                //JToken AClassы = Friends.SelectToken("AClass");*/
+        public void OpenMes(MsgUser_Logins Friends)
+        {
+           
+                toolStripTextBox1.Text = IP_ADRES.Ip_adress;
+          
+
+                toolStripLabel1.Text = Friends.User_.Name;
+                //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
+              //Image returnImage = Image.FromStream(ms);
+              //toolStripButton2.Image = returnImage;
+             
                 Na_me = Friends.User_.Name;
                 // Na_me = Friends.User_.Name;
-                //  int id = 0;
+                //  int id = 0;   // Answe
                 //    toolStripLabel1.Text = Na_me;
 
                 if (Friends.List_Mess == 0)
@@ -574,7 +704,7 @@ namespace Client_chat
                 toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
 
 
-            } 
+            
         }      
             //if (toolStripButton2.Image == null)
             //{
@@ -720,29 +850,114 @@ namespace Client_chat
 
                     }
                     else
+
                     {
-                        tt.Current = Users;
-                        string person = JsonSerializer.Serialize<User_photo>(tt);
-                        //  Friends = person;
+                        using (MemoryStream Message = new MemoryStream())
+                        {
 
 
-                        User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
-                        Friends = Id_Friend.Id;
+                            tt.Current = Users;
+                            string person = JsonSerializer.Serialize<User_photo>(tt);
+                            //  Friends = person;
 
-                        Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
+
+                            User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
+                            Friends = Id_Friend.Id;
+                            //_Answe
+                            CommandCL command = new CommandCL();
+
+                            command.Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006");
+                            if (command._Answe.ToString() == "true")
+                            {
+
+
+                                MessСhat[] les = new MessСhat[command._AClass.Count()];
+
+                                for (int i = 0; i < command._AClass.Count(); i++)
+                                {
+                                    string yu = command._AClass[i].ToString();
+                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                    les[i] = useTravel;
+                                }
+                                //  sender.Rows.Clear();
+                                dataGridViewChat.RowCount = les.Count();
+                                dataGridViewChat.ColumnCount = 2;
+                                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                                {
+                                    /*
+                                    //column.HeaderText = ColumnName.OutOfOffice.ToString();
+                                    //column.Name = ColumnName.OutOfOffice.ToString();
+                                    //column.AutoSizeMode =
+                                    //    DataGridViewAutoSizeColumnMode.DisplayedCells;
+                                    //column.FlatStyle = FlatStyle.Standard;
+                                    //column.ThreeState = true;
+                                    //column.CellTemplate = new DataGridViewCheckBoxCell();
+                                    //column.CellTemplate.Style.BackColor = Color.Beige;
+                                    */
+                                }
+                                allChat = les;
+                                dataGridViewChat.Columns.Insert(2, column);
+
+
+
+                                for (int i = 0; i < les.Count(); i++)
+                                {
+                                    for (int j = 0; j < 1; j++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                        dataGridViewChat.Columns[j].HeaderText = "Сообщения";
+                                        if (les[i].IdUserFrom != Users)
+                                        { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
+                                    }
+                                    for (int j = 1; j < 2; j++)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                        dataGridViewChat.Columns[j].HeaderText = "Дата отправки";
+
+
+                                    }
+                                    for (int j = 2; j < 3; j++)
+                                    {
+                                        bool aMark = false;
+                                        if (les[i].Mark.ToString() == "1")
+                                        {
+                                            aMark = true;
+                                        }
+
+
+                                        dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                                        //sender.Columns[2].ValueType = typeof(bool);
+                                        //sender.Columns[2].DefaultCellStyle. = 
+                                        //  sender.Columns[j].HeaderText = "";
+                                    }
+                                }
+                                dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                                dataGridViewChat.Visible = true;
+                            }
+                            else
+                            {
+                                dataGridViewChat.Rows.Clear();
+                                //MessageBox.Show("Сообщений нет");
+                            }
+
+                            command._Answe = null;
+                            command._List_Mess_count = null;
+                            command._AClass = null;
+                        }
+                        //    Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
+                        //OpenChat(dataGridViewChat);
                     }
-
-                    //OpenChat(dataGridViewChat);
                 }
             }
-            catch (Exception )
+            catch (Exception e)
             {
-              //  MessageBox.Show(s.Message);
+               MessageBox.Show(e.Message);
 
             }
-
         }
-
+        /*
         //private static void OpenChat(DataGridView sender)
         //{
         //    try
@@ -774,164 +989,162 @@ namespace Client_chat
         //}
 
         // Процедура отправки 006
-        async void Check_Mess_Friend(String server, string fs, string command, DataGridView sender)
-        {
-            try
-            {
-                //Int32 port = 9595;
+        //async void Check_Mess_Friend(String server, string fs, string command, DataGridView sender)
+        //{
+        //    try
+        //    {
+        //        //Int32 port = 9595;
 
-                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
+        //        using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //        {
 
-                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    NetworkStream stream = client.GetStream();
-                    await stream.WriteAsync(data, 0, data.Length);
-                    //data = new Byte[99999999];
-                    //String responseData = String.Empty;
-                    String responseDat = String.Empty;
+        //            Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            NetworkStream stream = client.GetStream();
+        //            await stream.WriteAsync(data, 0, data.Length);
+        //            //data = new Byte[99999999];
+        //            //String responseData = String.Empty;
+        //            String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int cnt = 0;
+        //                Byte[] locbuffer = new byte[1024];
+        //                do
+        //                {
+        //                    cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                    ms.Write(locbuffer, 0, cnt);
+        //                } while (client.Available > 0);
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
-                    dataGridViewChat.Rows.Clear();
+        //                responseDat = Encoding.Default.GetString(ms.ToArray());
+        //            }
+        //            dataGridViewChat.Rows.Clear();
 
-                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
-                    // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
-                    // if (responseData != "false")
-                    // {
-                    //MessСhat aChat = JsonSerializer.Deserialize<MessСhat>(responseData);
+        //            //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+        //            // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+        //            // if (responseData != "false")
+        //            // {
+        //            //MessСhat aChat = JsonSerializer.Deserialize<MessСhat>(responseData);
 
-                    //    //получить перечень сообщений
-                    /*
-                    Byte[] data2 = new Byte[99999909];
-                    Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
+        //            //    //получить перечень сообщений
+        //            /*
+        //            Byte[] data2 = new Byte[99999909];
+        //            Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
                     
 
-                    //   responseDat =System.Text.Encoding.ASCII.GetString(data,0, bytesMess);
+        //            //   responseDat =System.Text.Encoding.ASCII.GetString(data,0, bytesMess);
 
-                    //   data =Convert.FromBase64String(responseDat);
-                    //responseDat =System.Text.Encoding.Default.(data);
+        //            //   data =Convert.FromBase64String(responseDat);
+        //            //responseDat =System.Text.Encoding.Default.(data);
 
-                    //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
-                    responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
-                    */
-
-                    if (responseDat == "false")
-                    {
-
-
-
-                    }
-                    else
-                    {
-                        MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
-
-                        //Encoding Default = Encoding.Default;
-                        //Encoding ascii = Encoding.ASCII;
-
-                        //string input = "Auspuffanlage \"Century\" f├╝r";
-                        //string output = ascii.GetString(Encoding.Convert(Default, ascii, Default.GetBytes(responseDat)));
-                        //all_Chat = true;
-                        //var a = AClass.Values("IdUserFrom");
-
-                        //string Answe1 = Answe.ToString();
-                        //string List_Mess1 = List_Mess.ToString();
-                        //string AClass1 = AClass.ToString();
-                        //string[] les = new string[] {AClass1};
-
-                        //JToken id = AClass.Values("IdUserFrom") as JToken;
-                        //JToken IdUserFrom = AClass.Values("IdUserFrom") as JToken;
-                        //JToken IdUserTo = AClass.Values("IdUserTo") as JToken;
-                        //JToken Message = AClass.Values("Message") as JToken; 
-                        //JToken DataMess = AClass.Values("DataMess") as JToken;
-                        //JToken Mark = AClass.Values("Mark") as JToken;
-
-                        JObject details = JObject.Parse(responseDat);
-                        JToken Answe = details.SelectToken("Answe");
-                        JToken List_Mess = details.SelectToken("List_Mess");
-                        JToken AClass = details.SelectToken("AClass");
-                        if (Answe.ToString() == "true")
-                        {
+        //            //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
+        //            responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
+        //            */
+                /*
+        //            if (responseDat == "false")
+        //            {
 
 
-                            MessСhat[] les = new MessСhat[AClass.Count()];
 
-                            for (int i = 0; i < AClass.Count(); i++)
-                            {
-                                string yu = AClass[i].ToString();
-                                MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                                les[i] = useTravel;
-                            }
-                            //  sender.Rows.Clear();
-                            sender.RowCount = les.Count();
-                            sender.ColumnCount = 2;
+        //            }
+        //            else
+        //            {
+        //                MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
+        //                //Encoding Default = Encoding.Default;
+        //                //Encoding ascii = Encoding.ASCII;
 
-                            allChat = les;
-                            DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                            {
-                                //column.HeaderText = ColumnName.OutOfOffice.ToString();
-                                //column.Name = ColumnName.OutOfOffice.ToString();
-                                //column.AutoSizeMode =
-                                //    DataGridViewAutoSizeColumnMode.DisplayedCells;
-                                //column.FlatStyle = FlatStyle.Standard;
-                                //column.ThreeState = true;
-                                //column.CellTemplate = new DataGridViewCheckBoxCell();
-                                //column.CellTemplate.Style.BackColor = Color.Beige;
-                            }
+        //                //string input = "Auspuffanlage \"Century\" f├╝r";
+        //                //string output = ascii.GetString(Encoding.Convert(Default, ascii, Default.GetBytes(responseDat)));
+        //                //all_Chat = true;
+        //                //var a = AClass.Values("IdUserFrom");
 
-                            sender.Columns.Insert(2, column);
+        //                //string Answe1 = Answe.ToString();
+        //                //string List_Mess1 = List_Mess.ToString();
+        //                //string AClass1 = AClass.ToString();
+        //                //string[] les = new string[] {AClass1};
 
-                            for (int i = 0; i < les.Count(); i++)
-                            {
-                                for (int j = 0; j < 1; j++)
-                                {
-                                    sender.Rows[i].Cells[j].Value = les[i].Message;
-                                    sender.Columns[j].HeaderText = "Сообщения";
-                                    if (les[i].IdUserFrom != Users)
-                                    { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+        //                //JToken id = AClass.Values("IdUserFrom") as JToken;
+        //                //JToken IdUserFrom = AClass.Values("IdUserFrom") as JToken;
+        //                //JToken IdUserTo = AClass.Values("IdUserTo") as JToken;
+        //                //JToken Message = AClass.Values("Message") as JToken; 
+        //                //JToken DataMess = AClass.Values("DataMess") as JToken;
+        //                //JToken Mark = AClass.Values("Mark") as JToken;
 
-                                }
-                                for (int j = 1; j < 2; j++)
-                                {
-                                    sender.Rows[i].Cells[j].Value = les[i].DataMess;
-                                    sender.Columns[j].HeaderText = "Дата отправки";
+        //                JObject details = JObject.Parse(responseDat);
+        //                JToken Answe = details.SelectToken("Answe");
+        //                JToken List_Mess = details.SelectToken("List_Mess");
+        //                JToken AClass = details.SelectToken("AClass");
+        //                if (Answe.ToString() == "true")
+        //                {
 
 
-                                }
-                                for (int j = 2; j < 3; j++)
-                                {
-                                    bool aMark = false;
-                                    if (les[i].Mark.ToString() == "1")
-                                    {
-                                        aMark = true;
-                                    }
+        //                    MessСhat[] les = new MessСhat[AClass.Count()];
 
-                                    //sender.Columns[2].ValueType = typeof(bool);
-                                    //sender.Columns[2].DefaultCellStyle. = 
-                                    sender.Rows[i].Cells[j].Value = aMark;
-                                    //  sender.Columns[j].HeaderText = "";
-                                }
-                            }
-                            sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        //                    for (int i = 0; i < AClass.Count(); i++)
+        //                    {
+        //                        string yu = AClass[i].ToString();
+        //                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+        //                        les[i] = useTravel;
+        //                    }
+        //                    //  sender.Rows.Clear();
+        //                    sender.RowCount = les.Count();
+        //                    sender.ColumnCount = 2;
 
-                            sender.Visible = true;
-                        }
-                        else
-                        {
-                            sender.Rows.Clear();
-                            //MessageBox.Show("Сообщений нет");
-                        }
 
+        //                    allChat = les;
+        //                    DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+        //                    {
+        //                        //column.HeaderText = ColumnName.OutOfOffice.ToString();
+        //                        //column.Name = ColumnName.OutOfOffice.ToString();
+        //                        //column.AutoSizeMode =
+        //                        //    DataGridViewAutoSizeColumnMode.DisplayedCells;
+        //                        //column.FlatStyle = FlatStyle.Standard;
+        //                        //column.ThreeState = true;
+        //                        //column.CellTemplate = new DataGridViewCheckBoxCell();
+        //                        //column.CellTemplate.Style.BackColor = Color.Beige;
+        //                    }
+                         
+
+        //                        for (int i = 0; i < les.Count(); i++)
+        //                    {
+        //                        for (int j = 0; j < 1; j++)
+        //                        {
+        //                            sender.Rows[i].Cells[j].Value = les[i].Message;
+        //                            sender.Columns[j].HeaderText = "Сообщения";
+        //                            if (les[i].IdUserFrom != Users)
+        //                            { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
+        //                        }
+        //                        for (int j = 1; j < 2; j++)
+        //                        {
+        //                            sender.Rows[i].Cells[j].Value = les[i].DataMess;
+        //                            sender.Columns[j].HeaderText = "Дата отправки";
+
+
+        //                        }
+        //                        for (int j = 2; j < 3; j++)
+        //                        {
+        //                            bool aMark = false;
+        //                            if (les[i].Mark.ToString() == "1")
+        //                            {
+        //                                aMark = true;
+        //                            }
+
+        //                            //sender.Columns[2].ValueType = typeof(bool);
+        //                            //sender.Columns[2].DefaultCellStyle. = 
+        //                            sender.Rows[i].Cells[j].Value = aMark;
+        //                            //  sender.Columns[j].HeaderText = "";
+        //                        }
+        //                    }
+        //                    sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+        //                    sender.Visible = true;
+        //                }
+        //                else
+        //                {
+        //                    sender.Rows.Clear();
+        //                    //MessageBox.Show("Сообщений нет");
+        //                }
 
 
 
@@ -940,64 +1153,65 @@ namespace Client_chat
 
 
 
-                        //JsonObject jsonObj = new JsonObject(JsonSerializer.SerializeToNode<UseTravel>(responseData));
-                        //int k = int.Parse(jsonObj["kill"].ToString())
 
-                        //string yy = Convert.ToBase64String(data);
-                        //string yy2 = yy.Substring(yy.IndexOf("{"), yy.Length - yy.IndexOf("{") - 1);
-                        //var txt2 = Encoding.Default.GetString(Convert.FromBase64String(str));
-                        //string rr = JsonSerializer.Deserialize<string>(responseDat);
-                        //string response12 = Newtonsoft.Json.JsonConvert.SerializeObject(bytesMess);
+        //                //JsonObject jsonObj = new JsonObject(JsonSerializer.SerializeToNode<UseTravel>(responseData));
+        //                //int k = int.Parse(jsonObj["kill"].ToString())
 
-                        //Int32 bytesMess = await stream.ReadAsync(data, 0, 5);
-                        //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
-                        //UseTravel useTravel = JsonSerializer.DeserializeAsync<UseTravel>(data2.);
-                        //UseTravel useTravel = JsonSerializer.Deserialize<UseTravel>(tr);
-                        //MessageBox.Show($"{useTravel}");
-                        //string result = responseDat.Trim(new char[] { '"', '0' });
-                        //    Int32 it = Convert.ToInt32(result);
-                        //    MessСhat[] mChat = new MessСhat[it];
-                        //    Int32 bytesChat1 = await stream.ReadAsync(data, 0, data.Length);
-                        //    result = System.Text.Encoding.Default.GetString(data, 0, bytesChat1);
-                        //    string rez2 = result.Substring(0, result.IndexOf("}"));
-                        //    List<string> tokens = new List<string>(result.Split('}'));
-                        //  useTravel.aClass
+        //                //string yy = Convert.ToBase64String(data);
+        //                //string yy2 = yy.Substring(yy.IndexOf("{"), yy.Length - yy.IndexOf("{") - 1);
+        //                //var txt2 = Encoding.Default.GetString(Convert.FromBase64String(str));
+        //                //string rr = JsonSerializer.Deserialize<string>(responseDat);
+        //                //string response12 = Newtonsoft.Json.JsonConvert.SerializeObject(bytesMess);
 
-                        //    for (int j = 0; j < tokens.Count - 1; j++)
-                        //    {
-                        //        string tt = tokens[j] + "}";
-                        //        mChat[j] = JsonSerializer.Deserialize<MessСhat>(tt);
-                        //    }
-                        //allChat = mChat;
+        //                //Int32 bytesMess = await stream.ReadAsync(data, 0, 5);
+        //                //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
+        //                //UseTravel useTravel = JsonSerializer.DeserializeAsync<UseTravel>(data2.);
+        //                //UseTravel useTravel = JsonSerializer.Deserialize<UseTravel>(tr);
+        //                //MessageBox.Show($"{useTravel}");
+        //                //string result = responseDat.Trim(new char[] { '"', '0' });
+        //                //    Int32 it = Convert.ToInt32(result);
+        //                //    MessСhat[] mChat = new MessСhat[it];
+        //                //    Int32 bytesChat1 = await stream.ReadAsync(data, 0, data.Length);
+        //                //    result = System.Text.Encoding.Default.GetString(data, 0, bytesChat1);
+        //                //    string rez2 = result.Substring(0, result.IndexOf("}"));
+        //                //    List<string> tokens = new List<string>(result.Split('}'));
+        //                //  useTravel.aClass
 
-                        //   }
-                        //    else
-                        //    { 
-                        //        MessageBox.Show("Сообщений нет");
-                        //    }
-                    }
-                    //stream.Close();
-                    //client.Close();
+        //                //    for (int j = 0; j < tokens.Count - 1; j++)
+        //                //    {
+        //                //        string tt = tokens[j] + "}";
+        //                //        mChat[j] = JsonSerializer.Deserialize<MessСhat>(tt);
+        //                //    }
+        //                //allChat = mChat;
 
-                    // stream.Close();
-                    //   client.Close();
+        //                //   }
+        //                //    else
+        //                //    { 
+        //                //        MessageBox.Show("Сообщений нет");
+        //                //    }
+        //            }
+        //            //stream.Close();
+        //            //client.Close();
 
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
-            }
-            catch (SocketException e)
-            {
-                MessageBox.Show("SocketException: {0}", e.Message);
-            }
-            //catch(Exception e)
-            //{
-            //    MessageBox.Show(e.Message);
-            //}
+        //            // stream.Close();
+        //            //   client.Close();
 
-        }
+        //        }
+        //    }
+        //    catch (ArgumentNullException e)
+        //    {
+        //        MessageBox.Show("ArgumentNullException:{0}", e.Message);
+        //    }
+        //    catch (SocketException e)
+        //    {
+        //        MessageBox.Show("SocketException: {0}", e.Message);
+        //    }
+        //    //catch(Exception e)
+        //    //{
+        //    //    MessageBox.Show(e.Message);
+        //    //}
+
+        //}
         //async static void Connectt(String server, string fs, string command  )
         //{
         //    try
@@ -1033,7 +1247,7 @@ namespace Client_chat
         //    {
         //        MessageBox.Show("SocketException: {0}", e.Message);
         //    }
-        // }
+        // }*/
 
         private void dataGridViewChat_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -1049,95 +1263,102 @@ namespace Client_chat
         {
             try
             {
-                string FileFS = "";
-                using (MemoryStream fs = new MemoryStream())
-                {
-                    //string serialized = buf.ToString();
-                    Searh_Friends New_Friend = new Searh_Friends(textBox2.Text, Na_me);
-                    //        JsonSerializer.SerializeToDefaultBytes(fs,);
-                    JsonSerializer.Serialize<Searh_Friends>(fs, New_Friend);
-                    FileFS = Encoding.Default.GetString(fs.ToArray());
+                using (MemoryStream Despons_friend = new MemoryStream()) {
+                    CommandCL command = new CommandCL();
 
-                    //Console.WriteLine("Data has been saved to file");*/
+                    string FileFS = "";
+                    using (MemoryStream fs = new MemoryStream())
+                    {
+                        Searh_Friends New_Friend = new Searh_Friends(textBox2.Text, Na_me);
+                     
+                        JsonSerializer.Serialize<Searh_Friends>(fs, New_Friend);
+                        FileFS = Encoding.Default.GetString(fs.ToArray());
+                     
+                    }
+                     command.Connect_Friends(IP_ADRES.Ip_adress, FileFS, "008");
+                     var __Friends=  command._Friends;
+                    command._Friends = null;
                 }
-
-                Connect_Friends(IP_ADRES.Ip_adress, FileFS, "008");
             }
             catch
             {
 
-            }
+            }   
+            /*
+                        //Console.WriteLine("Data has been saved to file");      
+            //string serialized = buf.ToString();
+        //   JsonSerializer.SerializeToDefaultBytes(fs,);
+            // Connect_Friends(IP_ADRES.Ip_adress, FileFS, "008");*/
         }
 
         // Проццедура отправки 008
-        async void Connect_Friends(String server, string fs, string command)
-        {
-            try
-            {
-                //Int32 port = 9595;
-                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
-                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    NetworkStream stream = client.GetStream();
-                    await stream.WriteAsync(data, 0, data.Length);
+        /*
+        //async void Connect_Friends(String server, string fs, string command)
+        //{
+        //    try
+        //    {
+        //        //Int32 port = 9595;
+        //        using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //        {
+        //            Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            NetworkStream stream = client.GetStream();
+        //            await stream.WriteAsync(data, 0, data.Length);
 
-                    String responseDat = String.Empty;
+        //            String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int cnt = 0;
+        //                Byte[] locbuffer = new byte[1024];
+        //                do
+        //                {
+        //                    cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                    ms.Write(locbuffer, 0, cnt);
+        //                } while (client.Available > 0);
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
+        //                responseDat = Encoding.Default.GetString(ms.ToArray());
+        //            }
 
-                    /*
-                    data = new Byte[99999909];
-                    Int32 bytesMess = await stream.ReadAsync(data, 0, data.Length);
-                     //   responseDat =System.Text.Encoding.ASCII.GetString(data,0, bytesMess);
+        //            /*
+        //            data = new Byte[99999909];
+        //            Int32 bytesMess = await stream.ReadAsync(data, 0, data.Length);
+        //             //   responseDat =System.Text.Encoding.ASCII.GetString(data,0, bytesMess);
 
-                    //   data =Convert.FromBase64String(responseDat);
-                    //responseDat =System.Text.Encoding.Default.(data);
-                    //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
-                    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
-                    */
-
-                    Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
-
-
-
-                 //   searh_Friends.Name
+        //            //   data =Convert.FromBase64String(responseDat);
+        //            //responseDat =System.Text.Encoding.Default.(data);
+        //            //responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
+        //            responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesMess);
+        //            */
+               /*
+        //            Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
 
 
-                    /*                 //for (int i = 0; i < searh_Friends.Name i++)
-                                     //{
-                                     //    for (int j = 0; j < 1; j++)
-                                     //    {
-                                     //        // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
-                                     //        //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;
-                                     //        sender.Rows[i].Cells[j].Value = Friend[i].Name;
-                                     //        //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
-                                     //    }
-                                     //}*/
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
-            }
-            catch (SocketException e)
-            {
-                MessageBox.Show("SocketException: {0}", e.Message);
-            }
+
+        //         //   searh_Friends.Name
 
 
-        }
-
+        //            /*                 //for (int i = 0; i < searh_Friends.Name i++)
+        //                             //{
+        //                             //    for (int j = 0; j < 1; j++)
+        //                             //    {
+        //                             //        // Друзья.Displayed.ToString(Friend[j].Name   as String);        //Rows[i].Cells[j].Value = 
+        //                             //        //Друзья.DataGridView.Rows[i].Cells[j].Value= Friend[i].Name;
+        //                             //        sender.Rows[i].Cells[j].Value = Friend[i].Name;
+        //                             //        //Friend[i].Name = Convert.ToString(dataGridViewUser.Rows[i].Cells[j].Value);
+        //                             //    }
+        //                             //}*/
+                      /*
+        //        }
+        //    }
+        //    catch (ArgumentNullException e)
+        //    {
+        //        MessageBox.Show("ArgumentNullException:{0}", e.Message);
+        //    }
+        //    catch (SocketException e)
+        //    {
+        //        MessageBox.Show("SocketException: {0}", e.Message);
+        //    }
+        //}*/
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -1155,123 +1376,123 @@ namespace Client_chat
                     FileFS = Encoding.Default.GetString(fs.ToArray());
                 }
                 textBox1.Text = "";
-                Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);
+             
+                //Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);
             }
             catch
             {
 
             }
         }
-
-
         // Процедура отправки 011
-        async void Delete_message_make_up(String server, string fs, string command, DataGridView sender)
-        {
-            try
-            {
-                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
-                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                    NetworkStream stream = client.GetStream();
-                    await stream.WriteAsync(data, 0, data.Length);
+        /*
+        //async void Delete_message_make_up(String server, string fs, string command, DataGridView sender)
+        //{
+        //    try
+        //    {
+        //        using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+        //        {
+        //            Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+        //            NetworkStream stream = client.GetStream();
+        //            await stream.WriteAsync(data, 0, data.Length);
 
-                    //String responseData = String.Empty;
-                    String responseDat = String.Empty;
+        //            //String responseData = String.Empty;
+        //            String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                int cnt = 0;
+        //                Byte[] locbuffer = new byte[1024];
+        //                do
+        //                {
+        //                    cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+        //                    ms.Write(locbuffer, 0, cnt);
+        //                } while (client.Available > 0);
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
+        //                responseDat = Encoding.Default.GetString(ms.ToArray());
+        //            }
 
-                    /*
-                    data = new Byte[99999909];
-                    //    //получить перечень сообщений
-                    Byte[] data2 = new Byte[99999909];
-                    Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
-                    responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
-                    */
+        //            /*
+        //            data = new Byte[99999909];
+        //            //    //получить перечень сообщений
+        //            Byte[] data2 = new Byte[99999909];
+        //            Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
+        //            responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
+        //            */
+               /*
+        //            MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
-                    MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
+        //            JObject details = JObject.Parse(responseDat);
+        //            JToken Answe = details.SelectToken("Answe");
+        //            JToken List_Mess = details.SelectToken("List_Mess");
+        //            JToken AClass = details.SelectToken("AClass");
+        //            if (Answe.ToString() == "true")
+        //            {
+        //                MessСhat[] les = new MessСhat[AClass.Count()];
 
-                    JObject details = JObject.Parse(responseDat);
-                    JToken Answe = details.SelectToken("Answe");
-                    JToken List_Mess = details.SelectToken("List_Mess");
-                    JToken AClass = details.SelectToken("AClass");
-                    if (Answe.ToString() == "true")
-                    {
-                        MessСhat[] les = new MessСhat[AClass.Count()];
-
-                        for (int i = 0; i < AClass.Count(); i++)
-                        {
-                            string yu = AClass[i].ToString();
-                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                            les[i] = useTravel;
-                        }
-                        sender.Rows.Clear();
-                        sender.RowCount = les.Count();
-                        sender.ColumnCount = 2;
-
-
-                        allChat = les;
-                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                        {
-                        }
-
-                        sender.Columns.Insert(2, column);
-
-                        for (int i = 0; i < les.Count(); i++)
-                        {
-                            for (int j = 0; j < 1; j++)
-                            {
-                                sender.Rows[i].Cells[j].Value = les[i].Message;
-                                if (les[i].IdUserFrom != Users)
-                                { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
-
-                            }
-                            for (int j = 1; j < 2; j++)
-                            {
-                                sender.Rows[i].Cells[j].Value = les[i].DataMess;
-                            }
-                            for (int j = 2; j < 3; j++)
-                            {
-                                bool aMark = false;
-                                if (les[i].Mark.ToString() == "1")
-                                {
-                                    aMark = true;
-                                }
+        //                for (int i = 0; i < AClass.Count(); i++)
+        //                {
+        //                    string yu = AClass[i].ToString();
+        //                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+        //                    les[i] = useTravel;
+        //                }
+        //                sender.Rows.Clear();
+        //                sender.RowCount = les.Count();
+        //                sender.ColumnCount = 2;
 
 
-                                sender.Rows[i].Cells[j].Value = aMark;
-                            }
-                        }
-                        sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        //                allChat = les;
+        //                DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+        //                {
+        //                }
 
-                        sender.Visible = true;
-                    }
-                    else
-                    {
-                        sender.Rows.Clear();
-                        //MessageBox.Show("Сообщений нет");
-                    }
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
-            }
-            catch (SocketException e)
-            {
-                MessageBox.Show("SocketException: {0}", e.Message);
-            }
-        }
+        //                sender.Columns.Insert(2, column);
+
+        //                for (int i = 0; i < les.Count(); i++)
+        //                {
+        //                    for (int j = 0; j < 1; j++)
+        //                    {
+        //                        sender.Rows[i].Cells[j].Value = les[i].Message;
+        //                        if (les[i].IdUserFrom != Users)
+        //                        { sender.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
+        //                    }
+        //                    for (int j = 1; j < 2; j++)
+        //                    {
+        //                        sender.Rows[i].Cells[j].Value = les[i].DataMess;
+        //                    }
+        //                    for (int j = 2; j < 3; j++)
+        //                    {
+        //                        bool aMark = false;
+        //                        if (les[i].Mark.ToString() == "1")
+        //                        {
+        //                            aMark = true;
+        //                        }
+
+
+        //                        sender.Rows[i].Cells[j].Value = aMark;
+        //                    }
+        //                }
+        //                sender.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+        //                sender.Visible = true;
+        //            }
+        //            else
+        //            {
+        //                sender.Rows.Clear();
+        //                //MessageBox.Show("Сообщений нет");
+        //            }
+        //        }
+        //    }
+        //    catch (ArgumentNullException e)
+        //    {
+        //        MessageBox.Show("ArgumentNullException:{0}", e.Message);
+        //    }
+        //    catch (SocketException e)
+        //    {
+        //        MessageBox.Show("SocketException: {0}", e.Message);
+        //    }
+        //}*/
 
         private void dgrdResults_MouseClick(object sender, MouseEventArgs e)
         {
@@ -1345,7 +1566,70 @@ namespace Client_chat
                     FileFS = Encoding.Default.GetString(fs.ToArray());
                 }
                 textBox1.Text = "";
-                Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);
+
+                using (MemoryStream Delete_dispons = new MemoryStream())
+                {
+                    CommandCL command = new CommandCL();
+
+
+                    if (command.____Answe.ToString() == "true")
+                    {
+                        MessСhat[] les = new MessСhat[command.____AClass.Count()];
+
+                        for (int i = 0; i < command.____AClass.Count(); i++)
+                        {
+                            string yu = command.____AClass[i].ToString();
+                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                            les[i] = useTravel;
+                        }
+                        dataGridViewChat.Rows.Clear();
+                        dataGridViewChat.RowCount = les.Count();
+                        dataGridViewChat.ColumnCount = 2;
+
+
+                        allChat = les;
+                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                        {
+                        }
+
+                        dataGridViewChat.Columns.Insert(2, column);
+
+                        for (int i = 0; i < les.Count(); i++)
+                        {
+                            for (int j = 0; j < 1; j++)
+                            {
+                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                if (les[i].IdUserFrom != Users)
+                                { dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue; }
+
+                            }
+                            for (int j = 1; j < 2; j++)
+                            {
+                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                            }
+                            for (int j = 2; j < 3; j++)
+                            {
+                                bool aMark = false;
+                                if (les[i].Mark.ToString() == "1")
+                                {
+                                    aMark = true;
+                                }
+
+
+                                dataGridViewChat.Rows[i].Cells[j].Value = aMark;
+                            }
+                        }
+                        dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                        dataGridViewChat.Visible = true;
+                    }
+                    else
+                    {
+                        dataGridViewChat.Rows.Clear();
+                        //MessageBox.Show("Сообщений нет");
+                    }
+                    //   Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);}
+                }
             }
             catch
             {
