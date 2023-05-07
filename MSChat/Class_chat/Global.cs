@@ -72,9 +72,10 @@ namespace Class_chat
 
 
 
-    [DataContract]
+   // [DataContract]
     public class UserLogin
     {
+        //public UserLogin() { }
         public string Name { get; }
         public string Pass { get; set; }
         public UserLogin(string name, string pass)

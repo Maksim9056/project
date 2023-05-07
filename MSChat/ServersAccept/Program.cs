@@ -130,7 +130,7 @@ namespace ServersAccept
                         data = Encoding.Default.GetString(bytes, 0, i);
                         string comand = data.Substring(0, 3);
                         string json = data.Substring(3, data.Length - 3);
-                        byte[] msg = System.Text.Encoding.Default.GetBytes(json);
+                        byte[] msg = Encoding.Default.GetBytes(json);
 
                         //Заменяет работу switch (comand)
                         HandleCommand(comand, msg, globalClass, stream);

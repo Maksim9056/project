@@ -9,6 +9,9 @@ using System.IO;
 //using System.Runtime.Serialization.Json;
 using System.Drawing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices.ComTypes;
+using System.Windows.Input;
 //using System.Linq;
 //using Newtonsoft.Json.Linq;
 //using System.Net;
@@ -222,15 +225,30 @@ namespace Client_chat
                     UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
                     JsonSerializer.Serialize<UserLogin>(fs, tom);
                     FileFS = Encoding.Default.GetString(fs.ToArray());
-                    command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                    Chats_main a = new Chats_main();
-                    Chats_main parent = (Chats_main)this.Owner;
-                    parent.NotifyMe(CommandCL.User_Logins_and_Friends);
-                    parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
-                    // Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
-                    //чтобы не запоминал после передачи
-                    CommandCL.User_Logins_and_Friends = null;
-                    this.Close();
+
+                    //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+
+                    //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
+
+                    //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
+
+                    //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                    //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                    //task.Wait();
+                    Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
+
+                    //if (CommandCL.User_Logins_and_Friends != null)
+                    //    {
+                            Chats_main a = new Chats_main();
+                            Chats_main parent = (Chats_main)this.Owner;
+                            parent.NotifyMe(CommandCL.User_Logins_and_Friends);
+                            parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
+                            // Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
+                            //чтобы не запоминал после передачи
+                            CommandCL.User_Logins_and_Friends = null;
+                            this.Close();
+                        //}
+
                 }
                 Form.Close();
             }

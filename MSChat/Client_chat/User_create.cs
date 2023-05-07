@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -46,7 +47,9 @@ namespace Client_chat
                             JsonSerializer.Serialize<User_regis>(fs, tom);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
                         }
-                        command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
+                        //command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
+                        Task.Run(async () => await command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002")).Wait();
+
                         if (User_reg.UserName == textBox1.Text)
                         {
                             MessageBox.Show("Пользователь уже есть");

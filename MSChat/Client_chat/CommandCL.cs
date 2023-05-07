@@ -73,7 +73,7 @@ namespace Client_chat
         }
 
         // Процедура отправки регистрации пользователей 002
-        async public void Reg_User(String server, string fs, string command)
+        async public Task Reg_User(String server, string fs, string command)
         {
             try
             {
@@ -86,18 +86,22 @@ namespace Client_chat
 
                     String responseData = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
 
-                        responseData = Encoding.Default.GetString(ms.ToArray());
-                    }
+                    //    responseData = Encoding.Default.GetString(ms.ToArray());
+                    //}
+                    responseData = await Task<string>.Run(() =>
+                    {
+                        return Func_Read(stream, data.Length, client);
+                    });
 
 
                     User_reg.UserName = responseData;
@@ -139,11 +143,11 @@ namespace Client_chat
 
 
         // Передача 003 проверка пользователя и его пароль 
-        async public void Check_User_Possword(String server, string fs, string command)
+        async public Task Check_User_Possword(String server, string fs, string command)
         {
-            using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+            try
             {
-                try
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
 
                     byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
@@ -153,18 +157,24 @@ namespace Client_chat
                     //data = new Byte[99999999];
                     String responseData = String.Empty;
                     //String responseDat = String.Empty;                    
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
-                        responseData = Encoding.Default.GetString(ms.ToArray());
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = stream.Read(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
+                    //    responseData = Encoding.Default.GetString(ms.ToArray());
 
-                    }
+                    //}
+
+                    responseData = await Task<string>.Run(() =>
+                    {
+                        return Func_Read(stream, data.Length, client);
+                    });
+
                     if (responseData == "false")
                     {
                     }
@@ -172,108 +182,110 @@ namespace Client_chat
                     {
                         MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
                         User_Logins_and_Friends = person3;
-                                  /*
-                        //        responseData
-                        //Chats_main a = new Chats_main();
-                        //Chats_main parent = (Chats_main).this.Owner;
-                        //parent.NotifyMe(person3);
-                        //parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, person3.User_.Name);
-                        //userpass.Close();
                         /*
-                        //using (MemoryStream ms = new MemoryStream())
-                        //{
-                        //    int cnt = 0;
-                        //    Byte[] locbuffer = new byte[1024];
-                        //    do
-                        //    {
-                        //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                        //        ms.Write(locbuffer, 0, cnt);
-                        //    } while (client.Available > 0);
+              //        responseData
+              //Chats_main a = new Chats_main();
+              //Chats_main parent = (Chats_main).this.Owner;
+              //parent.NotifyMe(person3);
+              //parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, person3.User_.Name);
+              //userpass.Close();
+              /*
+              //using (MemoryStream ms = new MemoryStream())
+              //{
+              //    int cnt = 0;
+              //    Byte[] locbuffer = new byte[1024];
+              //    do
+              //    {
+              //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+              //        ms.Write(locbuffer, 0, cnt);
+              //    } while (client.Available > 0);
 
-                        //    responseDat = Encoding.Default.GetString(ms.ToArray());
-                        //}          
-
-
-                        //if (responseData == "false")
-                        //{
-
-
-
-                        //}
-                        //else
-                        //{
-                        //  User_Logins msgFriends = JsonSerializer.Deserialize<User_Logins>(responseDat);
-                        /*                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+              //    responseDat = Encoding.Default.GetString(ms.ToArray());
+              //}          
 
 
-
-                                            //if (person3.Name == user)
-                                            //{
-                                            //    //MessageBox.Show("Подключение пользователя разрешено");
-                                            //    //получить перечень друзей
-                                            //    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
-                                            //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
-                                            //    User_photo[] people = null;
-                                            //    if (responseDat == "false")
-                                            //    {
+              //if (responseData == "false")
+              //{
 
 
 
-                                            //    }
-                                            //    else
-                                            //    {
-                                            //        string result = responseDat.Trim(new char[] { '"', '0' });
-                                            //        Int32 it = Convert.ToInt32(result);
-                                            //        people = new User_photo[it];
+              //}
+              //else
+              //{
+              //  User_Logins msgFriends = JsonSerializer.Deserialize<User_Logins>(responseDat);
+              /*                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
 
-                                            //        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
-                                            //        //Друзья
-                                            //        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
-                                            //        string rez2 = result.Substring(0, result.IndexOf("}"));
 
-                                            //        List<string> tokens = new List<string>(result.Split('}'));
 
-                                            //        for (int j = 0; j < tokens.Count - 1; j++)
-                                            //        {
-                                            //            string tt = tokens[j] + "}";
-                                            //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
-                                            //        }
-                                            //    }*/
-                           /*
-             * 
-                        //a.Show();*/
-                    /*
-                        //a.OpenMes(person3.User_, person3);
-                        //userpass.Hide();
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show("Пользователя нет");
-                        //}
-                        */
+                                  //if (person3.Name == user)
+                                  //{
+                                  //    //MessageBox.Show("Подключение пользователя разрешено");
+                                  //    //получить перечень друзей
+                                  //    Int32 bytesFriend = await stream.ReadAsync(data, 0, 5);
+                                  //    responseDat = System.Text.Encoding.Default.GetString(data, 0, bytesFriend);
+                                  //    User_photo[] people = null;
+                                  //    if (responseDat == "false")
+                                  //    {
+
+
+
+                                  //    }
+                                  //    else
+                                  //    {
+                                  //        string result = responseDat.Trim(new char[] { '"', '0' });
+                                  //        Int32 it = Convert.ToInt32(result);
+                                  //        people = new User_photo[it];
+
+                                  //        Int32 bytesFriend1 = await stream.ReadAsync(data, 0, data.Length);
+                                  //        //Друзья
+                                  //        result = System.Text.Encoding.Default.GetString(data, 0, bytesFriend1);
+                                  //        string rez2 = result.Substring(0, result.IndexOf("}"));
+
+                                  //        List<string> tokens = new List<string>(result.Split('}'));
+
+                                  //        for (int j = 0; j < tokens.Count - 1; j++)
+                                  //        {
+                                  //            string tt = tokens[j] + "}";
+                                  //            people[j] = JsonSerializer.Deserialize<User_photo>(tt);
+                                  //        }
+                                  //    }*/
+                        /*
+          * 
+                     //a.Show();*/
+                        /*
+                            //a.OpenMes(person3.User_, person3);
+                            //userpass.Hide();
+                            //}
+                            //else
+                            //{
+                            //    MessageBox.Show("Пользователя нет");
+                            //}
+                            */
                     }
                 }
-                catch (ArgumentNullException)
-                {
-                    //Console.WriteLine("ArgumentNullException:{0}", e.Message);
-                }
-                catch (SocketException)
-                {
-                    //Console.WriteLine("SocketException: {0}", e.Message);
-                }
-                catch (Exception)
-                {
-                    //   Console.WriteLine("SocketException: {0}", e.Message);
-                }
-
             }
+
+            catch (ArgumentNullException)
+            {
+                //Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+                //Console.WriteLine("SocketException: {0}", e.Message);
+            }
+            catch (Exception)
+            {
+                //   Console.WriteLine("SocketException: {0}", e.Message);
+            }
+
         }
+        
 
 
 
 
         // Процедура отправки 006
-        async public void Check_Mess_Friend(String server, string fs, string command)
+        async public Task Check_Mess_Friend(String server, string fs, string command)
         {
             try
             {
@@ -287,39 +299,44 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
                     data = new Byte[99999999];
                     String responseData = String.Empty;
-                    String responseDat = String.Empty;
+                    //String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
+                    responseData = await Task<string>.Run(() =>
                     {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+                        return Func_Read(stream, data.Length, client);
+                    });
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
-                //    dataGridViewChat.Rows.Clear();
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
 
-                    Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
-                    responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
-                    if (responseData != "false")
-                    {
-                        MessСhat aChat = JsonSerializer.Deserialize<MessСhat>(responseData);
+                    //    responseDat = Encoding.Default.GetString(ms.ToArray());
+                    //}
+                    //    dataGridViewChat.Rows.Clear();
+
+                    //Int32 bytess = await stream.ReadAsync(data, 0, data.Length);
+                    //responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
+                    //if (responseData != "false")
+                    //{
+                        //MessСhat aChat = JsonSerializer.Deserialize<MessСhat>(responseData);
 
                         //получить перечень сообщений
 
 
-                        if (responseDat == "false")
+                        if (responseData == "false")
                         {
 
                         }
                         else
                         {
-                            MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
-                            JObject details = JObject.Parse(responseDat);
+                            MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);
+                            JObject details = JObject.Parse(responseData);
                             JToken Answe = details.SelectToken("Answe");
                             JToken List_Mess = details.SelectToken("List_Mess");
                             JToken AClass = details.SelectToken("AClass");
@@ -328,7 +345,7 @@ namespace Client_chat
                             _List_Mess_count = List_Mess;
                             _AClass = AClass;
                         }
-                    }
+                    //}
                 }
             }
             catch (ArgumentNullException e)
@@ -497,7 +514,7 @@ namespace Client_chat
                         */  
 
         // Проццедура отправки 008
-        async public void Connect_Friends(String server, string fs, string command)
+        async public Task Connect_Friends(String server, string fs, string command)
         {
             try
             {
@@ -510,20 +527,25 @@ namespace Client_chat
 
                     String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
+
+                    //    responseDat = Encoding.Default.GetString(ms.ToArray());
+                    //}
+                    responseDat = await Task<string>.Run(() =>
                     {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+                        return Func_Read(stream, data.Length, client);
+                    });
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
 
-                     Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
+                    Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
                     _Friends = searh_Friends;
                              
                 }
@@ -582,7 +604,7 @@ namespace Client_chat
                     */
 
         //// Процедура отправки 009
-        async public void Insert_Message(String server, string fs, string command)
+        async public Task Insert_Message(String server, string fs, string command)
         {
             try
             {
@@ -710,7 +732,7 @@ namespace Client_chat
 
 
         //// Процедура отправки 010
-        async public void Update_Message_make_up(String server, string fs, string command)
+        async public Task Update_Message_make_up(String server, string fs, string command)
         {
             try
             {
@@ -725,18 +747,22 @@ namespace Client_chat
                     //String responseData = String.Empty;
                     String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
+                    //    responseDat = Encoding.Default.GetString(ms.ToArray());
+                    //}
+                    responseDat = await Task<string>.Run(() =>
+                    {
+                        return Func_Read(stream, data.Length, client);
+                    });
 
 
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
@@ -826,7 +852,7 @@ namespace Client_chat
           */
 
         // Процедура отправки 011
-        async public void Delete_message_make_up(String server, string fs, string command)
+        async public Task Delete_message_make_up(String server, string fs, string command)
         {
             try
             {
@@ -839,20 +865,24 @@ namespace Client_chat
                     
                     String responseDat = String.Empty;
 
-                    using (MemoryStream ms = new MemoryStream())
+                    //using (MemoryStream ms = new MemoryStream())
+                    //{
+                    //    int cnt = 0;
+                    //    Byte[] locbuffer = new byte[1024];
+                    //    do
+                    //    {
+                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
+                    //        ms.Write(locbuffer, 0, cnt);
+                    //    } while (client.Available > 0);
+
+                    //    responseDat = Encoding.Default.GetString(ms.ToArray());
+                    //}
+
+                    responseDat = await Task<string>.Run(() =>
                     {
-                        int cnt = 0;
-                        Byte[] locbuffer = new byte[1024];
-                        do
-                        {
-                            cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                            ms.Write(locbuffer, 0, cnt);
-                        } while (client.Available > 0);
+                        return Func_Read(stream, data.Length, client);
+                    });
 
-                        responseDat = Encoding.Default.GetString(ms.ToArray());
-                    }
-
-                 
 
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
@@ -881,8 +911,5 @@ namespace Client_chat
                     Int32 bytesMess = await stream.ReadAsync(data2, 0, data2.Length);
                     responseDat = System.Text.Encoding.Default.GetString(data2, 0, bytesMess);
                     //String responseData = String.Empty;*/
-
-
-
     }
 }
