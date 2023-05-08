@@ -826,7 +826,6 @@ namespace Client_chat
                             //for (int I = 0;I< ms.Length;I++)
                             //{
                             //    images[I] = returnImagee;
-
                             //}                       
                             DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
                             imgColumn.Name = "Images";
