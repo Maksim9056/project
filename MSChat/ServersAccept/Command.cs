@@ -410,5 +410,28 @@ namespace ServersAccept
             }
         }
 
+        //014 - получение списка друзей (обновление)
+        public void Search_Image_Friends(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            using (MemoryStream tt2 = new MemoryStream())
+            {
+                Photo_Friends Search_Image = JsonSerializer.Deserialize<Photo_Friends>(msg);
+                globalClass.Select_Image_Photo_Friends(Search_Image);
+                if (globalClass.UserConnect)
+                {
+                  
+                    using (MemoryStream Byte_Image = new MemoryStream())
+                    {
+                        JsonSerializer.Serialize<Friends_Image>(Byte_Image,globalClass.Friends_Image);
+                        stream.Write(Byte_Image.ToArray(), 0, Byte_Image.ToArray().Length);
+                    }
+                }
+                else
+                {
+
+                }
+            }
+        }
+
     }
 }

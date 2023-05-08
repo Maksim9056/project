@@ -56,7 +56,7 @@ namespace Client_chat
         //Класс картинок редактированых
         public JToken AClassIm { get; set; }
 
-
+        public JToken List_Friends { get; set; }
 
         //Класс с картинками
         public UseImage_OutPut UserImage { get; set; }
@@ -313,7 +313,14 @@ namespace Client_chat
                     }
                     while (stream.DataAvailable);
                     responseData = completeMessage.ToString();
-
+                  
+                    
+                    
+                    //responseData = await Task<string>.Run(() =>
+                    //{
+                    //    return Func_Read(stream, data.Length, client);
+                    //});
+                                                                     /*
                     //Byte[] dataReceive = new Byte[256];
                     //String txtReceive = String.Empty;
                     //Int32 bytes;
@@ -327,7 +334,7 @@ namespace Client_chat
                     //responseData = await Task<string>.Run(() =>
                     //{
                     //    return Func_Read(stream, data.Length, client);
-                    //});
+                    //});*/
                     if (responseData == "false")
                     {
                     }
@@ -362,11 +369,87 @@ namespace Client_chat
             }
 
         }
+        async public Task Get_Image_Friends(String server, string fs, string command)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    await stream.WriteAsync(data, 0, data.Length);
+                    data = new Byte[1024];
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
+
+                    //Byte[] dataReceive = new Byte[256];
+                    //String txtReceive = String.Empty;
+                    //Int32 bytes;
+                    //while ((bytes = stream.Read(dataReceive, 0, dataReceive.Length)) != 0)
+                    //{
+                    //    responseData = System.Text.Encoding.ASCII.GetString(dataReceive, 0, bytes);
+                    //    txtReceive += responseData;
+                    //}
+
+
+                    //responseData = await Task<string>.Run(() =>
+                    //{
+                    //    return Func_Read(stream, data.Length, client);
+                    //});
+                    if (responseData == "false")
+                    {
+                    }
+                    else
+                    {
+                        //JsonSerializer.Serialize<Friends_Image>(globalClass.Friends_Image);
+                        JObject details = JObject.Parse(responseData);
+                        JToken Answe = details.SelectToken("List_Mess");
+                        JToken List_Mess = details.SelectToken("Image");
 
 
 
-        // Процедура отправки 006
-        async public Task Check_Mess_Friend(String server, string fs, string command)
+
+                        List_Friends = List_Mess;
+                        // JToken AClass = details.SelectToken("Image");
+                        //AnsweIm = Answe;
+                        //List_Mess_countIm = List_Mess;
+                        // AClassIm = AClass;
+
+                        //UseImage_OutPut msgImage = JsonSerializer.Deserialize<UseImage_OutPut>(responseData);
+                        //UserImage = AClass;
+                        //string[] Friends = List_Mess;
+
+
+                    }
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException e)
+            {
+                MessageBox.Show("SocketException: {0}", e.Message);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+
+            // Процедура отправки 006
+            async public Task Check_Mess_Friend(String server, string fs, string command)
         {
             try
             {

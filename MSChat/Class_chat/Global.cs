@@ -272,7 +272,29 @@ namespace Class_chat
         }
 
     }
+    public class Photo_Friends
+    {
+        Photo_Friends() { }
+        public int [] Id { get; set; }
+        public int [] Current { get; set; }
 
+        public Photo_Friends(int []id, int [] current)
+        {
+            Id = id;
+            Current = current;
+        }
+    }
+    public class Friends_Image
+    {
+        Friends_Image() { }
+        public int List_Mess { get; set; }
+        public string[] Image { get; set; }
+        public Friends_Image(string[] image, int list_Mess)
+        {
+            Image = image;
+            List_Mess = list_Mess;
+        }
+    }
 
 
     // класс для отправки UseImage_OutPut

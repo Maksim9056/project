@@ -98,8 +98,9 @@ namespace ServersAccept
             FDictCommands.Add("011", new Action<byte[], GlobalClass, NetworkStream>(command.Delete_Message));
             FDictCommands.Add("012", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens_Message));
             FDictCommands.Add("013", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens));
+            FDictCommands.Add("014", new Action<byte[], GlobalClass, NetworkStream>(command.Search_Image_Friends));
         }
-
+        
         static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)
         {
             Action<byte[], GlobalClass, NetworkStream> actionCommand;

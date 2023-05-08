@@ -12,7 +12,8 @@ using Newtonsoft.Json.Linq;
 //using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+//using static System.Net.WebRequestMethods;
+//using static System.Net.Mime.MediaTypeNames;
 //using System.Data;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 //using static System.Net.WebRequestMethods;
@@ -733,16 +734,42 @@ namespace Client_chat
         {
            
                 toolStripTextBox1.Text = IP_ADRES.Ip_adress;
+               CommandCL command = new CommandCL();
 
             if (Friends != null)
             {
+                using(MemoryStream Friends_Image = new MemoryStream())
+                {
+                    string FileFS = "";
+                    int[] Id = new int[Friends.List_Mess];
+
+                    int[] Id_Friends = new int[Friends.List_Mess];
+                   // int[] Id_Ph = new int[Friends.List_Mess];
+
+                    User_photo[] A = new User_photo[Friends.List_Mess];
+                    for (int I = 0; I < Friends.AClass.Count(); I++)
+                    {
+                        A[I] = Friends.AClass[I];
+                        Id_Friends[I] = A[I].Photo;
+                        Id[I] = A[I].Id;
+                    }
+                    // A[0].Id
+                    Photo_Friends tom = new Photo_Friends(Id_Friends,Id);
+                    JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
+                    FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
+
+                    Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS,"014")).Wait();
+                    
+                }
+              
                 toolStripLabel1.Text = Friends.User_.Name;
                 using (MemoryStream fs = new MemoryStream())
                 {
-                    CommandCL command = new CommandCL();
+                    //CommandCL command = new CommandCL();
                     string FileFS = "";
                     Photo tom = new Photo(Friends.User_.Photo, Friends.User_.Current);
                     JsonSerializer.Serialize<Photo>(fs, tom);
+
                     FileFS = Encoding.Default.GetString(fs.ToArray());
 
                     Task.Run(async () => await command.Get_Image(IP_ADRES.Ip_adress, FileFS, "007")).Wait();
@@ -763,6 +790,7 @@ namespace Client_chat
                 // Na_me = Friends.User_.Name;
                 //  int id = 0;   // Answe
                 //    toolStripLabel1.Text = Na_me;
+                //CommandCL commandS = new CommandCL();
 
                 if (Friends.List_Mess == 0)
                 {
@@ -775,6 +803,7 @@ namespace Client_chat
                         A[I] = Friends.AClass[I];
                     }
                     Friend = A;
+                  //  Friend[0].Id= 0;
                     try
                     {
                         if (Friends.Answe == "false")
@@ -784,18 +813,71 @@ namespace Client_chat
                         {
                             dataGridViewUser.RowCount = Friend.Count();
                             dataGridViewUser.ColumnCount = 1;
+                            //DataGridViewTextBoxColumn column0 = new DataGridViewTextBoxColumn();
+                            //{
+                            //}
+
+                            //dataGridViewChat.Columns.Insert(0, column0);
+
+                            //DataGridViewImageColumn column1 = new DataGridViewImageColumn();
+                            //{
+                            //}
+                            //dataGridViewChat.Columns.Insert(1, column1);
+                            //for (int I = 0;I< ms.Length;I++)
+                            //{
+                            //    images[I] = returnImagee;
+
+                            //}                       
+                            DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
+                            imgColumn.Name = "Images";
+                            dataGridViewUser.Columns.Add(imgColumn);
+
                             for (int i = 0; i < Friend.Count(); i++)
                             {
-                                for (int j = 0; j < 1; j++)
-                                {
-
-                                    dataGridViewUser.Rows[i].Cells[j].Value = Friend[i].Name;
-                                }
+                                DataGridViewTextBoxCell cell0 = (DataGridViewTextBoxCell)dataGridViewUser.Rows[i].Cells[0];
+                                cell0.Value = Friend[i].Name;
                             }
+
+                            for (int i = 0; i < Friend.Count(); i++)
+                            {
+                                string Im = command.List_Friends[i].ToString();
+                                byte[] ByteImege = Convert.FromBase64String(Im);
+                                MemoryStream ms = new MemoryStream(ByteImege);
+                                Image returnImagee = Image.FromStream(ms);
+
+                                //DataGridViewImageColumn img = new DataGridViewImageColumn();
+
+                                DataGridViewImageCell cell1 = (DataGridViewImageCell)dataGridViewUser.Rows[i].Cells["Images"];
+                                cell1.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                                //img.Image= returnImagee;
+                                cell1.Value = returnImagee;
+                                //dataGridViewUser.Rows[i].Cells["Images"].Value = returnImagee;
+                            }
+
                             dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                            dataGridViewUser.Columns[1].HeaderText = "Фото";
+                            // dataGridViewUser.Columns[1].HeaderText = "Фото Друзей";
+
 
                         }
                         Users = Friends.User_.Id;
+
+                        //dataGridView1.DataSource = ds.Tables[0];
+                        //dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                        //dataGridView1.Columns["Код"].Visible = false;
+                        //dataGridView1.RowHeadersVisible = false;
+
+                        //for (int i = 0; i < dataGridView1.RowCount; i++)
+                        //{
+                        //    DataGridViewImageCell cell = (DataGridViewImageCell)dataGridView1.Rows[i].Cells[dataGridView1.Columns["ФотоОтправитель"].Index];
+                        //    cell.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                        //    DataGridViewImageCell cell2 = (DataGridViewImageCell)dataGridView1.Rows[i].Cells[dataGridView1.Columns["ФотоПолучатель"].Index];
+                        //    cell2.ImageLayout = DataGridViewImageCellLayout.Zoom;
+
+                        //}
+
+
+
                     }
 
                     catch (Exception ex)

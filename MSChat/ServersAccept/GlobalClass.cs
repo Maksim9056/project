@@ -74,12 +74,12 @@ namespace ServersAccept
         // Для картинки
         public UseImage Items_Image { get; set; }
 
+        public Friends_Image Friends_Image { get; set; }
+    /// <Блок процедур >
 
-        /// <Блок процедур >
 
-
-        //Создают таблицу пользователей 
-        public void CreateTable_Users()
+    //Создают таблицу пользователей 
+    public void CreateTable_Users()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
@@ -323,7 +323,47 @@ namespace ServersAccept
                 }
             }
         }
+        async public void Select_Image_Photo_Friends(Photo_Friends data)
+        {
+            //string Name = "";
+            string sqlExpressio = $"SELECT * FROM Files  WHERE Id in ({String.Join(",", data.Id)})";
 
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                var n = await command.ExecuteReaderAsync();
+                SqliteDataReader sqReader = commandS.ExecuteReader();
+
+                if (n.HasRows == true)
+                {
+                    //Console.WriteLine("Такое имя уже есть");
+                    UserConnect = true;
+                    // Always call Read before accessing data.
+                    string[] strings = new string[3];
+                    int i = 0;
+                    while (sqReader.Read())
+                    {
+                        //var Im = sqReader["Image"];
+                        //byte[] Image = Convert.FromBase64String(Im.ToString());
+                        //var a = Im as Byte[];
+                        //var b =   Convert.ToBase64String(Im as Byte[]);
+                        strings[i] = Convert.ToBase64String(sqReader["Image"] as Byte[]);
+                        i++;
+                    }                        
+                       Friends_Image friends_ =new Friends_Image(strings, strings.Length);
+                        //  UseImage useImage = new UseImage(strings, "true", 1);
+                        Friends_Image = friends_;
+
+                }
+                else
+                {
+                    UserConnect = false;
+                }
+            }
+        }
+      
 
         //Проверяет  в таблицу Друзья количество друзей 1го пользователя
         async public void Select_Friend(string curent_user)
