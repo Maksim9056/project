@@ -736,34 +736,11 @@ namespace Client_chat
                 toolStripTextBox1.Text = IP_ADRES.Ip_adress;
                CommandCL command = new CommandCL();
 
-            if (Friends != null)
-            {
-                using(MemoryStream Friends_Image = new MemoryStream())
-                {
-                    string FileFS = "";
-                    int[] Id = new int[Friends.List_Mess];
-
-                    int[] Id_Friends = new int[Friends.List_Mess];
-                   // int[] Id_Ph = new int[Friends.List_Mess];
-
-                    User_photo[] A = new User_photo[Friends.List_Mess];
-                    for (int I = 0; I < Friends.AClass.Count(); I++)
-                    {
-                        A[I] = Friends.AClass[I];
-                        Id_Friends[I] = A[I].Photo;
-                        Id[I] = A[I].Id;
-                    }
-                    // A[0].Id
-                    Photo_Friends tom = new Photo_Friends(Id_Friends,Id);
-                    JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
-                    FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
-
-                    Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS,"014")).Wait();
-                    
-                }
-              
-                toolStripLabel1.Text = Friends.User_.Name;
-                using (MemoryStream fs = new MemoryStream())
+             toolStripLabel1.Text = Friends.User_.Name;
+            //"false"
+            string pathImage = Environment.CurrentDirectory.ToString();
+            toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");   
+            using (MemoryStream fs = new MemoryStream())
                 {
                     //CommandCL command = new CommandCL();
                     string FileFS = "";
@@ -782,6 +759,38 @@ namespace Client_chat
                     toolStripButton2.Image = returnImage;
 
                 }
+
+            if (Friends != null)
+            {
+                if (Friends.AClass.Count != 0)
+                {
+                    using (MemoryStream Friends_Image = new MemoryStream())
+                    {
+                        string FileFS = "";
+                        int[] Id = new int[Friends.List_Mess];
+
+                        int[] Id_Friends = new int[Friends.List_Mess];
+                        // int[] Id_Ph = new int[Friends.List_Mess];
+
+                        User_photo[] A = new User_photo[Friends.List_Mess];
+                        for (int I = 0; I < Friends.AClass.Count(); I++)
+                        {
+                            A[I] = Friends.AClass[I];
+                            Id_Friends[I] = A[I].Photo;
+                            Id[I] = A[I].Id;
+                        }
+                        // A[0].Id
+                        Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
+                        JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
+                        FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
+
+                        Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS, "014")).Wait();
+
+                    }
+                }
+              
+            
+            
                 //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
                 //Image returnImage = Image.FromStream(ms);
                 //toolStripButton2.Image = returnImage;
@@ -885,10 +894,9 @@ namespace Client_chat
                     }
 
                 }
-                string pathImage = Environment.CurrentDirectory.ToString();
-                toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
+              
             }
-
+              
             
         }      
 
@@ -1024,10 +1032,11 @@ namespace Client_chat
                 int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                 //DataGridViewRow selectedRow = dataGridViewUser.Rows[selectedrowindex];
                 //String Friend = Convert.ToString(selectedRow.Cells[0].Value);
-                if (selectedrowindex < 0)
+                if(selectedrowindex != 0)
                 {
 
                 }else
+
                 {
                     User_photo tt = Friend[selectedrowindex];
 
@@ -1152,9 +1161,9 @@ namespace Client_chat
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception )
             {
-               MessageBox.Show(e.Message);
+     //          MessageBox.Show(e.Message);
 
             }
         }

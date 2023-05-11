@@ -75,11 +75,12 @@ namespace ServersAccept
         public UseImage Items_Image { get; set; }
 
         public Friends_Image Friends_Image { get; set; }
-    /// <Блок процедур >
+        /// <Блок процедур >
 
+        public int Id { get; set; }
 
-    //Создают таблицу пользователей 
-    public void CreateTable_Users()
+        //Создают таблицу пользователей 
+        public void CreateTable_Users()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
@@ -326,6 +327,23 @@ namespace ServersAccept
         async public void Select_Image_Photo_Friends(Photo_Friends data)
         {
             //string Name = "";
+
+            string sqlExpressi = $"SELECT COUNT(*) AS rec_count  FROM Files  WHERE Id in ({String.Join(",", data.Id)})";
+
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressi, connection);
+                SqliteDataReader sqReader = command.ExecuteReader();
+                //while (sqReader.Read())
+                //{
+                //    UserCount = sqReader.GetInt32(0);
+                //}
+                sqReader.Read();
+                Id = Convert.ToInt32(sqReader["rec_count"].ToString());
+            }
+
+        
             string sqlExpressio = $"SELECT * FROM Files  WHERE Id in ({String.Join(",", data.Id)})";
 
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -341,7 +359,7 @@ namespace ServersAccept
                     //Console.WriteLine("Такое имя уже есть");
                     UserConnect = true;
                     // Always call Read before accessing data.
-                    string[] strings = new string[3];
+                    string[] strings = new string[Id];
                     int i = 0;
                     while (sqReader.Read())
                     {
@@ -369,8 +387,6 @@ namespace ServersAccept
         async public void Select_Friend(string curent_user)
         {
             int UserCount = 0;
-
-
             string sqlExpressioCount = $"SELECT COUNT(*)  FROM Friends  WHERE IdUserFrom = '{curent_user}'";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
@@ -422,7 +438,6 @@ namespace ServersAccept
 
 
                         //Проверяет  в таблицу Пользователи количество у id пользователей 
-
                         sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
                         SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
                         SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
@@ -848,9 +863,9 @@ namespace ServersAccept
             using (var connections = new SqliteConnection(GlobalClass.connectionString))
             {
                 await connections.OpenAsync();
-                SqliteCommand command_ = new SqliteCommand(sqlE, connections);              
+                SqliteCommand command_ = new SqliteCommand(sqlE, connections);            
                 SqliteCommand commands_ = new SqliteCommand(sqlE, connections);
-
+                //что то произошло
                 var n1 = await command_.ExecuteReaderAsync();
                 SqliteDataReader sqReader2 = commands_.ExecuteReader();
 
