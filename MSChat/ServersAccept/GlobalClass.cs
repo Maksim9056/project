@@ -40,6 +40,8 @@ namespace ServersAccept
 
         //Содержит id пользользователя для проверки сообщений
         public string Id_Users { get; set; }
+        //Для пользователя
+        public string Name { get; set; }
 
         ////Заготовки
         //public int Frinds { get; set; }
@@ -283,9 +285,44 @@ namespace ServersAccept
                 }
                 else
                 {
-                    UserConnect = false;
+
+                    string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data}'";
+                    using (var connectio = new SqliteConnection(GlobalClass.connectionString))
+                    {
+                        await connectio.OpenAsync();
+                        SqliteCommand _command = new SqliteCommand(sqlExpressi, connectio);
+                        SqliteCommand __commandS = new SqliteCommand(sqlExpressi, connectio);
+                        var ns = await _command.ExecuteReaderAsync();
+                        SqliteDataReader sqReaders = __commandS.ExecuteReader();
+
+                        if (ns.HasRows == true)
+                        {
+                            //   Console.WriteLine("Такое имя уже есть");
+                            // UserConnect = true;
+                            // Always call Read before accessing data.
+                            while (sqReaders.Read())
+                            {
+                                //       Current_User = sqReader["Id"].ToString();
+                                Id_Users = sqReaders["Id"].ToString();
+                                //Еще будет нужна
+                                //  int Id = Convert.ToInt32(Current_User);
+                                string Friend = sqReaders["Name"].ToString();
+
+                                Name = Friend;
+
+                          //      Console.WriteLine(Current_User);
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
             }
+
+
+
         }
 
         // Поиск и выборка картинки по ID 

@@ -215,30 +215,36 @@ namespace Client_chat
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {  
+        {
             using (Password_Users Form = new Password_Users())
             {
-                using (MemoryStream fs = new MemoryStream())
+                if (textBox2.Text == "")
                 {
-                    CommandCL command = new CommandCL();
-                    string FileFS = "";
-                    UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
-                    JsonSerializer.Serialize<UserLogin>(fs, tom);
-                    FileFS = Encoding.Default.GetString(fs.ToArray());
-             /*
-                    //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-
-                    //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
-
-                    //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
-
-                    //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                    //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                    //task.Wait();*/
-                    Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
-
-                    if (CommandCL.User_Logins_and_Friends.User_ != null)
+                    MessageBox.Show("Пароль не заполнен!");
+                }
+                else
+                {
+                    using (MemoryStream fs = new MemoryStream())
                     {
+                        CommandCL command = new CommandCL();
+                        string FileFS = "";
+                        UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                        JsonSerializer.Serialize<UserLogin>(fs, tom);
+                        FileFS = Encoding.Default.GetString(fs.ToArray());
+                        /*
+                               //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+
+                               //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
+
+                               //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
+
+                               //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                               //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                               //task.Wait();*/
+                        Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
+
+                        if (CommandCL.User_Logins_and_Friends.User_ != null)
+                        {
                             Chats_main a = new Chats_main();
                             Chats_main parent = (Chats_main)this.Owner;
                             parent.NotifyMe(CommandCL.User_Logins_and_Friends);
@@ -247,14 +253,21 @@ namespace Client_chat
                             //чтобы не запоминал после передачи
                             CommandCL.User_Logins_and_Friends = null;
                             this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Такой учетной записи нет");
-                    }
+                        }               
+                        else if(CommandCL.User_Logins_and_Friends.List_Mess != 0)
+                        {
+                           
+                            MessageBox.Show("Пароль введен не верно!");
+                        }
+                        else if(CommandCL.User_Logins_and_Friends.AClass ==null)
+                        {
+                            MessageBox.Show("Такой учетной записи нет");
+                        }
 
+
+                    }
+                    Form.Close();
                 }
-                Form.Close();
             }
         }
 

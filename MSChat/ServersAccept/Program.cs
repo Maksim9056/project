@@ -212,7 +212,6 @@ namespace ServersAccept
                         //        break;
                         //}*/
                     }
-                //    data = "";
                 }
 
             }
