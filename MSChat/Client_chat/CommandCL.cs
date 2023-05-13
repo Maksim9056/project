@@ -178,6 +178,7 @@ namespace Client_chat
 
                     if (responseData == "false")
                     {
+                        User_Logins_and_Friends = null;
                     }
                     else
                     {
@@ -266,17 +267,17 @@ namespace Client_chat
                 }
             }
 
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                //Console.WriteLine("ArgumentNullException:{0}", e.Message);
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
             }
             catch (SocketException)
             {
                 //Console.WriteLine("SocketException: {0}", e.Message);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //   Console.WriteLine("SocketException: {0}", e.Message);
+                  Console.WriteLine("SocketException: {0}", e.Message);
             }
 
         }

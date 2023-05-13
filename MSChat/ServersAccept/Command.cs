@@ -41,6 +41,10 @@ namespace ServersAccept
             using (MemoryStream tt2 = new MemoryStream())
             {
                 UserLogin person3 = JsonSerializer.Deserialize<UserLogin>(msg);
+                var options1 = new JsonSerializerOptions
+                {
+                    AllowTrailingCommas = true
+                };
 
                 globalClass.Select_Users(person3.Name, person3.Pass);
                 if (globalClass.UserConnect == true)
@@ -50,10 +54,6 @@ namespace ServersAccept
                     //    JsonSerializer.Serialize<User_photo>(ms, globalClass.AUser);
                     //    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                     //}
-                    var options1 = new JsonSerializerOptions
-                    {
-                        AllowTrailingCommas = true
-                    };
 
                     globalClass.Select_Friend(globalClass.Current_User);
 
@@ -146,6 +146,18 @@ namespace ServersAccept
                                     //                   //    }
                                     //                   //}*/
                     //}
+                }
+                else
+                {
+                    // отправлять на сервер что такому пользователю нет доступа
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        User_photo[] json_List_Friends = new User_photo[] { };
+                        User_Logins user_Logins = new User_Logins("false", null, 0, null);
+                        JsonSerializer.Serialize<User_Logins>(ms, user_Logins, options1);
+                        stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                    }
+
                 }
             }
         }
