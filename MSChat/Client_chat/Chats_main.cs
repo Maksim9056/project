@@ -803,12 +803,10 @@ namespace Client_chat
 
                         User_photo tt = new User_photo("", "", "", 0, 0, Users);
                         //tt.Current = Users;
-
                         string person = JsonSerializer.Serialize<User_photo>(tt);
 
                         Byte[] data = System.Text.Encoding.Default.GetBytes("013" + person);
                         await stream.WriteAsync(data, 0, data.Length);
-
                         String responseDat = String.Empty;
                         using (MemoryStream ms = new MemoryStream())
                         {
@@ -840,8 +838,6 @@ namespace Client_chat
                                     int[] Id = new int[msgFriends.List_Mess];
 
                                     int[] Id_Friends = new int[msgFriends.List_Mess];
-                                    // int[] Id_Ph = new int[Friends.List_Mess];
-
                                     User_photo[] b = new User_photo[msgFriends.List_Mess];
                                     for (int I = 0; I < msgFriends.AClass.Count(); I++)
                                     {
@@ -849,7 +845,6 @@ namespace Client_chat
                                         Id_Friends[I] = b[I].Photo;
                                         Id[I] = b[I].Id;
                                     }
-                                    // A[0].Id
                                     Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
                                     JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
                                     FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
@@ -872,13 +867,8 @@ namespace Client_chat
                                         dataGridViewUser.RowCount = Friend.Count();
                                         dataGridViewUser.ColumnCount = 1;
                                         DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
-                                        imgColumn.Name = "Фото";
-                                        //dataGridViewUser.RowCount = msgFriends.AClass.Count();
-                                        //dataGridViewUser.ColumnCount = 1;
-                                        dataGridViewUser.Columns.Add(imgColumn);
-
-                                       // dataGridViewUser.RowCount = msgFriends.AClass.Count();
-                               
+                                        imgColumn.Name = "Фото";                        
+                                        dataGridViewUser.Columns.Add(imgColumn);                               
                                         for (int i = 0; i < Friend.Count(); i++)
                                         {
                                                 DataGridViewTextBoxCell cell0 = (DataGridViewTextBoxCell)dataGridViewUser.Rows[i].Cells[0];
@@ -896,9 +886,7 @@ namespace Client_chat
                                             cell1.Value = returnImagee;
                                         }
                                         dataGridViewUser.Columns[0].HeaderText = "Друзья";
-                                        dataGridViewUser.Columns[1].HeaderText = "Фото";
-                                        //  dataGridViewUser.Columns[0].HeaderText = "Друзья";
-                                        //   Users = msgFriends.AClass[0].Id;
+                                        dataGridViewUser.Columns[1].HeaderText = "Фото";                                     
                                     }
                                 }
                                 catch (Exception ex)
