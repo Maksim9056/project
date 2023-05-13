@@ -414,8 +414,8 @@ namespace Client_chat
                         //получить перечень сообщений
                         if (responseData == "false")
                         {
-
-                        }
+                           _Answe = "false";
+                    }
                         else
                         {
                             MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);

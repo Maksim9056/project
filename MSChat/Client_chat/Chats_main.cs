@@ -298,6 +298,7 @@ namespace Client_chat
         //Открытие формы и заполнение таблиц
         public void OpenMes(MsgUser_Logins Friends)
         {
+            Users = Friends.User_.Id;
             //Заполняеться Ip_adress для отправки
             toolStripTextBox1.Text = IP_ADRES.Ip_adress;
             //Имя заполняем
@@ -521,13 +522,15 @@ namespace Client_chat
                 }
                 else
                 {
+                    dataGridViewChat.Rows.Clear();
                     //При выделении по RowIndex по ячейке он заполняеться
                     int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                     //Проверяем не пустой selectedrowindex   
-                    if (selectedrowindex != 0)
-                    {
+                    if (false)
+                        //if (selectedrowindex != 0)
+                        {
 
-                    }
+                        }
                     else
                     {
                         //Проверяем не пустой selectedrowindex
@@ -811,7 +814,7 @@ namespace Client_chat
 
                         MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
                         User_photo[] A = new User_photo[msgFriends.AClass.Count];
-                        for (int i = 0; i < Friend.Count(); i++)
+                        for (int i = 0; i < msgFriends.AClass.Count(); i++)
                         {
                             A[i] = msgFriends.AClass[i];
                         }
