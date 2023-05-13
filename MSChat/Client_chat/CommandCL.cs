@@ -1,17 +1,17 @@
 ﻿using Class_chat;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
+//using System.Collections.Generic;
+//using System.Drawing;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
+//using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Client_chat
 {
@@ -60,7 +60,7 @@ namespace Client_chat
        // public UseImage_OutPut UserImage { get; set; }
 
 
-        //Функция 
+        //Функция считывания байт из потока и формирование единой строки
         public string Func_Read(Stream str, int length, TcpClient client)
         {
             string Result = string.Empty;
@@ -142,8 +142,6 @@ namespace Client_chat
         }
 
 
-
-
         // Передача 003 проверка пользователя и его пароль 
         async public Task Check_User_Possword(String server, string fs, string command)
         {
@@ -156,8 +154,8 @@ namespace Client_chat
                     string Host = System.Net.Dns.GetHostName();
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
-                    //data = new Byte[99999999];
                     String responseData = String.Empty;
+                    /*
                     //String responseDat = String.Empty;                    
                     //using (MemoryStream ms = new MemoryStream())
                     //{
@@ -171,6 +169,7 @@ namespace Client_chat
                     //    responseData = Encoding.Default.GetString(ms.ToArray());
 
                     //}
+                    */
 
                     responseData = await Task<string>.Run(() =>
                     {
@@ -323,8 +322,6 @@ namespace Client_chat
 
                         //UseImage_OutPut msgImage = JsonSerializer.Deserialize<UseImage_OutPut>(responseData);
                         //UserImage = AClass;
-
-
                     }
                 }
             }
@@ -342,6 +339,8 @@ namespace Client_chat
             }
 
         }
+
+        // Передача ???
         async public Task Get_Image_Friends(String server, string fs, string command)
         {
             try
@@ -351,7 +350,7 @@ namespace Client_chat
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
-                    data = new Byte[1024];
+                    //data = new Byte[1024];
                     String responseData = String.Empty;
 
                     Byte[] readingData = new Byte[256];
@@ -364,8 +363,6 @@ namespace Client_chat
                     }
                     while (stream.DataAvailable);
                     responseData = completeMessage.ToString();
-
-
 
                     if (responseData == "false")
                     {
@@ -397,19 +394,17 @@ namespace Client_chat
         }
 
 
-            // Процедура отправки 006
-            async public Task Check_Mess_Friend(String server, string fs, string command)
+        // Процедура отправки 006
+        async public Task Check_Mess_Friend(String server, string fs, string command)
         {
             try
             {
-
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
-
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     await stream.WriteAsync(data, 0, data.Length);
-                    data = new Byte[99999999];
+                    data = new Byte[1024];
                     String responseData = String.Empty;
 
                     responseData = await Task<string>.Run(() =>
@@ -451,6 +446,7 @@ namespace Client_chat
 
         }
 
+
         // Проццедура отправки 008
         async public Task Connect_Friends(String server, string fs, string command)
         {
@@ -481,12 +477,11 @@ namespace Client_chat
         }
 
 
-        //// Процедура отправки 009
+        // Процедура отправки 009
         async public Task Insert_Message(String server, string fs, string command)
         {
             try
             {
-
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
@@ -494,7 +489,6 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseDat = String.Empty;
-
 
                     responseDat = await Task<string>.Run(() =>
                     {
@@ -522,7 +516,8 @@ namespace Client_chat
             }
         }
 
-        //// Процедура отправки 010
+
+        // Процедура отправки 010
         async public Task Update_Message_make_up(String server, string fs, string command)
         {
             try
@@ -557,6 +552,7 @@ namespace Client_chat
                 MessageBox.Show("SocketException: {0}", e.Message);
             }
         }  
+
 
         // Процедура отправки 011
         async public Task Delete_message_make_up(String server, string fs, string command)

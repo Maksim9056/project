@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json.Linq;
 //using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
@@ -44,8 +44,8 @@ namespace Client_chat
        
         public  CommandCL command = new CommandCL();
 
-        //Отображает Сообщения из чата
 
+        //Отображает Сообщения из чата
         public void Chat(CommandCL command)
         {
             using (MemoryStream Chats = new MemoryStream())
@@ -116,15 +116,15 @@ namespace Client_chat
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
         }
+
+
         //MsgUser_Logins s
         public void NotifyMe(MsgUser_Logins responseDat)
-        {//JToken s
-
-            //JObject details = JObject.Parse(responseDat);
-
+        {
             OpenMes(responseDat);
         }
 
+        //Сохраняет файл конфигурации в json
         public void SaveConfig(Int32 Port, string ipAddress,string Name)
         {
             using (FileStream file = new FileStream("Client.json", FileMode.OpenOrCreate))
@@ -135,7 +135,7 @@ namespace Client_chat
             }
         }
 
-
+        //
         private void toolStripButton1_Click(object sender, EventArgs e)
             {
             try
@@ -172,8 +172,6 @@ namespace Client_chat
                             using (Password_Users a = new Password_Users())
                             {
                                 a.ShowDialog(this);
-                                
-                                //this.Hide();
                             }
                         }
                         else
@@ -199,11 +197,13 @@ namespace Client_chat
             }
         }
 
+        //
         private void toolStripLabel1_Click(object sender, EventArgs e)
         {
 
         }
 
+        //
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -220,6 +220,7 @@ namespace Client_chat
             }
         }
 
+        //
         private void toolStripButton1_MouseHover(object sender, EventArgs e)
         {
         }
@@ -241,7 +242,6 @@ namespace Client_chat
                     //Проверка для редактированого сообщение отправить
                     if (Update_Message == true)
                     {
-
                         using (MemoryStream _Update_Message = new MemoryStream())
                         {
                             //Заполняем клас для отправки на сервере
@@ -252,7 +252,6 @@ namespace Client_chat
                                 JsonSerializer.Serialize<MessСhat>(Update, Mes_chat);
                                 FileFS = Encoding.Default.GetString(Update.ToArray());
                             }
-
                             //Отправляем редактированое сообщение на сервер
                             Task.Run(async () => await command.Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010")).Wait();
                             //Стираем соообщения 
@@ -262,22 +261,18 @@ namespace Client_chat
                             Update_Message = false;                                  
                             Update_id = 0;
                             textBox1.Text = "";
-
                         }
-                        //  Update_Message_make_up(IP_ADRES.Ip_adress, FileFS, "010",dataGridViewChat);
                     }
                     else
                     {
                         //Заполняем класс с чатом новое сообщение
                         using (MemoryStream fs = new MemoryStream())
                         {
-
                             DateTime dateTime = DateTime.Now;
                             MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1);
                             JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
                         }
-
                         // чтение данных
                         textBox1.Text = "";
                         // Добавляем сообщение в чат !
@@ -300,21 +295,20 @@ namespace Client_chat
             }
         }
 
-        //Вход
+        //Открытие формы и заполнение таблиц
         public void OpenMes(MsgUser_Logins Friends)
         {
             //Заполняеться Ip_adress для отправки
             toolStripTextBox1.Text = IP_ADRES.Ip_adress;
             //Имя заполняем
              toolStripLabel1.Text = Friends.User_.Name;
-            //Путь для картинки
+            //Путь к каталогу программы
             string pathImage = Environment.CurrentDirectory.ToString();
             //Кнопка включение
             toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
             // Заполняем  клас где  id фото и пользователя текущего
             using (MemoryStream fs = new MemoryStream())
             {
-                //CommandCL command = new CommandCL();
                 string FileFS = "";
                 Photo tom = new Photo(Friends.User_.Photo, Friends.User_.Current);
                 JsonSerializer.Serialize<Photo>(fs, tom);
@@ -333,7 +327,6 @@ namespace Client_chat
                 Image returnImage = Image.FromStream(ms);
                 //Показываем картинку  текущему пользователю
                 toolStripButton2.Image = returnImage;
-
             }
             //Проверка когда нету друзей и их картинки 
             if (Friends != null)
@@ -361,19 +354,16 @@ namespace Client_chat
                         Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
                         JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
                         FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
-                        //Отправляем на сервер и получаем от туда картинку ввиду строки
+                        //Отправляем на сервер и получаем от туда картинку ввиде строки
                         Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS, "014")).Wait();
-
                     }
                 }                                     
-                //MemoryStream ms = new MemoryStream(ruser.Photo);MsgUser_Logins
-                //Image returnImage = Image.FromStream(ms);
-                //toolStripButton2.Image = returnImage;
                 //Заполняем пользователя имя
                 Na_me = Friends.User_.Name;
                 //Проверяем количество друзей
                 if (Friends.List_Mess == 0)
                 {
+                    //обработать когда их 0
                 }
                 else
                 {
@@ -434,7 +424,6 @@ namespace Client_chat
                         // Получаем id пользователя текущего
                         Users = Friends.User_.Id;                   
                     }
-                   
                     catch (Exception ex)
                     {
                         //Для выведения ошибки при картинке
@@ -444,28 +433,28 @@ namespace Client_chat
             }            
         }      
 
+        //
         private void toolStripButton2_Click_1(object sender, EventArgs e)
         {
 
         }
   
-
+        //
         private void Chats_main_Load(object sender, EventArgs e)
         {
             try
-            {
+            {   
+                string path = Environment.CurrentDirectory.ToString();
+
                 //Проверяем зашел ли пользователь в свою учетную
                 if (toolStripLabel1.Text != "")
                 {
-
-
+                    //???
                 }
                 else 
                 {
-                    //Указываем путь для картинке при старте
-                    string pathImage = Environment.CurrentDirectory.ToString();
-                    //Заполняем картинку
-                    toolStripButton1.Image = Image.FromFile(pathImage+"\\Resources\\Images\\Красный..png"); 
+                    //Заполняем картинку 
+                    toolStripButton1.Image = Image.FromFile(path+ "\\Resources\\Images\\Красный..png"); 
                 }
 
                 dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -479,7 +468,6 @@ namespace Client_chat
                 button1.Visible = false;
 
                 // Ищем файл с настройками подключения
-                string path = Environment.CurrentDirectory.ToString();
                 FileInfo fileInfo = new FileInfo(path+"\\Client.json");
                 if (fileInfo.Exists)
                 {
@@ -501,6 +489,7 @@ namespace Client_chat
             }
         }
 
+        //
         private void dataGridViewUser_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -511,12 +500,14 @@ namespace Client_chat
         {
             try
             {
+                // ???
                 view_mess();
             }
             catch 
             {
             }
         }
+
 
         //Запращиваем сообщения из друзей id dataGridViewUser_Click и проверяется список сообщений
         private void view_mess()
@@ -538,7 +529,6 @@ namespace Client_chat
 
                     }
                     else
-
                     {
                         //Проверяем не пустой selectedrowindex
                         //Ищем в классе  через selectedrowindex если есть то заполняем в класс User_photo в атрибут tt
@@ -553,13 +543,9 @@ namespace Client_chat
                             //Заполняем в классс 
                             using (MemoryStream Message = new MemoryStream())
                             {
-
-
                                 tt.Current = Users;
                                 string person = JsonSerializer.Serialize<User_photo>(tt);
                                 //  Friends = person;
-
-
                                 User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
                                 Friends = Id_Friend.Id;
                        
@@ -571,7 +557,6 @@ namespace Client_chat
                                 
                                 Chat(command);             
                             }
-                            //    Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006", dataGridViewChat);
                         }
                     }
                 }
@@ -584,11 +569,13 @@ namespace Client_chat
             }
         }
 
+        //
         private void dataGridViewChat_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        //
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
@@ -606,7 +593,6 @@ namespace Client_chat
                     using (MemoryStream fs = new MemoryStream())
                     {
                         Searh_Friends New_Friend = new Searh_Friends(textBox2.Text, Na_me);
-                     
                         JsonSerializer.Serialize<Searh_Friends>(fs, New_Friend);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
                      
@@ -642,14 +628,14 @@ namespace Client_chat
                     FileFS = Encoding.Default.GetString(fs.ToArray());
                 }
                 textBox1.Text = "";
-             
-                //Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011", dataGridViewChat);
             }
             catch
             {
 
             }
         }
+
+
         //Для функций над contextMenuStrip1  там выбор и удобно
         private void dgrdResults_MouseClick(object sender, MouseEventArgs e)
         {
@@ -662,6 +648,7 @@ namespace Client_chat
             }
             catch { }
         }
+
         //Для функций над contextMenuStrip1 сдесь просто нажать надо  там выбор и удобно
         private void dgrdResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -754,16 +741,19 @@ namespace Client_chat
             }
         }
 
+        //
         private void dataGridViewUser_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        //
         private void dataGridViewChat_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        //
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -788,6 +778,7 @@ namespace Client_chat
 
             }
          }
+
         //Список друзей обновляет но только добавленных поэтому надо будет доделать это 
         async private void timer2_Tick(object sender, EventArgs e)
         {
@@ -795,12 +786,9 @@ namespace Client_chat
             {
                 if (toolStripLabel1.Text != "")
                 {
-
                     using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
                     {
                         NetworkStream stream = client.GetStream();
-
-
                         User_photo tt = new User_photo("", "", "", 0, 0, Users);
                         //tt.Current = Users;
                         string person = JsonSerializer.Serialize<User_photo>(tt);
@@ -820,8 +808,8 @@ namespace Client_chat
 
                             responseDat = Encoding.Default.GetString(ms.ToArray());
                         }
-                        MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
 
+                        MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
                         User_photo[] A = new User_photo[msgFriends.AClass.Count];
                         for (int i = 0; i < Friend.Count(); i++)
                         {
@@ -855,7 +843,6 @@ namespace Client_chat
                             }
                             if (msgFriends.Answe == "true")
                             {
-                                
                                 try
                                 {
                                     if (msgFriends.AClass == null)
