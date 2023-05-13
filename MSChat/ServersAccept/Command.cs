@@ -392,20 +392,35 @@ namespace ServersAccept
             {
                 User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
 
-                globalClass.Select_Friend(Select_list_Friends.Current.ToString());
-
-                User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
-
-                for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                if (string.IsNullOrEmpty( Select_list_Friends.Current.ToString()))
                 {
-                    json_List_Friends[k] = globalClass.List_Friend[k];
+
                 }
-
-                using (MemoryStream ms = new MemoryStream())
+                else
                 {
-                    User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
-                    JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
-                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+
+                    if (Select_list_Friends.Current == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        globalClass.Select_Friend(Select_list_Friends.Current.ToString());
+
+                        User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+
+                        for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                        {
+                            json_List_Friends[k] = globalClass.List_Friend[k];
+                        }
+
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
+                            JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
+                            stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                        }
+                    }
                 }
             }
         }
