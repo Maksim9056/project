@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using Class_chat;
@@ -8,10 +7,7 @@ using System.IO;
 //using System.Collections.Generic;
 //using System.Runtime.Serialization.Json;
 using System.Drawing;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Input;
 //using System.Linq;
 //using Newtonsoft.Json.Linq;
 //using System.Net;

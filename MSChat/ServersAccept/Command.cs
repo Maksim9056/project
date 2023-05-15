@@ -3,7 +3,6 @@ using System;
 using System.Text.Json;
 using System.IO;
 using System.Net.Sockets;
-using System.Xml.Linq;
 //using System.Threading;
 //using System.Collections.Generic;
 
@@ -11,9 +10,6 @@ namespace ServersAccept
 {
     internal class Command
     {
-
-
-        
         //002-Регистрация пользователей
         public void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -59,7 +55,7 @@ namespace ServersAccept
                         stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                     }
                 }
-                else 
+                else
                 {
                     if (globalClass.UserConnect == true)
                     {
@@ -94,67 +90,15 @@ namespace ServersAccept
                         {
                             using (MemoryStream ms = new MemoryStream())
                             {
-                                User_photo[] json_List_Friends = new User_photo[] {};
+                                User_photo[] json_List_Friends = new User_photo[] { };
                                 User_Logins user_Logins = new User_Logins("false", globalClass.AUser, json_List_Friends.Length, json_List_Friends);
                                 //User_Logins user_Logins = new User_Logins("false", json_List_Friends.Length, json_List_Friends);
                                 JsonSerializer.Serialize<User_Logins>(ms, user_Logins, options1);
                                 stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                             }
                         }
-                        /*                //else
-                                        //{
-                                        //    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                                        //    stream.Write(msgAnswe, 0, msgAnswe.Length);
-                                        //}
-                                        ////Thread.Sleep(100);
-                                        //using (MemoryStream tt = new MemoryStream())
-                                        //{
-                                        //    //   User_photo Select_list_Friends = JsonSerializer.Deserialize<User_photo>(msg);
 
-                                        //    /*         
-                                        //                   //        await stream.FlushAsync();
-                                        //                   //        globalClass.Select_Friend(globalClass.Current_User);
-                                        //                   //        User_photo AUser;                                //Обработана ситуацию когда нет друзей
-                                        //                   //        if (globalClass.Friends == false)
-                                        //                   //        {
-                                        //                   //            byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                                        //                   //            stream.Write(msgAnswe, 0, msgAnswe.Length);
-                                        //                   //        }
-                                        //                   //        else
-                                        //                   //        {
-                                        //                   //            using (MemoryStream ms_count = new MemoryStream())
-                                        //                   //            {
 
-                                        //                   //                var Countuser = globalClass.List_Friend.Length;
-                                        //                   //                JsonSerializer.Serialize(ms_count, Countuser.ToString().PadLeft(3, '0'));
-                                        //                   //                //   byte[] ms_count_Answe = ms_count.ToArray();
-                                        //                   //                stream.Write(ms_count.ToArray(), 0, ms_count.ToArray().Length);
-                                        //                   //            }
-                                        //                   //            //stream.Flush();
-                                        //                   //            var options = new JsonSerializerOptions
-                                        //                   //            {
-                                        //                   //                AllowTrailingCommas = true
-                                        //                   //            };
-                                        //                   //            //что то не очень
-                                        //                   //            int tt = globalClass.List_Friend.Length;
-                                        //                   //            for (int k = 0; k < tt; k++)
-                                        //                   //            {
-                                        //                   //                using (MemoryStream ms_Friend_Answe = new MemoryStream())
-                                        //                   //                {
-                                        //                   //                    AUser = globalClass.List_Friend[k];
-                                        //                   //                    JsonSerializer.Serialize<User_photo>(ms_Friend_Answe, AUser, options);
-                                        //                   //                    stream.Write(ms_Friend_Answe.ToArray(), 0, ms_Friend_Answe.ToArray().Length);
-                                        //                   //                }
-                                        //                   //            }
-                                        //                   //        }
-                                        //                   //    }
-                                        //                   //    else
-                                        //                   //    {
-                                        //                   //        byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                                        //                   //        stream.Write(msgAnswe, 0, msgAnswe.Length);
-                                        //                   //    }
-                                        //                   //}*/
-                        //}
                     }
                     else
                     {
@@ -194,7 +138,7 @@ namespace ServersAccept
                 }
             }
         }
-        
+
         //005-Выборка сообщений переписки с другом пользователя
         public void Sampling_Messages_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -216,7 +160,7 @@ namespace ServersAccept
                 }
             }
         }
-        
+
         //006-Проверяет сообщение для друга
         public void Select_Message_Friend(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
@@ -318,7 +262,7 @@ namespace ServersAccept
                 }
             }
         }
-        
+
         // 010- редактировать сообщение
         public void Update_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {

@@ -43,20 +43,11 @@ namespace ServersAccept
         //Для пользователя
         public string Name { get; set; }
 
-        ////Заготовки
-        //public int Frinds { get; set; }
-        ////Заготовки
-
-        //public int[] Frend { get; set; }
-        ////Заготовки
-        //public UseImage Use_image { get; set; }
-        ////Заготовки
-        //public string Frends_id { get; set; }
         ////Передают Имя  пользользователя и добавляет их список друзей
         public string Searh_Friend { get; set; }
 
         //Проверяет  Имя  пользользователя и есть ли он таблице пользователи
-        public bool  _Searh_Freind { get; set; }
+        public bool _Searh_Freind { get; set; }
 
         //Содержит id  2 пользользователя (Друга)
         public int Insert_Friend_by_id { get; set; }
@@ -101,7 +92,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
- 
+
         //Создают таблицу друзей 
         public void CreateTable_Friends()
         {
@@ -120,7 +111,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
-        
+
         //Создают таблицу Чат 
         public void CreateTable_Chat()
         {
@@ -143,7 +134,7 @@ namespace ServersAccept
                 command.ExecuteNonQuery();
             }
         }
-        
+
         //Создают таблицу Картинка 
         public void CreateTable_Files()
         {
@@ -162,29 +153,29 @@ namespace ServersAccept
 
 
         //Заготовка
-     /*   async public void Insert_Friends()
-        {
+        /*   async public void Insert_Friends()
+           {
 
-            //string sq = " Select  " +
-            //           "p.Id as 'Код', " +
-            //           "c.name as 'Отправитель', " +
-            //          "b.name as 'Получатель' " +
-            //           "From Friends p " +
-            //           "Join Users b ON p.IdUserFrom = b.id " +
-            //           "Join Users c ON p.IdUserTo = c.id ";
-            //using (var connection = new SqliteConnection(GlobalClass.connectionString))
-            //{
-            //    await connection.OpenAsync();
-            //    SqliteCommand command = new SqliteCommand(sq, connection);
-            //    await command.ExecuteNonQueryAsync();
-            //    command.CommandText = sq;
-            //}
+               //string sq = " Select  " +
+               //           "p.Id as 'Код', " +
+               //           "c.name as 'Отправитель', " +
+               //          "b.name as 'Получатель' " +
+               //           "From Friends p " +
+               //           "Join Users b ON p.IdUserFrom = b.id " +
+               //           "Join Users c ON p.IdUserTo = c.id ";
+               //using (var connection = new SqliteConnection(GlobalClass.connectionString))
+               //{
+               //    await connection.OpenAsync();
+               //    SqliteCommand command = new SqliteCommand(sq, connection);
+               //    await command.ExecuteNonQueryAsync();
+               //    command.CommandText = sq;
+               //}
 
-        }
+           }
 
-       //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";
-         and Password='{pasword}
-     */ 
+          //  string sq = $"INSERT INTO Users ( Messege, DataMess, Mark) VALUES ( {msg.ToString()}'{data}','{dateTime:s}','1')";
+            and Password='{pasword}
+        */
 
 
         //Добавляет пользователей и проверяет при  том что они там уже добавлены
@@ -197,7 +188,7 @@ namespace ServersAccept
                 {
                     await connection.OpenAsync();
                     SqliteCommand command = new SqliteCommand(sq, connection);
-            //        command.Parameters.Add(new SqliteParameter("@buf", buf));
+                    //        command.Parameters.Add(new SqliteParameter("@buf", buf));
 
                     await command.ExecuteNonQueryAsync();
                     command.CommandText = sq;
@@ -225,7 +216,7 @@ namespace ServersAccept
                 }
             }
         }
-        
+
         //Добавляет Картинку в таблицу Files  и педают id картинки для пользователей
         async public void Insert_Image(byte[] buf)
         {
@@ -275,9 +266,9 @@ namespace ServersAccept
                     {
 
                         Current_User = sqReader["Id"].ToString();
-                        int Image =Convert.ToInt32( sqReader["Image"].ToString() );
+                        int Image = Convert.ToInt32(sqReader["Image"].ToString());
                         int Id = Convert.ToInt32(Current_User);
-                      //  byte[] foto = null;
+                        //  byte[] foto = null;
                         AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
 
                         Console.WriteLine(Current_User);
@@ -310,7 +301,7 @@ namespace ServersAccept
 
                                 Name = Friend;
 
-                          //      Console.WriteLine(Current_User);
+                                //      Console.WriteLine(Current_User);
                             }
                         }
                         else
@@ -351,7 +342,7 @@ namespace ServersAccept
                         string StringImage = Convert.ToBase64String(Im as Byte[]);
                         string[] strings = new string[1];
                         strings[0] = StringImage;
-                        UseImage useImage = new UseImage(strings,"true",1);
+                        UseImage useImage = new UseImage(strings, "true", 1);
                         Items_Image = useImage;
                     }
                 }
@@ -380,7 +371,7 @@ namespace ServersAccept
                 Id = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
 
-        
+
             string sqlExpressio = $"SELECT * FROM Files  WHERE Id in ({String.Join(",", data.Id)})";
 
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -406,10 +397,10 @@ namespace ServersAccept
                         //var b =   Convert.ToBase64String(Im as Byte[]);
                         strings[i] = Convert.ToBase64String(sqReader["Image"] as Byte[]);
                         i++;
-                    }                        
-                       Friends_Image friends_ =new Friends_Image(strings, strings.Length);
-                        //  UseImage useImage = new UseImage(strings, "true", 1);
-                        Friends_Image = friends_;
+                    }
+                    Friends_Image friends_ = new Friends_Image(strings, strings.Length);
+                    //  UseImage useImage = new UseImage(strings, "true", 1);
+                    Friends_Image = friends_;
 
                 }
                 else
@@ -418,7 +409,7 @@ namespace ServersAccept
                 }
             }
         }
-      
+
 
         //Проверяет  в таблицу Друзья количество друзей 1го пользователя
         async public void Select_Friend(string curent_user)
@@ -449,7 +440,7 @@ namespace ServersAccept
             }
 
             if (Friends == true)
-            {         
+            {
                 //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
                 string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
                 int[] Frend = new int[UserCount];
@@ -514,8 +505,8 @@ namespace ServersAccept
 
             }
         }
-        
-        
+
+
         //Проверяет  в таблицу пользователи по имени пользователя
         async public void Select_From_Users(string data)
         {
@@ -541,10 +532,10 @@ namespace ServersAccept
                 else
                 {
                     User_Select_Chats = false;
-                }  
+                }
             }
         }
-        
+
         //Проверяет  в таблицу Друзья  добавляет друзей по id 
         async public void Select_From_Users(string IdUserFrom, string IdUserTo)
         {
@@ -569,10 +560,10 @@ namespace ServersAccept
                 command.CommandText = sqй;
             }
         }
-        
+
         //Добавляет  в таблицу Чат  сообщение от пользователя 
         async public void Insert_Message(MessСhat messСhat)
-        {        
+        {
             string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
             {
@@ -617,11 +608,11 @@ namespace ServersAccept
                     while (sqReader.Read())
                     {
                         int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
-                        int  IdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
-                        int  IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
+                        int IdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
+                        int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                         DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                        MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string,DataMess, Mark);
+                        MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
                         //aChat = mСhat;
                         aClats[k] = mСhats;
                         k++;
@@ -630,7 +621,7 @@ namespace ServersAccept
                 }
                 else
                 {
-                 
+
                 }
             }
         }
@@ -657,7 +648,7 @@ namespace ServersAccept
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
                 SqliteDataReader sqReader = command.ExecuteReader();
- 
+
                 sqReader.Read();
                 UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
             }
@@ -669,7 +660,7 @@ namespace ServersAccept
                 await connection.OpenAsync();
                 SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
                 SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
-                var n = await command.ExecuteReaderAsync();          
+                var n = await command.ExecuteReaderAsync();
                 SqliteDataReader sqReader = command2.ExecuteReader();
                 // Always call Read before accessing data.
                 if (n.HasRows == true)
@@ -685,7 +676,7 @@ namespace ServersAccept
                         int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                         MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
                         aClats[k] = mСhats;
-                        k++;                     
+                        k++;
                     }
                     Frends_Chat_Wath = aClats;
                 }
@@ -695,7 +686,7 @@ namespace ServersAccept
                 }
             }
         }
-        
+
         //Удаляет сообщение в чате  сообщение в чате у данного пользователя по 
         async public void Delete_Message_make_up(MessСhat messСhat)
         {
@@ -730,7 +721,7 @@ namespace ServersAccept
                 SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
                 SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
                 var n = await command.ExecuteReaderAsync();
-                SqliteDataReader sqReader = command2.ExecuteReader();      
+                SqliteDataReader sqReader = command2.ExecuteReader();
                 if (n.HasRows == true)
                 {
                     MessСhat[] aClats = new MessСhat[UserCount];

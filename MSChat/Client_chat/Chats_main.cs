@@ -1,6 +1,5 @@
 ﻿using Class_chat;
 using System;
-//using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,15 +7,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
-//using Newtonsoft.Json.Linq;
-//using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-//using static System.Net.WebRequestMethods;
-//using static System.Net.Mime.MediaTypeNames;
-//using System.Data;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-//using static System.Net.WebRequestMethods;
+
 
 namespace Client_chat
 {
@@ -30,8 +23,7 @@ namespace Client_chat
         string Na_me { get; set; }
         public User_photo[] Friend { get; set; }
         public MessСhat[] allChat { get; set; }
-      //  public bool all_Chat { get; set; }
- //       public Image Image { get; set; }
+
         public int Users { get; set; }
         public int Friends { get; set; }
         public bool Update_Message { get; set; }
