@@ -18,22 +18,21 @@ namespace Class_chat
         //    UserName=userName;
         //}
     }
-    public  class  User_reg
+    public class User_reg
     {
         public static string UserName { get; set; }
         public User_reg(string userName)
         {
-        
-            UserName=userName;
+            UserName = userName;
         }
-}
+    }
 
 
     public class Connect_Client_
     {
-        public  Int32 Port { get; set; }
-        public  string IP { get; set; }
-        public  string UserName { get; set; }
+        public Int32 Port { get; set; }
+        public string IP { get; set; }
+        public string UserName { get; set; }
         public Connect_Client_(Int32 port, string ip, string userName)
         {
             Port = port;
@@ -44,35 +43,31 @@ namespace Class_chat
 
     public class Connect_server
     {
-
         public string Ip_address { get; set; }
         public Int32 Port { get; set; }
-
-        
     }
+
     public class Connect_server_
     {
         public string Ip_address { get; set; }
         public Int32 Port { get; set; }
-        public  Connect_server_(string ip, Int32 port)
+        public Connect_server_(string ip, Int32 port)
         {
-            Ip_address=ip;
+            Ip_address = ip;
             Port = port;
-
-
         }
     }
 
 
     public class ConnectSettings
     {
-        public const  Int32 port = 9595;
-     //  public const string IP = "127.0.0.1"; 
+        public const Int32 port = 9595;
+        //  public const string IP = "127.0.0.1"; 
     }
 
 
 
-   // [DataContract]
+    // [DataContract]
     public class UserLogin
     {
         //public UserLogin() { }
@@ -97,7 +92,7 @@ namespace Class_chat
         {
             Name = name;
             Pass = pass;
-            Current=curent;
+            Current = curent;
         }
     }
 
@@ -120,7 +115,6 @@ namespace Class_chat
             Photo = photo;
             Id = id;
         }
-
     }
 
     public class User_photo
@@ -142,7 +136,6 @@ namespace Class_chat
             Id = id;
             Current = current;
         }
-
     }
 
     // класс отправки 
@@ -163,12 +156,10 @@ namespace Class_chat
     // класс приема User_photo_Travel
     public class MsgFriends
     {
-
         //MsgFriends() { }
         public string Answe { get; set; }
         public int List_Mess { get; set; }
         public List<User_photo> AClass { get; set; } = new List<User_photo>();
-
     }
 
 
@@ -197,13 +188,9 @@ namespace Class_chat
         public string Answe { get; }
         public User_photo User_ { get; set; }
         public int List_Mess { get; set; }
-        public List<User_photo> AClass { get; set; } = new List<User_photo>();    
+        public List<User_photo> AClass { get; set; } = new List<User_photo>();
 
     }
-
-
-
-
 
 
     public class _Name
@@ -224,14 +211,14 @@ namespace Class_chat
         public string Message { get; set; }
         public DateTime DataMess { get; set; }
         public int Mark { get; set; }
-        public MessСhat(int id,int idUserFrom, int idUserTo, string message,  DateTime dataMess, int mark)
+        public MessСhat(int id, int idUserFrom, int idUserTo, string message, DateTime dataMess, int mark)
         {
             Id = id;
             IdUserFrom = idUserFrom;
             IdUserTo = idUserTo;
             Message = message;
             DataMess = dataMess;
-            Mark = mark;    
+            Mark = mark;
         }
     }
 
@@ -270,15 +257,15 @@ namespace Class_chat
             Id = id;
             Current = current;
         }
-
     }
+
     public class Photo_Friends
     {
         Photo_Friends() { }
-        public int [] Id { get; set; }
-        public int [] Current { get; set; }
+        public int[] Id { get; set; }
+        public int[] Current { get; set; }
 
-        public Photo_Friends(int []id, int [] current)
+        public Photo_Friends(int[] id, int[] current)
         {
             Id = id;
             Current = current;
@@ -326,12 +313,10 @@ namespace Class_chat
     {
         __User_regis() { }
         public string Name { get; set; }
-
-        public string  Pass { get; set; }
+        public string Pass { get; set; }
         public string Age { get; set; }
         public byte[] Photo { get; set; }
         public int Id { get; set; }
-
 
         public __User_regis(string name, string pass, string age, byte[] photo, int id)
         {
@@ -341,7 +326,6 @@ namespace Class_chat
             Photo = photo;
             Id = id;
         }
-
     }
 
     public class Searh_Friends
@@ -354,7 +338,6 @@ namespace Class_chat
             Name = name;
             User = user;
         }
-
     }
 
 }

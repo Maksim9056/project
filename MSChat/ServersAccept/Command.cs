@@ -46,7 +46,6 @@ namespace ServersAccept
                 globalClass.Select_Users(person3.Name, person3.Pass);
                 if (globalClass.Name != null)
                 {
-
                     using (MemoryStream ms = new MemoryStream())
                     {
                         User_Logins user_Logins = new User_Logins("false", null, 1, null);
@@ -70,7 +69,6 @@ namespace ServersAccept
                         if (globalClass.Friends == true)
                         {
                             User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
-
 
                             for (int k = 0; k < globalClass.List_Friend.Length; k++)
                             {
@@ -97,8 +95,6 @@ namespace ServersAccept
                                 stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
                             }
                         }
-
-
                     }
                     else
                     {
@@ -116,7 +112,6 @@ namespace ServersAccept
                 }
             }
         }
-
 
         //004-выборка друзей пользователя
         public void Sampling_Users_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)

@@ -115,7 +115,6 @@ namespace ServersAccept
         {
             try
             {
-
                 using (TcpClient client = client_obj as TcpClient)
                 {
                     byte[] bytes = new byte[99999999];
@@ -211,15 +210,14 @@ namespace ServersAccept
                                      //}*/
                     }
                 }
-
             }
             catch (Exception e)
             {
              //   Console.WriteLine(e.Source);
                 Console.WriteLine(e.Message);
             }
-
         }
+
         //Загружаеться Ip_address и port
         static public void SaveOpen()
         {
@@ -239,16 +237,12 @@ namespace ServersAccept
                 using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
                 {
                     Connect_server_ connect_Server_ = new Connect_server_(IPAddress.Loopback.ToString(), ConnectSettings.port);
-
                     JsonSerializer.Serialize<Connect_server_>(fileStream, connect_Server_);
                 }
 
-
                 using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
                 {
-
                     Connect_server aFile = JsonSerializer.Deserialize<Connect_server>(fileStream);
-
                     Ip_Adress = aFile.Ip_address;
                     port = aFile.Port;
                 }

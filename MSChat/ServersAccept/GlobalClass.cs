@@ -24,7 +24,7 @@ namespace ServersAccept
         public string Current_User { get; set; }
 
         //Заготовка для фото  добавление  
-        public byte[] Image_User { get; set; }
+        //public byte[] Image_User { get; set; }
 
         //Класс - все аргументы пользователю даже id его изображениея
         public User_photo AUser { get; set; }
@@ -36,7 +36,7 @@ namespace ServersAccept
         public MessСhat[] aChatss { get; set; }
 
         //Заготовки 
-        public MessСhat List_Mess { get; set; }
+        //public MessСhat List_Mess { get; set; }
 
         //Содержит id пользользователя для проверки сообщений
         public string Id_Users { get; set; }
@@ -352,6 +352,7 @@ namespace ServersAccept
                 }
             }
         }
+
         async public void Select_Image_Photo_Friends(Photo_Friends data)
         {
             //string Name = "";
@@ -409,7 +410,6 @@ namespace ServersAccept
                 }
             }
         }
-
 
         //Проверяет  в таблицу Друзья количество друзей 1го пользователя
         async public void Select_Friend(string curent_user)
@@ -505,7 +505,6 @@ namespace ServersAccept
 
             }
         }
-
 
         //Проверяет  в таблицу пользователи по имени пользователя
         async public void Select_From_Users(string data)
@@ -825,11 +824,9 @@ namespace ServersAccept
 
                 if (n.HasRows == true)
                 {
-
                     // Always call Read before accessing data.
                     while (sqReader.Read())
                     {
-
                         //       Current_User = sqReader["Id"].ToString();
                         Insert_Friend_by_id = Convert.ToInt32(sqReader["Id"].ToString());
                         //Еще будет нужна

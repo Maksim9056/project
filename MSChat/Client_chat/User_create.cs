@@ -48,9 +48,9 @@ namespace Client_chat
                         //command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
                         Task.Run(async () => await command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002")).Wait();
                         if (User_reg.UserName == null)
-                        {                                                 
-                                MessageBox.Show("Выберите картинку  с меньшим размером!");
-                            
+                        {
+                            MessageBox.Show("Выберите картинку  с меньшим размером!");
+
                         }
                         else
                         {
@@ -60,10 +60,10 @@ namespace Client_chat
                             }
                             else
                             {
-                                MessageBox.Show("Добавление пользователя разрешено");  
+                                MessageBox.Show("Добавление пользователя разрешено");
                                 this.Close();
                             }
-                       
+
                             //using (Password_Users a = new Password_Users())
                             //{
                             //Chats_main parent = (Chats_main)this.Owner;
