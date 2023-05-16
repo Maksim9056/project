@@ -284,6 +284,7 @@ namespace Class_chat
             Current = current;
         }
     }
+
     public class Friends_Image
     {
         Friends_Image() { }
