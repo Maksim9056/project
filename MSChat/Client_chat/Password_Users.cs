@@ -212,58 +212,63 @@ namespace Client_chat
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (Password_Users Form = new Password_Users())
+            try
             {
-                if (textBox2.Text == "")
+                using (Password_Users Form = new Password_Users())
                 {
-                    MessageBox.Show("Пароль не заполнен!");
-                }
-                else
-                {
-                    using (MemoryStream fs = new MemoryStream())
+                    if (textBox2.Text == "")
                     {
-                        CommandCL command = new CommandCL();
-                        string FileFS = "";
-                        UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
-                        JsonSerializer.Serialize<UserLogin>(fs, tom);
-                        FileFS = Encoding.Default.GetString(fs.ToArray());
-                        /*
-                               //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-
-                               //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
-
-                               //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
-
-                               //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                               //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                               //task.Wait();*/
-                        Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
-
-                        if (CommandCL.User_Logins_and_Friends.User_ != null)
-                        {
-                            Chats_main a = new Chats_main();
-                            Chats_main parent = (Chats_main)this.Owner;
-                            parent.NotifyMe(CommandCL.User_Logins_and_Friends);
-                            parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
-                            // Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003", textBox1.Text, this);
-                            //чтобы не запоминал после передачи
-                            CommandCL.User_Logins_and_Friends = null;
-                            this.Close();
-                        }               
-                        else if(CommandCL.User_Logins_and_Friends.List_Mess != 0)
-                        {
-                           
-                            MessageBox.Show("Пароль введен не верно!");
-                        }
-                        else if(CommandCL.User_Logins_and_Friends.AClass ==null)
-                        {
-                            MessageBox.Show("Такой учетной записи нет");
-                        }
-
-
+                        MessageBox.Show("Пароль не заполнен!");
                     }
-                    Form.Close();
+                    else
+                    {
+                        using (MemoryStream fs = new MemoryStream())
+                        {
+                            CommandCL command = new CommandCL();
+                            string FileFS = "";
+                            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                            JsonSerializer.Serialize<UserLogin>(fs, tom);
+                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                            /*
+                                   //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+
+                                   //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
+
+                                   //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
+
+                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                                   //task.Wait();*/
+                            Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
+
+                            if (CommandCL.User_Logins_and_Friends.User_ != null)
+                            {
+                                Chats_main a = new Chats_main();
+                                Chats_main parent = (Chats_main)this.Owner;
+                                parent.NotifyMe(CommandCL.User_Logins_and_Friends);
+                                parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
+                                CommandCL.User_Logins_and_Friends = null;
+                                this.Close();
+                            }
+                            else if (CommandCL.User_Logins_and_Friends.List_Mess != 0)
+                            {
+
+                                MessageBox.Show("Пароль введен не верно!");
+                            }
+                            else if (CommandCL.User_Logins_and_Friends.AClass == null)
+                            {
+                                MessageBox.Show("Такой учетной записи нет");
+                            }
+
+
+                        }
+                        Form.Close();
+                    }
                 }
+            }
+            catch
+            {
+
             }
         }
 

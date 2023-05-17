@@ -684,7 +684,9 @@ namespace Client_chat
                         //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
                         int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
                         MessСhat tt = allChat[selectedrowindexs];
+                    
                         textBox1.Text = tt.Message;
+
                         Update_id = tt.Id;
                         Update_Message = true;
                         //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ

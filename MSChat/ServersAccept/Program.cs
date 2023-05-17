@@ -63,11 +63,7 @@ namespace ServersAccept
                     ThreadPool.UnsafeQueueUserWorkItem(ClientProcessing, server.AcceptTcpClient());
                     counter++;
                     Console.Write("\nСоединие№" + counter.ToString() + "!");
-                    /*
-                    // QueueUserWorkItem             
-                    // ThreadPool.QueueUserWorkItem;   
-                    //      Thread.MemoryBarrier();
-                    */
+
                 }
             }
             catch (SocketException e)
