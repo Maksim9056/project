@@ -434,7 +434,7 @@ namespace ServersAccept
                     }
                     else
                     {
-
+                        //Проверяем по Id текущего пользователя если 0 то нету
                         if (Select_list_Friends.Current == 0)
                         {
 
@@ -442,19 +442,38 @@ namespace ServersAccept
                         else
                         {
                             globalClass.Select_Friend(Select_list_Friends.Current.ToString());
-
-                            User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
-
-                            for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                            //Проверяем пустые массив  друзей если есть то пустоту посылаем
+                            if (globalClass.List_Friend == null)
                             {
-                                json_List_Friends[k] = globalClass.List_Friend[k];
+                                using (MemoryStream ms = new MemoryStream())
+                                {   //Заполняем в пустой класс для принятия на клиенте
+                                    User_photo[] json_List_Friends = new User_photo[] { };
+                                    //Собераем класс отправки
+                                    User_photo_Travel user_Logins = new User_photo_Travel("false", json_List_Friends.Length, json_List_Friends);
+                                    //Серилизуем класс User_photo_Travel 
+                                    JsonSerializer.Serialize<User_photo_Travel>(ms, user_Logins);
+                                    //Отправляем
+                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                }
                             }
-
-                            using (MemoryStream ms = new MemoryStream())
+                            else//Друзья есть и массив друзей посылаем
                             {
-                                User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
-                                JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
-                                stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                //Заполняем размерность массива 
+                                User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+                                //Получаем в цикле друзейй
+                                for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                                {
+                                    json_List_Friends[k] = globalClass.List_Friend[k];
+                                }
+                                //Отправляем
+                                using (MemoryStream ms = new MemoryStream())
+                                {   //Заполняем класс 
+                                    User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
+                                    //Серилизуем класс User_photo_Travel 
+                                    JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
+                                    //Отправка на клиенте
+                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                }
                             }
                         }
                     }

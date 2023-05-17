@@ -20,15 +20,19 @@ namespace Client_chat
         {
             InitializeComponent();
         }
+        //Размео постояное значение
         private const int ButtonSizeIncrease = 20;
+        //Отрисовка
         private Point _originalButtonLocation;
+        //размерность 
         private Size _originalButtonSize;
-        public  User_regis[] List_Friend { get; set; }
 
+        //Регестрация
         private void button2_Click(object sender, EventArgs e)
         {
             using (User_create Регестрироваться = new User_create())
             {
+                //Переход в форму регестрация
                 Регестрироваться.ShowDialog(this);
                 //this.Hide();
             }
@@ -36,6 +40,7 @@ namespace Client_chat
 
         private void textBox1_Click(object sender, EventArgs e)
         {
+            //Проверяем имя на пустоту
             if (string.IsNullOrEmpty(textBox1.Text))
             {
                 if (textBox1.Text == "Имя")
@@ -44,11 +49,137 @@ namespace Client_chat
                 { textBox1.Text = textBox1.Text; }
             }
         }
-  /*
-                    // responseData = System.Text.Encoding.Default.GetString(data, 0, bytess);
-                    //  DataContractJsonSerializer formater = new DataContractJsonSerializer(typeof(User_regis));*/
 
-        //// Передача 003
+
+
+        //При вводе пароля появляються * 
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Проверяем на пустоту
+            if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                //Есть ли значение пароль
+                if (textBox2.Text == "Пароль")
+                {
+                    textBox2.Text = string.Empty;
+                    textBox2.UseSystemPasswordChar = true;
+                }
+                else
+                {
+                    //присваеваем пароль   
+                    textBox2.Text = textBox2.Text;
+                    //Маскируем пароль *
+                    textBox2.PasswordChar = '*';
+
+                }
+            }
+        }
+
+        //Для увиличения кнопки
+        private void button1_MouseMove(object sender, MouseEventArgs e)
+        {
+            //Формула
+            button1.Width = _originalButtonSize.Width + ButtonSizeIncrease;
+            button1.Height = _originalButtonSize.Height + ButtonSizeIncrease;
+            //отрисовка
+            button1.Location = new Point(_originalButtonLocation.X - ButtonSizeIncrease / 2,
+                                          _originalButtonLocation.Y - ButtonSizeIncrease / 2);
+        }
+
+
+        //Авторизация пользователя
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Password_Users Form = new Password_Users())
+                {
+                    //Проверяем пароль 
+                    if (textBox2.Text == "")
+                    {
+                        MessageBox.Show("Пароль не заполнен!");
+                    }
+                    else
+                    {
+                        using (MemoryStream fs = new MemoryStream())
+                        {
+                            //Создаем  экземпляр класс CommandCL
+                            CommandCL command = new CommandCL();
+                            //Для класс серилизации используем для строки FileFS
+                            string FileFS = "";
+                            //Собрали класс UserLogin
+                            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                            //Серилизовали класс UserLogin в MemoryStream fs 
+                            JsonSerializer.Serialize<UserLogin>(fs, tom);
+                            //Декодировали в строку  MemoryStream fs   
+                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                            /*
+                                   //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+
+                                   //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
+
+                                   //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
+
+                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
+                                   //task.Wait();*/
+                            //Отправили и получили результат
+                            Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
+                            //Проверяем есть ли пользователь 
+                            if (CommandCL.User_Logins_and_Friends.User_ != null)
+                            {
+                                Chats_main a = new Chats_main();
+                                Chats_main parent = (Chats_main)this.Owner;
+                                parent.NotifyMe(CommandCL.User_Logins_and_Friends);
+                                parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
+                                CommandCL.User_Logins_and_Friends = null;
+                                this.Close();
+                            }
+                            //Проверяем количество друзей сдесь специально больше 1  
+                            else if (CommandCL.User_Logins_and_Friends.List_Mess != 0)
+                            {
+
+                                MessageBox.Show("Пароль введен не верно!");
+                            }
+                            //Проверяем  не равен класс друзей == null
+                            else if (CommandCL.User_Logins_and_Friends.AClass == null)
+                            {
+                                MessageBox.Show("Такой учетной записи нет");
+                            }
+
+
+                        }
+                        Form.Close();
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        //Постояное значени кнопки
+        private void Password_Users_Load(object sender, EventArgs e)
+        {
+            //Сдесь храним постояное значение
+            _originalButtonLocation = button1.Location;
+            //Сдесь храним постояное значение
+            _originalButtonSize = button1.Size;
+            //Сдесь храним постояное значение
+            textBox1.Text = Connect_Client.UserName;
+            
+        }
+         //Уменьшает размер когда нету  курсора мыши
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            //Возращает прежний размер кнопки
+            button1.Size = _originalButtonSize;
+            //Возращает прежний размер кнопки
+            button1.Location = _originalButtonLocation;
+        }
+    }
+}
+//// Передача 003
         //async void Check_User_Possword(String server, string fs, string command)
         //{
         //    using (TcpClient client = new TcpClient(server, ConnectSettings.port))
@@ -174,116 +305,10 @@ namespace Client_chat
         //        }
 
         //    }
-        //}
-        
-        public void Clas( string responseDat)
-        {
+        //}        */*/*/
 
 
+    
 
+        //
 
-        }
-
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (string.IsNullOrEmpty(textBox2.Text))
-            {
-                if (textBox2.Text == "Пароль")
-                {
-                    textBox2.Text = string.Empty;
-                    textBox2.UseSystemPasswordChar = true;
-                }
-                else
-                {
-                    textBox2.Text = textBox2.Text;           
-                    textBox2.PasswordChar = '*';
-
-                }
-            }
-        }
-
-        private void button1_MouseMove(object sender, MouseEventArgs e)
-        {
-            button1.Width = _originalButtonSize.Width + ButtonSizeIncrease;
-            button1.Height = _originalButtonSize.Height + ButtonSizeIncrease;
-            button1.Location = new Point(_originalButtonLocation.X - ButtonSizeIncrease / 2,
-                                          _originalButtonLocation.Y - ButtonSizeIncrease / 2);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using (Password_Users Form = new Password_Users())
-                {
-                    if (textBox2.Text == "")
-                    {
-                        MessageBox.Show("Пароль не заполнен!");
-                    }
-                    else
-                    {
-                        using (MemoryStream fs = new MemoryStream())
-                        {
-                            CommandCL command = new CommandCL();
-                            string FileFS = "";
-                            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
-                            JsonSerializer.Serialize<UserLogin>(fs, tom);
-                            FileFS = Encoding.Default.GetString(fs.ToArray());
-                            /*
-                                   //command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-
-                                   //var result = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003").GetAwaiter().GetResult();
-
-                                   //var result = Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003"));
-
-                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                                   //var task = command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003");
-                                   //task.Wait();*/
-                            Task.Run(async () => await command.Check_User_Possword(IP_ADRES.Ip_adress, FileFS, "003")).Wait();
-
-                            if (CommandCL.User_Logins_and_Friends.User_ != null)
-                            {
-                                Chats_main a = new Chats_main();
-                                Chats_main parent = (Chats_main)this.Owner;
-                                parent.NotifyMe(CommandCL.User_Logins_and_Friends);
-                                parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
-                                CommandCL.User_Logins_and_Friends = null;
-                                this.Close();
-                            }
-                            else if (CommandCL.User_Logins_and_Friends.List_Mess != 0)
-                            {
-
-                                MessageBox.Show("Пароль введен не верно!");
-                            }
-                            else if (CommandCL.User_Logins_and_Friends.AClass == null)
-                            {
-                                MessageBox.Show("Такой учетной записи нет");
-                            }
-
-
-                        }
-                        Form.Close();
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        private void Password_Users_Load(object sender, EventArgs e)
-        {
-            _originalButtonLocation = button1.Location;
-            _originalButtonSize = button1.Size;
-            textBox1.Text = Connect_Client.UserName;
-            
-        }
-
-        private void button1_MouseLeave(object sender, EventArgs e)
-        {
-            button1.Size = _originalButtonSize;
-            button1.Location = _originalButtonLocation;
-        }
-    }
-}

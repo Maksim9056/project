@@ -321,19 +321,20 @@ namespace Client_chat
 
         }
 
-        // Передача ???
+        // Передача картинок друзей
         async public Task Get_Image_Friends(String server, string fs, string command)
         {
             try
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
+                {   //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправили на сервер
                     await stream.WriteAsync(data, 0, data.Length);
                     //data = new Byte[1024];
                     String responseData = String.Empty;
-
+                    //Функция получения
                     Byte[] readingData = new Byte[256];
                     StringBuilder completeMessage = new StringBuilder();
                     int numberOfBytesRead = 0;
@@ -344,12 +345,14 @@ namespace Client_chat
                     }
                     while (stream.DataAvailable);
                     responseData = completeMessage.ToString();
-
+                    //Проверяем
                     if (responseData == "false")
                     {
+                        //Обработаем
                     }
                     else
                     {
+                        //Разбераем JObject и JToken удобно без обрезания серилизует байты
                         JObject details = JObject.Parse(responseData);
                         JToken Answe = details.SelectToken("List_Mess");
                         JToken List_Mess = details.SelectToken("Image");
@@ -381,35 +384,40 @@ namespace Client_chat
             try
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
+                {   //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправили  на сервер
                     await stream.WriteAsync(data, 0, data.Length);
+                    //Назначаем длину 1024
                     data = new Byte[1024];
                     String responseData = String.Empty;
-
+                    //функция получения но обрезающая 
                     responseData = await Task<string>.Run(() =>
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-                        //получить перечень сообщений
-                        if (responseData == "false")
-                        {
-                           _Answe = "false";
+                    //получить перечень сообщений
+                    if (responseData == "false")
+                    {   //Если нету списка
+                        _Answe = "false";
                     }
-                        else
-                        {
-                            MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);
-                            JObject details = JObject.Parse(responseData);
-                            JToken Answe = details.SelectToken("Answe");
-                            JToken List_Mess = details.SelectToken("List_Mess");
-                            JToken AClass = details.SelectToken("AClass");
+                    else
+                    {
+                        //Разбераем классом но надо правильно это делать может не сработать 
+                        //В данном случаи сработал
+                        MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);
+                        //Разбераем JObject и JToken удобно для повторного использования
+                        JObject details = JObject.Parse(responseData);
+                        JToken Answe = details.SelectToken("Answe");
+                        JToken List_Mess = details.SelectToken("List_Mess");
+                        JToken AClass = details.SelectToken("AClass");
+                        //Присваеваем значения
+                        _Answe = Answe;
+                        _List_Mess_count = List_Mess;
+                        _AClass = AClass;
+                    }
 
-                            _Answe = Answe;
-                            _List_Mess_count = List_Mess;
-                            _AClass = AClass;
-                        }
-                    
                 }
             }
             catch (ArgumentNullException e)
@@ -434,15 +442,25 @@ namespace Client_chat
             try
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
+                {    //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправили друзей
                     await stream.WriteAsync(data, 0, data.Length);
-                    String responseDat = String.Empty;                 
-                    responseDat = await Task<string>.Run(() =>
+
+                    String responseDat = String.Empty;
+                    //Функция для получения ответа 
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
                     {
-                        return Func_Read(stream, data.Length, client);
-                    });
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseDat = completeMessage.ToString();
+                    //Получили данные в строке и десеризовали класс Searh_Friends
                     Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
                     _Friends = searh_Friends;                             
                 }                                                                 
@@ -505,16 +523,20 @@ namespace Client_chat
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
+                     //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправли на сервер
                     await stream.WriteAsync(data, 0, data.Length);
                     String responseDat = String.Empty;
+                    //получаем из сервера ответ
                     responseDat = await Task<string>.Run(() =>
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-
+                    // десеризовали класс MsgInfo в д
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
+                    //Разбераем JObject и JToken удобно для повторного использования
                     JObject details = JObject.Parse(responseDat);
                     JToken Answe = details.SelectToken("Answe");
                     JToken List_Mess = details.SelectToken("List_Mess");
@@ -542,17 +564,21 @@ namespace Client_chat
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
+                    //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправили на сервер
                     await stream.WriteAsync(data, 0, data.Length);                 
-                    String responseDat = String.Empty;             
+                    String responseDat = String.Empty;
+                    //получаем строку
                     responseDat = await Task<string>.Run(() =>
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-
+                    //Разбераем классом MsgInfo  но надо правильно это делать может не сработать  
+                    //Сдесь сработала десерилизация
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
-
+                    //Разбераем JObject и JToken удобно для повторного использования
                     JObject details = JObject.Parse(responseDat);
                     JToken Answe = details.SelectToken("Answe");
                     JToken List_Mess = details.SelectToken("List_Mess");

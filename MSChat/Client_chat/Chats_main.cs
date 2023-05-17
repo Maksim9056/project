@@ -20,21 +20,28 @@ namespace Client_chat
             InitializeComponent();
         }
 
+        //Для Поиска друзей
         string Na_me { get; set; }
+        //Постояные значения используем для пользователей
         public User_photo[] Friend { get; set; }
+        //Постояные значения используем для фильтра для чата
         public MessСhat[] allChat { get; set; }
-
+        //id пользователя
         public int Users { get; set; }
+        //id другу
         public int Friends { get; set; }
+        //Обновлять сообщение
         public bool Update_Message { get; set; }
-
+        //id сообщения
         public int Update_id { get; set; }
 
+        //Для отображения при выборке [Редактировать] ,[Удалить]
         public int selectedBiodataId;
+        //Проверяет есть ли  подключения
         public bool Entrance { get; set; }
-        public string Respons { get; set; }
-       
-        public  CommandCL command = new CommandCL();
+
+        //Экземпляр класса CommandCL
+        public CommandCL command = new CommandCL();
 
 
         //Отображает Сообщения из чата
@@ -42,6 +49,7 @@ namespace Client_chat
         {
             using (MemoryStream Chats = new MemoryStream())
             {
+                //
                 if (command._Answe != null)
                 {
                     if (command._Answe.ToString() == "true")
