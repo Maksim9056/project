@@ -27,38 +27,17 @@ namespace Client_chat
         public  JToken _List_Mess_count  { get; set; }
         //Класс с друзьями и сообщениями
         public  JToken _AClass  { get; set; }
-        //Проверка
-       // public JToken __Answe { get; set; }
-       // //Количество друзей
-       // public JToken __List_Mess_count { get; set; }
-       // //Класс с друзьями и сообщениями
-       // public JToken __AClass { get; set; }
-       // // Проверка редактированых 
-       // public JToken ___Answe { get; set; }
-       // //Количество друзей редактированых
-       // public JToken ___List_Mess_count { get; set; }
-       // //Класс с друзьями и сообщениями редактированых
-       // public JToken ___AClass { get; set; }
-
-       // // Проверка редактированых 
-       // public JToken ____Answe { get; set; }
-       ////Количество друзей редактированых
-       // public JToken ____List_Mess_count { get; set; }
-        //Класс с друзьями и сообщениями редактированых
-    //    public JToken ____AClass { get; set; }
 
         // Проверка редактированых 
         public JToken AnsweIm { get; set; }
+
         //Количество картинок редактированых
         public JToken List_Mess_countIm { get; set; }
+
         //Класс картинок редактированых
         public JToken AClassIm { get; set; }
 
         public JToken List_Friends { get; set; }
-
-        //Класс с картинками
-       // public UseImage_OutPut UserImage { get; set; }
-
 
         //Функция считывания байт из потока и формирование единой строки
         public string Func_Read(Stream str, int length, TcpClient client)
@@ -84,15 +63,17 @@ namespace Client_chat
         {
             try
             {
+                //Регистрация
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
+                    //Декодируем Bite []
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
-
+                    //Отправляем на сервер
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseData = String.Empty;
-
+                    //Функия получения
                     Byte[] readingData = new Byte[256];
                     StringBuilder completeMessage = new StringBuilder();
                     int numberOfBytesRead = 0;
@@ -103,7 +84,7 @@ namespace Client_chat
                     }
                     while (stream.DataAvailable);
                     responseData = completeMessage.ToString();
-
+                    //Получаем имя пользователя
                     User_reg.UserName = responseData;
                 }
             }
@@ -129,10 +110,11 @@ namespace Client_chat
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
-
+                    //Декодируем Bite []
                     byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     string Host = System.Net.Dns.GetHostName();
                     NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
                     await stream.WriteAsync(data, 0, data.Length);
                     String responseData = String.Empty;
                     /*
@@ -151,17 +133,20 @@ namespace Client_chat
                     //}
                     */
 
+
+                    //Функция получаем
                     responseData = await Task<string>.Run(() =>
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-
+                    //Проверяем
                     if (responseData == "false")
                     {
                         User_Logins_and_Friends = null;
                     }
                     else
                     {
+                        //Десерилизуем класс
                         MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
                         User_Logins_and_Friends = person3;
                         /*
@@ -269,13 +254,15 @@ namespace Client_chat
             try
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {
+                {   
+                    //Декодируем Bite []
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
                     await stream.WriteAsync(data, 0, data.Length);
-                    data = new Byte[1024];
+            
                     String responseData = String.Empty;
-
+                    //Функция получения
                     Byte[] readingData = new Byte[256];
                     StringBuilder completeMessage = new StringBuilder();
                     int numberOfBytesRead = 0;
@@ -285,14 +272,17 @@ namespace Client_chat
                         completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
                     }
                     while (stream.DataAvailable);
+                    //Получили результат
                     responseData = completeMessage.ToString();
 
-
+                    //Проверяем условия
                     if (responseData == "false")
                     {
+                        //Нету картинки
                     }
                     else
                     {
+                        //Так обрабатываем картинки 
                         JObject details = JObject.Parse(responseData);
                         JToken Answe = details.SelectToken("Answe");
                         JToken List_Mess = details.SelectToken("List_Mess");

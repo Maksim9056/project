@@ -49,43 +49,58 @@ namespace Client_chat
         {
             using (MemoryStream Chats = new MemoryStream())
             {
-                //
+                // Проверяем не равно ли   null
                 if (command._Answe != null)
                 {
+                    //Здесь проверяем есть ли true то заполняет чат
                     if (command._Answe.ToString() == "true")
                     {
+                        //Заполняем размерность классу
                         MessСhat[] les = new MessСhat[command._AClass.Count()];
-
+                        //Десерилизуем класс и получаем класс MessСhat 
                         for (int i = 0; i < command._AClass.Count(); i++)
                         {
                             string yu = command._AClass[i].ToString();
                             MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
                             les[i] = useTravel;
                         }
+                        //Отчищаем чат
                         dataGridViewChat.Rows.Clear();
+                        //Устанавливаем количество столбцов
                         dataGridViewChat.RowCount = les.Count();
+                        //Устанавливаем количество 2 колонок
                         dataGridViewChat.ColumnCount = 2;
+                        //Для прочтения
                         DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
                         {
                         }
+                        //Передаем значения от les до  allChat
                         allChat = les;
+                        //Добавляем колонкку признак активности
                         dataGridViewChat.Columns.Insert(2, column);
+                        //Проверяем   i < les.Count() больше ли  размерности массива
                         for (int i = 0; i < les.Count(); i++)
                         {
+                            //Выводим в    dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message сообщение
                             for (int j = 0; j < 1; j++)
                             {
                                 dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                //Присваем заголовок колонке
                                 dataGridViewChat.Columns[j].HeaderText = "Сообщения";
+                                //Проверяем от кого сообщения и заполняем голлубым
                                 if (les[i].IdUserFrom != Users)
                                 {
                                     dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
                                 }
                             }
+                            //Отправка
                             for (int j = 1; j < 2; j++)
-                            {
+                            {  //Выводим в dataGridViewChat дату отправления сообщения
                                 dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                //Заголовок дата отправки
                                 dataGridViewChat.Columns[j].HeaderText = "Дата отправки";
                             }
+                            //Признак активности
                             for (int j = 2; j < 3; j++)
                             {
                                 bool aMark = false;
@@ -93,79 +108,92 @@ namespace Client_chat
                                 {
                                     aMark = true;
                                 }
+                                //Выводим галочку
                                 dataGridViewChat.Rows[i].Cells[j].Value = aMark;
                             }
                         }
+                        //Даем размерность автоматически но слимитами
                         dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                         dataGridViewChat.Visible = true;
                     }
                     else
                     {
+                        //Отчищаем чат
                         dataGridViewChat.Rows.Clear();
                     }
                 }
                 else
                 {
+                    //Если нет сообщений
                     dataGridViewChat.Rows.Clear();
                     //MessageBox.Show("Сообщений нет");
                 }
             }
         }
 
-
+        //Сылка
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
         }
 
 
-        //MsgUser_Logins s
+        //MsgUser_Logins для Входа
         public void NotifyMe(MsgUser_Logins responseDat)
         {
+            //Авторизация
             OpenMes(responseDat);
         }
 
         //Сохраняет файл конфигурации в json
-        public void SaveConfig(Int32 Port, string ipAddress,string Name)
+        public void SaveConfig(Int32 Port, string ipAddress, string Name)
         {
+            //Чтения файла Client.json"
             using (FileStream file = new FileStream("Client.json", FileMode.OpenOrCreate))
             {
+                //Заполняем класс Connect_Client_
                 Connect_Client_ connect_Client = new Connect_Client_(Port, ipAddress, Name);
-                JsonSerializer.Serialize<Connect_Client_>(file,connect_Client);
+                //Серелизуем класс Connect_Client_
+                JsonSerializer.Serialize<Connect_Client_>(file, connect_Client);
+                //Ip adress присваеваем
                 IP_ADRES.Ip_adress = ipAddress;
             }
         }
 
         //
         private void toolStripButton1_Click(object sender, EventArgs e)
-            {
+        {
             try
             {
                 if (toolStripTextBox1.Text != "")
                 {
                     Entrance = true;
-                  //  IPStatus status;
-                   try
-                   {   
-                       //IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
-                       /* Ping p = new Ping();
-                      //  PingReply pr = p.Send(IP_ADRES.Ip_adress );
-                        //status = pr.Status;                  
-                        //if (status != IPStatus.Success)
-                        //{
-                        //    MessageBox.Show("Сервер работает");
-                        //   //IPAddress.Loopback.ToString();
-      
-                        //}
-                        //else
-                        //{
-                        //   MessageBox.Show("Сервер временно недоступен!");
-                        //}*/
+                    //  IPStatus status;
+                    try
+                    {
+                        //IP_ADRES.Ip_adress =  toolStripTextBox1.Text;
+                        /* Ping p = new Ping();
+                       //  PingReply pr = p.Send(IP_ADRES.Ip_adress );
+                         //status = pr.Status;                  
+                         //if (status != IPStatus.Success)
+                         //{
+                         //    MessageBox.Show("Сервер работает");
+                         //   //IPAddress.Loopback.ToString();
+
+                         //}
+                         //else
+                         //{
+                         //   MessageBox.Show("Сервер временно недоступен!");
+                         //}*/
+                        //Получаем Ip adress
                         string ipAddress = toolStripTextBox1.Text;
+                        //Ping пингуем 
                         Ping pingSender = new Ping();
+                        //Отправляем получаем
                         PingReply reply = pingSender.Send(ipAddress);
+                        //Проверяем ответ
                         if (reply.Status == IPStatus.Success)
                         {
-                            SaveConfig(ConnectSettings.port, ipAddress,"");
+                            SaveConfig(ConnectSettings.port, ipAddress, "");
                             toolStripButton1.BackColor = Color.Gray;
                             //Подключения к сервуру
                             toolStripButton1.ForeColor = Color.Gray;
@@ -176,34 +204,36 @@ namespace Client_chat
                         }
                         else
                         {
-                            Console.WriteLine("Ping to {0} failed.", ipAddress);
+                            MessageBox.Show("Ping to {0} failed.", ipAddress);
                         }
-                    } 
-                   catch   
-                   {
+                    }
+                    catch
+                    {
 
-                   }
-              
+                    }
+
                 }
                 else
                 {
+                    //Устанавливаем значение что пользователь здесь
                     Entrance = false;
+                    //Выводим что пустой ip adress
                     MessageBox.Show("Ip-адрес:Не заполнен");
                 }
             }
             catch
             {
-
+                //ошибки
             }
         }
 
-        //
+        //Сылка 
         private void toolStripLabel1_Click(object sender, EventArgs e)
         {
 
         }
 
-        //
+        //Уже неиспользуем
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -220,7 +250,7 @@ namespace Client_chat
             }
         }
 
-        //
+        //Сылка
         private void toolStripButton1_MouseHover(object sender, EventArgs e)
         {
         }
@@ -258,7 +288,7 @@ namespace Client_chat
                             dataGridViewChat.Rows.Clear();
                             //Заполняем сразу в чат соообщение
                             Chat(command);
-                            Update_Message = false;                                  
+                            Update_Message = false;
                             Update_id = 0;
                             textBox1.Text = "";
                         }
@@ -280,11 +310,11 @@ namespace Client_chat
                         //Отправляем новое сообщение  и чат обновляем
                         using (MemoryStream New_message = new MemoryStream())
                         {
-                            Task.Run(async () => await command.Insert_Message(IP_ADRES.Ip_adress, FileFS, "009")).Wait();       
+                            Task.Run(async () => await command.Insert_Message(IP_ADRES.Ip_adress, FileFS, "009")).Wait();
                             //Стираем сообщения
                             dataGridViewChat.Rows.Clear();
                             //Заполняем чат
-                            Chat(command);                           
+                            Chat(command);
                         }
                     }
                 }
@@ -301,84 +331,84 @@ namespace Client_chat
             try
             {
                 Users = Friends.User_.Id;
-            //Заполняеться Ip_adress для отправки
-            toolStripTextBox1.Text = IP_ADRES.Ip_adress;
-            //Имя заполняем
-             toolStripLabel1.Text = Friends.User_.Name;
-            //Путь к каталогу программы
-            string pathImage = Environment.CurrentDirectory.ToString();
-            //Кнопка включение
-            toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
-            // Заполняем  клас где  id фото и пользователя текущего
-            using (MemoryStream fs = new MemoryStream())
-            {
-                string FileFS = "";
-                Photo tom = new Photo(Friends.User_.Photo, Friends.User_.Current);
-                JsonSerializer.Serialize<Photo>(fs, tom);
-
-                FileFS = Encoding.Default.GetString(fs.ToArray());
-
-                //Отправляем на сервер  картинку id и пользователя id для получение картинки
-                Task.Run(async () => await command.Get_Image(IP_ADRES.Ip_adress, FileFS, "007")).Wait();
-                //Выбераем первый элемент картинки 
-                string Im = command.AClassIm.First().ToString();
-                //С конвертировали в  массив byte для вывода картинки
-                byte[] ByteImege = Convert.FromBase64String(Im);
-                //Передали в Поток памяти размер массива byte картинки пользователя
-                MemoryStream ms = new MemoryStream(ByteImege);
-                //Заполнение в  image по потоку картинку передали
-                Image returnImage = Image.FromStream(ms);
-                //Показываем картинку  текущему пользователю
-                toolStripButton2.Image = returnImage;
-            }
-            //Проверка когда нету друзей и их картинки 
-            if (Friends != null)
-            {
-                //Количество друзей
-                if (Friends.AClass.Count != 0)
+                //Заполняеться Ip_adress для отправки
+                toolStripTextBox1.Text = IP_ADRES.Ip_adress;
+                //Имя заполняем
+                toolStripLabel1.Text = Friends.User_.Name;
+                //Путь к каталогу программы
+                string pathImage = Environment.CurrentDirectory.ToString();
+                //Кнопка включение
+                toolStripButton1.Image = Image.FromFile(pathImage + "\\Resources\\Images\\Зеленый.png");
+                // Заполняем  клас где  id фото и пользователя текущего
+                using (MemoryStream fs = new MemoryStream())
                 {
-                    //Заполняем  класс  Photo_Friends текущую id картинки друзей и id друзей
-                    using (MemoryStream Friends_Image = new MemoryStream())
+                    string FileFS = "";
+                    Photo tom = new Photo(Friends.User_.Photo, Friends.User_.Current);
+                    JsonSerializer.Serialize<Photo>(fs, tom);
+
+                    FileFS = Encoding.Default.GetString(fs.ToArray());
+
+                    //Отправляем на сервер  картинку id и пользователя id для получение картинки
+                    Task.Run(async () => await command.Get_Image(IP_ADRES.Ip_adress, FileFS, "007")).Wait();
+                    //Выбераем первый элемент картинки 
+                    string Im = command.AClassIm.First().ToString();
+                    //С конвертировали в  массив byte для вывода картинки
+                    byte[] ByteImege = Convert.FromBase64String(Im);
+                    //Передали в Поток памяти размер массива byte картинки пользователя
+                    MemoryStream ms = new MemoryStream(ByteImege);
+                    //Заполнение в  image по потоку картинку передали
+                    Image returnImage = Image.FromStream(ms);
+                    //Показываем картинку  текущему пользователю
+                    toolStripButton2.Image = returnImage;
+                }
+                //Проверка когда нету друзей и их картинки 
+                if (Friends != null)
+                {
+                    //Количество друзей
+                    if (Friends.AClass.Count != 0)
                     {
-                        string FileFS = "";
-                        int[] Id = new int[Friends.List_Mess];
+                        //Заполняем  класс  Photo_Friends текущую id картинки друзей и id друзей
+                        using (MemoryStream Friends_Image = new MemoryStream())
+                        {
+                            string FileFS = "";
+                            int[] Id = new int[Friends.List_Mess];
 
-                        int[] Id_Friends = new int[Friends.List_Mess];
-                        // int[] Id_Ph = new int[Friends.List_Mess];
+                            int[] Id_Friends = new int[Friends.List_Mess];
+                            // int[] Id_Ph = new int[Friends.List_Mess];
 
+                            User_photo[] A = new User_photo[Friends.List_Mess];
+                            for (int I = 0; I < Friends.AClass.Count(); I++)
+                            {
+                                A[I] = Friends.AClass[I];
+                                Id_Friends[I] = A[I].Photo;
+                                Id[I] = A[I].Id;
+                            }
+                            // A[0].Id
+                            Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
+                            JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
+                            FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
+                            //Отправляем на сервер и получаем от туда картинку ввиде строки
+                            Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS, "014")).Wait();
+                        }
+                    }
+                    //Заполняем пользователя имя
+                    Na_me = Friends.User_.Name;
+                    //Проверяем количество друзей
+                    if (Friends.List_Mess == 0)
+                    {
+                        //обработать когда их 0
+                    }
+                    else
+                    {
                         User_photo[] A = new User_photo[Friends.List_Mess];
                         for (int I = 0; I < Friends.AClass.Count(); I++)
                         {
                             A[I] = Friends.AClass[I];
-                            Id_Friends[I] = A[I].Photo;
-                            Id[I] = A[I].Id;
                         }
-                        // A[0].Id
-                        Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
-                        JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
-                        FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
-                        //Отправляем на сервер и получаем от туда картинку ввиде строки
-                        Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS, "014")).Wait();
-                    }
-                }                                     
-                //Заполняем пользователя имя
-                Na_me = Friends.User_.Name;
-                //Проверяем количество друзей
-                if (Friends.List_Mess == 0)
-                {
-                    //обработать когда их 0
-                }
-                else
-                {
-                    User_photo[] A = new User_photo[Friends.List_Mess];
-                    for (int I = 0; I < Friends.AClass.Count(); I++)
-                    {
-                        A[I] = Friends.AClass[I];
-                    }
-                    Friend = A;
-                  //  Friend[0].Id= 0;
-                    //Проверяем  если там сообщение если true то заполняет  dataGridViewUser  друзей и их картинки
-                    
+                        Friend = A;
+                        //  Friend[0].Id= 0;
+                        //Проверяем  если там сообщение если true то заполняет  dataGridViewUser  друзей и их картинки
+
                         if (Friends.Answe == "false")
                         {
                         }
@@ -387,7 +417,7 @@ namespace Client_chat
                             // Количество друзей для опрелении  в RowCount
                             dataGridViewUser.RowCount = Friend.Count();
                             //Колонку по умолчанию
-                            dataGridViewUser.ColumnCount = 1;           
+                            dataGridViewUser.ColumnCount = 1;
                             //Добоавляем колонку друзей
                             DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
                             //Называем колонку для картинок
@@ -424,26 +454,25 @@ namespace Client_chat
                             dataGridViewUser.Columns[1].HeaderText = "Фото";
                         }
                         // Получаем id пользователя текущего
-                        Users = Friends.User_.Id;                   
+                        Users = Friends.User_.Id;
                     }
-                    
+
                 }
-            } 
+            }
             catch (Exception ex)
             {
-                        //Для выведения ошибки при картинке
-           
+                //Для выведения ошибки при картинке          
                 MessageBox.Show(ex.Message);
-             }           
-        }      
+            }
+        }
 
-        //
+        //Для картинки
         private void toolStripButton2_Click_1(object sender, EventArgs e)
         {
 
         }
   
-        //
+        //форма чата
         private void Chats_main_Load(object sender, EventArgs e)
         {
             try
@@ -489,14 +518,15 @@ namespace Client_chat
             }
             catch (Exception a)
             {
+                //Выводим ошибку
                 MessageBox.Show(a.Message);
             }
         }
 
-        //
+        //Задем ширину столбцов
         private void dataGridViewUser_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-            dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        {  //Задем ширину столбцов dataGridViewUser
+            dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         //При нажатии dataGridViewUser_Click проверяется список сообщений
@@ -504,11 +534,12 @@ namespace Client_chat
         {
             try
             {
-                // ???
+                //Функция сообщения автоматически обновляет при клике
                 view_mess();
             }
             catch 
             {
+                //Если нет нажатия в dataGridViewUser_
             }
         }
 
@@ -521,19 +552,20 @@ namespace Client_chat
                 //Проверяем не пустая ли таблица друзей 
                 if (dataGridViewUser == null)
                 {
-
+                    //нету друзей
                 }
                 else
                 {
+                    //отчищаем чат
                     dataGridViewChat.Rows.Clear();
                     //При выделении по RowIndex по ячейке он заполняеться
                     int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                     //Проверяем не пустой selectedrowindex   
                     if (false)
                         //if (selectedrowindex != 0)
-                        {
+                    {
 
-                        }
+                     }
                     else
                     {
                         //Проверяем не пустой selectedrowindex
@@ -560,7 +592,7 @@ namespace Client_chat
 
                                 //Стераем сообщения  dataGridViewChat и потом заполняем
                                 dataGridViewChat.Rows.Clear();
-                                
+                                //Заполняем чат
                                 Chat(command);             
                             }
                         }
@@ -575,9 +607,11 @@ namespace Client_chat
             }
         }
 
-        //
+     
+        //Задем ширину столбцов
         private void dataGridViewChat_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
+            //Задем ширину столбцов dataGridViewChat
             dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -596,9 +630,12 @@ namespace Client_chat
                 using (MemoryStream Despons_friend = new MemoryStream()) 
                 {
                     string FileFS = "";
+                    //Серилизуем класс Searh_Friends и заполняем FileFS классом серилизованым
                     using (MemoryStream fs = new MemoryStream())
                     {
+                        //Заполнили класс нашим пользователем и другом
                         Searh_Friends New_Friend = new Searh_Friends(textBox2.Text, Na_me);
+                        //
                         JsonSerializer.Serialize<Searh_Friends>(fs, New_Friend);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
                      
@@ -622,19 +659,34 @@ namespace Client_chat
         {
             try
             {
-                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                MessСhat tt = allChat[selectedrowindexs];
-                textBox1.Text = tt.Message;
-                Update_id = tt.Id;
-                string FileFS = "";
-                using (MemoryStream fs = new MemoryStream())
+                //Проверяем если данные dataGridViewChat
+                if (dataGridViewChat == null)
                 {
-                    DateTime dateTime = DateTime.Now;
-                    MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
-                    JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
-                    FileFS = Encoding.Default.GetString(fs.ToArray());
+
                 }
-                textBox1.Text = "";
+                else
+                {
+
+
+                    //Выделили id ячейки выбраной
+                    int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                    //Определяем по фильтру id данного чата
+
+                    MessСhat tt = allChat[selectedrowindexs];
+                    //Даем значение но надо проверять
+                    textBox1.Text = tt.Message;
+                    Update_id = tt.Id;
+                    string FileFS = "";
+                    using (MemoryStream fs = new MemoryStream())
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                        JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
+                        FileFS = Encoding.Default.GetString(fs.ToArray());
+                    }
+                    textBox1.Text = "";
+                }
+
             }
             catch
             {
@@ -647,13 +699,17 @@ namespace Client_chat
         private void dgrdResults_MouseClick(object sender, MouseEventArgs e)
         {
             try
-            {
+            {   //При нажатие на правую кнопку ячейки чат  появляеться contextMenuStrip1
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
-                {
+                { 
+                    //Появляеться ячейки чат  появляеться contextMenuStrip1
                     contextMenuStrip1.Show(Cursor.Position.X, Cursor.Position.Y);
                 }
             }
-            catch { }
+            catch 
+            {
+                //Ошибки если будут!
+            }
         }
 
         //Для функций над contextMenuStrip1 сдесь просто нажать надо  там выбор и удобно
@@ -663,18 +719,21 @@ namespace Client_chat
             if (e.Button == MouseButtons.Right)
             {
                 try
-                {
+                {   //при простой  нажатии теперь обратно возращаеться чат только убераеться contextMenuStrip1
                     dataGridViewChat.CurrentCell = dataGridViewChat.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     // Can leave these here - doesn't hurt
                     dataGridViewChat.Rows[e.RowIndex].Selected = true;
+                    //Устанавливаем фокус
                     dataGridViewChat.Focus();
 
                     //selectedBiodataId = Convert.ToInt32(dataGridViewChat.Rows[e.RowIndex].Cells[1].Value);
+
+                    //Возращаем id
                     selectedBiodataId = e.RowIndex;
                 }
                 catch (Exception)
                 {
-
+                    //Обрабатываем ошибки
                 }
             }
         }
@@ -689,19 +748,31 @@ namespace Client_chat
                 {
                     if (dataGridViewChat == null)
                     {
-
+                        //Проверка на пустоту
                     }
                     else
                     {
-                        //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
-                        int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                        MessСhat tt = allChat[selectedrowindexs];
-                    
-                        textBox1.Text = tt.Message;
+                        //Проверка Сообщения польщователя или друга !
+                        if (dataGridViewChat.SelectedCells[0].Style.BackColor == Color.Blue)
+                        {                        
+                            //Пишим текущему пользователю что сообщения друга нельзя трогать!
+                            MessageBox.Show("Сообщения друга нельзя редактировать!");
+                        }
+                        else
+                        {
 
-                        Update_id = tt.Id;
-                        Update_Message = true;
-                        //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ
+                            //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
+                            //Выбераем ячейку сообщение
+                            int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                            //Находим по фильтру id dataGridViewChat
+                            MessСhat tt = allChat[selectedrowindexs];
+                            //Передаем значение для редактирования
+                            textBox1.Text = tt.Message;
+                            //id редактированного сообщения
+                            Update_id = tt.Id;  
+                            //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ
+                            Update_Message = true;
+                        } 
                     }
                 }
             }
@@ -720,52 +791,81 @@ namespace Client_chat
         {
             try
             {
-                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                MessСhat tt = allChat[selectedrowindexs];
-                textBox1.Text = tt.Message;
-                Update_id = tt.Id;
-                string FileFS = "";
-                using (MemoryStream fs = new MemoryStream())
+                if (dataGridViewChat == null)
                 {
-                    DateTime dateTime = DateTime.Now;
-                    MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
-                    JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
-                    FileFS = Encoding.Default.GetString(fs.ToArray());
+                    //Проверка на пустоту
                 }
-                textBox1.Text = "";
-
-                using (MemoryStream Delete_dispons = new MemoryStream())
+                else
                 {
-                    //Отправляем на сервер и там удаляеться сообщение
-                    Task.Run(async () => await command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011")).Wait();
-                    //Отчищаем dataGridViewChat
-                    dataGridViewChat.Rows.Clear();
-                    //Заполняем чат 
-                    Chat(command);          
+                    //Проверка Сообщения польщователя или друга !
+                    if (dataGridViewChat.SelectedCells[0].Style.BackColor == Color.Blue)
+                    {
+                        //Пишим текущему пользователю что сообщения друга нельзя трогать!
+                        MessageBox.Show("Сообщения друга нельзя удалять!");
+                    }
+                    else
+                    {
+                        //получает id dataGridViewChat
+                        int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                        //Находим по фильтру id dataGridViewChat
+                        MessСhat tt = allChat[selectedrowindexs];
+                        //Сообщения для удаления
+                        textBox1.Text = tt.Message;
+                        //id сообщения для удаления
+                        Update_id = tt.Id;
+                        //Для отправки
+                        string FileFS = "";
+                        using (MemoryStream fs = new MemoryStream())
+                        {
+                            //Определяем текущию дату
+                            DateTime dateTime = DateTime.Now;
+                            //Заполняем класс
+                            MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                            //Серилизуем класс
+                            JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
+                            //Декодируем в строку
+                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                        }
+                        //Отчищаем
+                        textBox1.Text = "";
+                        //Отправляем на сервер м получаем
+                        using (MemoryStream Delete_dispons = new MemoryStream())
+                        {
+                            //Отправляем на сервер и там удаляеться сообщение
+                            Task.Run(async () => await command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011")).Wait();
+                            //Отчищаем dataGridViewChat
+                            dataGridViewChat.Rows.Clear();
+                            //Заполняем чат 
+                            Chat(command);
+                        }
+                    }
                 }
-            }   
+            }
             catch
             {
-
+                //Если нету id dataGridViewChat обработали
             }
         }
 
-        //
+        //Автоматически ширину задают dataGridViewUser_CellClick
         private void dataGridViewUser_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            //Автоматически ширину задают dataGridViewUser
             dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        //
+
+        //Автоматически ширину задают dataGridViewChat_CellClick
         private void dataGridViewChat_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //Автоматически ширину задают dataGridViewChat
+            dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        //
+        // Не убрали
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            //есть сылка
         }
 
         //Для обновлений сообщений
@@ -779,12 +879,13 @@ namespace Client_chat
                 }
                 else
                 {
+                    //Выводим чат автоматически и получаем его
                     view_mess();
                 }
             }
             catch
             {
-
+                //Если будет ошибка при пустоте
             }
          }
 
@@ -793,20 +894,27 @@ namespace Client_chat
         {
             try
             {
+                //Проверяется авторизовался ли пользователь в учетную запись
                 if (toolStripLabel1.Text != "")
                 {
                     using (TcpClient client = new TcpClient(IP_ADRES.Ip_adress, ConnectSettings.port))
                     {
                         NetworkStream stream = client.GetStream();
+                        //Отправляем текущего пользователя
                         User_photo tt = new User_photo("", "", "", 0, 0, Users);
                         //tt.Current = Users;
+                        //Серелизуем класс User_photo в строку
                         string person = JsonSerializer.Serialize<User_photo>(tt);
-
+                        //Отправляем на сервер и Декодируем и соединяем команду и класс User_photo
                         Byte[] data = System.Text.Encoding.Default.GetBytes("013" + person);
+                        //Отправили на сервер
                         await stream.WriteAsync(data, 0, data.Length);
+
                         String responseDat = String.Empty;
+                        //Получаем с сервера ответ
                         using (MemoryStream ms = new MemoryStream())
                         {
+                            //Возращаем ответ
                             int cnt = 0;
                             Byte[] locbuffer = new byte[1024];
                             do
@@ -814,84 +922,118 @@ namespace Client_chat
                                 cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
                                 ms.Write(locbuffer, 0, cnt);
                             } while (client.Available > 0);
-
+                            //Получаем ответ
                             responseDat = Encoding.Default.GetString(ms.ToArray());
                         }
-
+                        //Десерилизуем класс MsgFriends и используем
                         MsgFriends msgFriends = JsonSerializer.Deserialize<MsgFriends>(responseDat);
+                        //Заполняем размерность класса User_photo для принятия
                         User_photo[] A = new User_photo[msgFriends.AClass.Count];
+                        //Получаем друзей
                         for (int i = 0; i < msgFriends.AClass.Count(); i++)
                         {
                             A[i] = msgFriends.AClass[i];
                         }
+                        //Получили друзей и присвоили значения
                         Friend = A;
+                        //Проверяем есть ли друзья 
                         if (Friend != null)
                         {
+                            //Проверяем размерность класса больше 0
                             if (msgFriends.AClass.Count != 0)
                             {
                                 using (MemoryStream Friends_Image = new MemoryStream())
                                 {
+                                    //Для классов
                                     string FileFS = "";
+                                    //Передаем Id пользователю
                                     int[] Id = new int[msgFriends.List_Mess];
-
+                                    //Передаем Id_Friends друзьям
                                     int[] Id_Friends = new int[msgFriends.List_Mess];
+                                    //Даем размерность User_photo коичество друзей
                                     User_photo[] b = new User_photo[msgFriends.List_Mess];
+                                    //Заполняем id друзей картинок и id пользователй
                                     for (int I = 0; I < msgFriends.AClass.Count(); I++)
                                     {
                                         b[I] = msgFriends.AClass[I];
                                         Id_Friends[I] = b[I].Photo;
                                         Id[I] = b[I].Id;
                                     }
+                                    //Собераем класс
                                     Photo_Friends tom = new Photo_Friends(Id_Friends, Id);
+                                    //Серелизуем
                                     JsonSerializer.Serialize<Photo_Friends>(Friends_Image, tom);
+                                    //Декодируем в строку
                                     FileFS = Encoding.Default.GetString(Friends_Image.ToArray());
-
+                                    //Отправляем на сервер
                                     Task.Run(async () => await command.Get_Image_Friends(IP_ADRES.Ip_adress, FileFS, "014")).Wait();
 
                                 }
                             }
+                            //Получаем ответ если фото друзей
                             if (msgFriends.Answe == "true")
                             {
                                 try
                                 {
+                                    //Есть ли друзья
                                     if (msgFriends.AClass == null)
                                     {
+                                        //Если нету фото не выводим
                                     }
                                     else
                                     {
+                                        //Отчищаем таблицу dataGridViewUser
                                         dataGridViewUser.Rows.Clear();
+                                        //Устанавливаем значие количество таблицу dataGridViewUser
                                         dataGridViewUser.RowCount = Friend.Count();
+                                        //Колонку 1
                                         dataGridViewUser.ColumnCount = 1;
+                                        //Для картинки подписываем
                                         DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
-                                        imgColumn.Name = "Фото";                        
-                                        dataGridViewUser.Columns.Add(imgColumn);                               
+                                        //Назначаем заголовок Фото
+                                        imgColumn.Name = "Фото";      
+                                        //Добавляем колонку
+                                        dataGridViewUser.Columns.Add(imgColumn);    
+                                        //Заполняем друзей
                                         for (int i = 0; i < Friend.Count(); i++)
                                         {
                                                 DataGridViewTextBoxCell cell0 = (DataGridViewTextBoxCell)dataGridViewUser.Rows[i].Cells[0];
+                                                // Имя друзей
                                                 cell0.Value = Friend[i].Name;
                                         }
-
+                                        //Заполняем картинку друзей
                                         for (int i = 0; i < Friend.Count(); i++)
                                         {
+                                            //Получаем конвертируем из массива строк в строку
                                             string Im = command.List_Friends[i].ToString();
+                                            //Конвертируем в байты
                                             byte[] ByteImege = Convert.FromBase64String(Im);
+                                            //Задаем значения MemoryStream
                                             MemoryStream ms = new MemoryStream(ByteImege);
+                                            //Получаем картинку
                                             Image returnImagee = Image.FromStream(ms);
+                                            //Заголовок фото
                                             DataGridViewImageCell cell1 = (DataGridViewImageCell)dataGridViewUser.Rows[i].Cells["Фото"];
+                                            //Даем размерность фото
                                             cell1.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                                            //Присваеваем значение картинки
                                             cell1.Value = returnImagee;
                                         }
+                                        //Заголовок для колонки друзей
                                         dataGridViewUser.Columns[0].HeaderText = "Друзья";
+                                        //Заголовок для колонки Фото друзей
                                         dataGridViewUser.Columns[1].HeaderText = "Фото";                                     
                                     }
                                 }
                                 catch (Exception )
                                 {
-                                    //    MessageBox.Show(ex.Message);
+                                    //Обрабатываем ошибку
+                                    // MessageBox.Show(ex.Message);
                                 }
                             }
                             else
                             {
+                                //Отчищаем
                                 dataGridViewUser.Rows.Clear();
                             }
                         }
@@ -900,7 +1042,7 @@ namespace Client_chat
             }
             catch
             {
-
+                //Обрабатываем ошибки 
             }
         }
     }
