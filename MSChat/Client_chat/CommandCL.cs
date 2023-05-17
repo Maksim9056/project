@@ -111,21 +111,14 @@ namespace Client_chat
                     //});
                     //
                     */
-                    Byte[] readingData = new Byte[256];
-                    StringBuilder completeMessage = new StringBuilder();
-                    int numberOfBytesRead = 0;
-                    do
+                    responseData = await Task<string>.Run(() =>
                     {
-                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
-                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
-                    }
-                    while (stream.DataAvailable);
-                    responseData = completeMessage.ToString();
+                        return Func_Read(stream, data.Length, client);
+                    });
 
                     User_reg.UserName = responseData;
                 }
             }
-
             catch (ArgumentNullException e)
             {
                 Console.WriteLine("ArgumentNullException:{0}", e.Message);

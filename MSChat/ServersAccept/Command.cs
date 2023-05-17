@@ -33,9 +33,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -121,9 +121,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -149,9 +149,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -178,10 +178,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -221,9 +220,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -250,10 +249,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -281,9 +279,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -310,9 +308,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -341,9 +339,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -373,9 +371,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -422,9 +420,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -469,9 +467,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
 
@@ -499,10 +497,9 @@ namespace ServersAccept
                     }
                 }
             }
-            catch 
+            catch (Exception e)
             {
-
-
+                Console.WriteLine(e.Message.ToString());
             }
         }
     }
