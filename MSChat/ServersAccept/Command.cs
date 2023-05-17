@@ -13,10 +13,8 @@ namespace ServersAccept
         //002-Регистрация пользователей
         public void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
-            try
-            {
-                using (MemoryStream tt2 = new MemoryStream())
-                {
+              using (MemoryStream tt2 = new MemoryStream())
+              {
                     DateTime dateTime = DateTime.Now;
                     User_regis person2 = JsonSerializer.Deserialize<User_regis>(msg);
                     globalClass.Insert_Image(person2.Photo);
@@ -31,12 +29,7 @@ namespace ServersAccept
                         byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
                         stream.Write(msgAnswe, 0, msgAnswe.Length);
                     }
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message.ToString());
-            }
+              }       
         }
 
         //003-Проверка логина и пароля

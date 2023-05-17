@@ -30,8 +30,7 @@ namespace Client_chat
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
+            
 
                 if (textBox2.Text == textBox3.Text)
                 {
@@ -45,6 +44,7 @@ namespace Client_chat
                             JsonSerializer.Serialize<User_regis>(fs, tom);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
                         }
+
                         //command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002");
                         Task.Run(async () => await command.Reg_User(IP_ADRES.Ip_adress, FileFS, "002")).Wait();
                         if (User_reg.UserName == null)
@@ -81,12 +81,8 @@ namespace Client_chat
                     MessageBox.Show($"Пароли не совпадают !");
                 }
             }             
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Пароли не совпадают !", ex.Message);
-            }
             //  Reg_User(IP_ADRES.Ip_adress, FileFS, "002", textBox1.Text, this);
-        }
+        
 
 
         /*

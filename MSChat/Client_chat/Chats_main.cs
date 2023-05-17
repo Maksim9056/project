@@ -290,7 +290,9 @@ namespace Client_chat
         //Открытие формы и заполнение таблиц
         public void OpenMes(MsgUser_Logins Friends)
         {
-            Users = Friends.User_.Id;
+            try
+            {
+                Users = Friends.User_.Id;
             //Заполняеться Ip_adress для отправки
             toolStripTextBox1.Text = IP_ADRES.Ip_adress;
             //Имя заполняем
@@ -367,9 +369,8 @@ namespace Client_chat
                     }
                     Friend = A;
                   //  Friend[0].Id= 0;
-                    try
                     //Проверяем  если там сообщение если true то заполняет  dataGridViewUser  друзей и их картинки
-                    {
+                    
                         if (Friends.Answe == "false")
                         {
                         }
@@ -417,13 +418,15 @@ namespace Client_chat
                         // Получаем id пользователя текущего
                         Users = Friends.User_.Id;                   
                     }
-                    catch (Exception ex)
-                    {
-                        //Для выведения ошибки при картинке
-                        MessageBox.Show(ex.Message);
-                    }
+                    
                 }
-            }            
+            } 
+            catch (Exception ex)
+            {
+                        //Для выведения ошибки при картинке
+           
+                MessageBox.Show(ex.Message);
+             }           
         }      
 
         //
@@ -597,6 +600,7 @@ namespace Client_chat
                     //Просто проверяем и отчищаем
                     var __Friends =  command._Friends;
                     command._Friends = null;
+                    textBox2.Text = null;
                 }
             }
             catch
@@ -873,9 +877,9 @@ namespace Client_chat
                                         dataGridViewUser.Columns[1].HeaderText = "Фото";                                     
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception )
                                 {
-                                    MessageBox.Show(ex.Message);
+                                    //    MessageBox.Show(ex.Message);
                                 }
                             }
                             else

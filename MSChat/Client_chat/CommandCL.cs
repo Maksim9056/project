@@ -92,29 +92,17 @@ namespace Client_chat
                     await stream.WriteAsync(data, 0, data.Length);
 
                     String responseData = String.Empty;
-                    /*
-                    //using (MemoryStream ms = new MemoryStream())
-                    //{
-                    //    int cnt = 0;
-                    //    Byte[] locbuffer = new byte[1024];
-                    //    do
-                    //    {
-                    //        cnt = await stream.ReadAsync(locbuffer, 0, locbuffer.Length);
-                    //        ms.Write(locbuffer, 0, cnt);
-                    //    } while (client.Available > 0);
 
-                    //    responseData = Encoding.Default.GetString(ms.ToArray());
-                    //}
-                    //responseData = await Task<string>.Run(() =>
-                    //{
-                    //    return Func_Read(stream, data.Length, client);
-                    //});
-                    //
-                    */
-                    responseData = await Task<string>.Run(() =>
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
                     {
-                        return Func_Read(stream, data.Length, client);
-                    });
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
 
                     User_reg.UserName = responseData;
                 }
@@ -127,11 +115,10 @@ namespace Client_chat
             {
                 Console.WriteLine("SocketException: {0}", e.Message);
             }
-            catch (Exception e)
+            catch(Exception )
             {
-                Console.WriteLine("SocketException: {0}", e.Message);
+               // MessageBox.Show(e.Message);
             }
-
         }
 
 
