@@ -217,31 +217,38 @@ namespace ServersAccept
         //Загружаеться Ip_address и port
         static public void SaveOpen()
         {
-            string path = Environment.CurrentDirectory.ToString();
-            FileInfo fileInfo = new FileInfo(path + "\\Server.json");
-            if (fileInfo.Exists)
+            try
             {
-                using (FileStream fs = new FileStream("Server.json", FileMode.Open))
+                string path = Environment.CurrentDirectory.ToString();
+                FileInfo fileInfo = new FileInfo(path + "\\Server.json");
+                if (fileInfo.Exists)
                 {
-                    Connect_server _aFile = JsonSerializer.Deserialize<Connect_server>(fs);
-                    Ip_Adress = _aFile.Ip_address;
-                    port = _aFile.Port;
+                    using (FileStream fs = new FileStream("Server.json", FileMode.Open))
+                    {
+                        Connect_server _aFile = JsonSerializer.Deserialize<Connect_server>(fs);
+                        Ip_Adress = _aFile.Ip_address;
+                        port = _aFile.Port;
+                    }
+                }
+                else
+                {
+                    using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
+                    {
+                        Connect_server_ connect_Server_ = new Connect_server_(IPAddress.Loopback.ToString(), ConnectSettings.port);
+                        JsonSerializer.Serialize<Connect_server_>(fileStream, connect_Server_);
+                    }
+
+                    using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
+                    {
+                        Connect_server aFile = JsonSerializer.Deserialize<Connect_server>(fileStream);
+                        Ip_Adress = aFile.Ip_address;
+                        port = aFile.Port;
+                    }
                 }
             }
-            else
+            catch(Exception ex) 
             {
-                using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
-                {
-                    Connect_server_ connect_Server_ = new Connect_server_(IPAddress.Loopback.ToString(), ConnectSettings.port);
-                    JsonSerializer.Serialize<Connect_server_>(fileStream, connect_Server_);
-                }
-
-                using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
-                {
-                    Connect_server aFile = JsonSerializer.Deserialize<Connect_server>(fileStream);
-                    Ip_Adress = aFile.Ip_address;
-                    port = aFile.Port;
-                }
+                Console.WriteLine(ex.Message);
             }
 
         }
