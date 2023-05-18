@@ -349,18 +349,37 @@ namespace ServersAccept
 
                     globalClass.Delete_Message_make_up(Delete_Message);
 
-                    MessСhat[] json_Update_delete = new MessСhat[globalClass.Frends_Chat_Wath.Length];
-
-                    for (int k = 0; k < globalClass.Frends_Chat_Wath.Length; k++)
+                    if (globalClass.Frends_Chat_Wath == null)
                     {
-                        json_Update_delete[k] = globalClass.Frends_Chat_Wath[k];
+                        using (MemoryStream ms = new MemoryStream())
+                        {   //Заполняем в пустой класс для принятия на клиенте
+
+                            MessСhat[] json_Update_delete = new MessСhat[] {};
+                            //Собераем класс отправки
+                            UseTravel Update_chats_make_up_after_delete = new UseTravel("false", json_Update_delete.Length, json_Update_delete);
+                            //Серилизуем класс User_photo_Travel 
+                            JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
+                            //Отправляем
+                            stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                        }
                     }
-
-                    using (MemoryStream ms = new MemoryStream())
+                    else
                     {
-                        UseTravel Update_chats_make_up_after_delete = new UseTravel("true", json_Update_delete.Length, json_Update_delete);
-                        JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
-                        stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+
+
+                        MessСhat[] json_Update_delete = new MessСhat[globalClass.Frends_Chat_Wath.Length];
+
+                        for (int k = 0; k < globalClass.Frends_Chat_Wath.Length; k++)
+                        {
+                            json_Update_delete[k] = globalClass.Frends_Chat_Wath[k];
+                        }
+
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            UseTravel Update_chats_make_up_after_delete = new UseTravel("true", json_Update_delete.Length, json_Update_delete);
+                            JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
+                            stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                        }
                     }
                 }
             }

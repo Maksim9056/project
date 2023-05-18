@@ -753,26 +753,33 @@ namespace Client_chat
                     else
                     {
                         //Проверка Сообщения польщователя или друга !
-                        if (dataGridViewChat.SelectedCells[0].Style.BackColor == Color.Blue)
-                        {                        
-                            //Пишим текущему пользователю что сообщения друга нельзя трогать!
-                            MessageBox.Show("Сообщения друга нельзя редактировать!");
-                        }
-                        else
-                        {
+                        //Пишим текущему пользователю что сообщения друга нельзя трогать!
 
-                            //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
-                            //Выбераем ячейку сообщение
-                            int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                            //Находим по фильтру id dataGridViewChat
-                            MessСhat tt = allChat[selectedrowindexs];
-                            //Передаем значение для редактирования
-                            textBox1.Text = tt.Message;
-                            //id редактированного сообщения
-                            Update_id = tt.Id;  
-                            //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ
-                            Update_Message = true;
-                        } 
+
+                        foreach (DataGridViewCell cell in dataGridViewChat.SelectedCells)
+                        {
+                            if (cell.Value.ToString().Contains(dataGridViewChat.SelectedCells[0].Value.ToString()))
+                            {
+                                cell.Style.BackColor = Color.Blue;
+                                MessageBox.Show("Сообщения друга нельзя редактировать!");
+                            }
+                            else
+                            {
+
+                                //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
+                                //Выбераем ячейку сообщение
+                                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                                //Находим по фильтру id dataGridViewChat
+                                MessСhat tt = allChat[selectedrowindexs];
+                                //Передаем значение для редактирования
+                                textBox1.Text = tt.Message;
+                                //id редактированного сообщения
+                                Update_id = tt.Id;
+                                //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ
+                                Update_Message = true;
+                            }
+                            break;
+                        }
                     }
                 }
             }
@@ -798,46 +805,53 @@ namespace Client_chat
                 else
                 {
                     //Проверка Сообщения польщователя или друга !
-                    if (dataGridViewChat.SelectedCells[0].Style.BackColor == Color.Blue)
+                    foreach (DataGridViewCell cell in dataGridViewChat.SelectedCells)
                     {
-                        //Пишим текущему пользователю что сообщения друга нельзя трогать!
-                        MessageBox.Show("Сообщения друга нельзя удалять!");
-                    }
-                    else
-                    {
-                        //получает id dataGridViewChat
-                        int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                        //Находим по фильтру id dataGridViewChat
-                        MessСhat tt = allChat[selectedrowindexs];
-                        //Сообщения для удаления
-                        textBox1.Text = tt.Message;
-                        //id сообщения для удаления
-                        Update_id = tt.Id;
-                        //Для отправки
-                        string FileFS = "";
-                        using (MemoryStream fs = new MemoryStream())
-                        {
-                            //Определяем текущию дату
-                            DateTime dateTime = DateTime.Now;
-                            //Заполняем класс
-                            MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
-                            //Серилизуем класс
-                            JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
-                            //Декодируем в строку
-                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                        if (cell.Value.ToString().Contains(dataGridViewChat.SelectedCells[0].Value.ToString()))
+                        {                        
+                            //Пишим текущему пользователю что сообщения друга нельзя трогать!
+
+                            cell.Style.BackColor = Color.Blue;
+                            MessageBox.Show("Сообщения друга нельзя удалять!");
+
                         }
-                        //Отчищаем
-                        textBox1.Text = "";
-                        //Отправляем на сервер м получаем
-                        using (MemoryStream Delete_dispons = new MemoryStream())
+                        else
                         {
-                            //Отправляем на сервер и там удаляеться сообщение
-                            Task.Run(async () => await command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011")).Wait();
-                            //Отчищаем dataGridViewChat
-                            dataGridViewChat.Rows.Clear();
-                            //Заполняем чат 
-                            Chat(command);
+                            //получает id dataGridViewChat
+                            int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                            //Находим по фильтру id dataGridViewChat
+                            MessСhat tt = allChat[selectedrowindexs];
+                            //Сообщения для удаления
+                            textBox1.Text = tt.Message;
+                            //id сообщения для удаления
+                            Update_id = tt.Id;
+                            //Для отправки
+                            string FileFS = "";
+                            using (MemoryStream fs = new MemoryStream())
+                            {
+                                //Определяем текущию дату
+                                DateTime dateTime = DateTime.Now;
+                                //Заполняем класс
+                                MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                                //Серилизуем класс
+                                JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
+                                //Декодируем в строку
+                                FileFS = Encoding.Default.GetString(fs.ToArray());
+                            }
+                            //Отчищаем
+                            textBox1.Text = "";
+                            //Отправляем на сервер м получаем
+                            using (MemoryStream Delete_dispons = new MemoryStream())
+                            {
+                                //Отправляем на сервер и там удаляеться сообщение
+                                Task.Run(async () => await command.Delete_message_make_up(IP_ADRES.Ip_adress, FileFS, "011")).Wait();
+                                //Отчищаем dataGridViewChat
+                                dataGridViewChat.Rows.Clear();
+                                //Заполняем чат 
+                                Chat(command);
+                            }
                         }
+                        break;
                     }
                 }
             }
