@@ -20,27 +20,53 @@ namespace Client_chat
             InitializeComponent();
         }
 
-        //Для Поиска друзей
+        /// <summary>
+        /// Для Поиска друзей
+        /// </summary>
         string Na_me { get; set; }
-        //Постояные значения используем для пользователей
+        /// <summary>
+        /// Постояные значения используем для пользователей
+        /// </summary>
+        
         public User_photo[] Friend { get; set; }
-        //Постояные значения используем для фильтра для чата
+        /// <summary>
+        /// Постояные значения используем для фильтра для чата
+        /// </summary>
         public MessСhat[] allChat { get; set; }
-        //id пользователя
+
+        /// <summary>
+        /// id пользователя
+        /// </summary>
         public int Users { get; set; }
-        //id другу
+
+        /// <summary>
+        /// id другу
+        /// </summary>        
         public int Friends { get; set; }
-        //Обновлять сообщение
+
+        /// <summary>
+        /// Обновлять сообщение
+        /// </summary>
         public bool Update_Message { get; set; }
-        //id сообщения
+
+        /// <summary>
+        /// id сообщения
+        /// </summary>
         public int Update_id { get; set; }
 
-        //Для отображения при выборке [Редактировать] ,[Удалить]
+        /// <summary>
+        /// Для отображения при выборке [Редактировать] ,[Удалить]
+        /// </summary>
         public int selectedBiodataId;
-        //Проверяет есть ли  подключения
+
+        /// <summary>
+        /// Проверяет есть ли  подключения
+        /// </summary>
         public bool Entrance { get; set; }
 
-        //Экземпляр класса CommandCL
+        /// <summary>
+        /// Экземпляр класса CommandCL
+        /// </summary>
         public CommandCL command = new CommandCL();
 
 
@@ -137,14 +163,22 @@ namespace Client_chat
         }
 
 
-        //MsgUser_Logins для Входа
+        /// <summary>
+        /// MsgUser_Logins для Входа
+        /// </summary>
+        /// <param name="responseDat"></param>
         public void NotifyMe(MsgUser_Logins responseDat)
         {
             //Авторизация
             OpenMes(responseDat);
         }
 
-        //Сохраняет файл конфигурации в json
+        /// <summary>
+        /// Сохраняет файл конфигурации в json
+        /// </summary>
+        /// <param name="Port"></param>
+        /// <param name="ipAddress"></param>
+        /// <param name="Name"></param>
         public void SaveConfig(Int32 Port, string ipAddress, string Name)
         {
             //Чтения файла Client.json"
@@ -256,7 +290,11 @@ namespace Client_chat
         }
 
 
-        //Две команды для отправки нового сообщения и редактования сообщения
+        /// <summary>
+        /// Две команды для отправки нового сообщения и редактования сообщения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
             try
@@ -325,7 +363,10 @@ namespace Client_chat
             }
         }
 
-        //Открытие формы и заполнение таблиц
+        /// <summary>
+        /// Открытие формы и заполнение таблиц
+        /// </summary>
+        /// <param name="Friends"></param>
         public void OpenMes(MsgUser_Logins Friends)
         {
             try
@@ -472,7 +513,11 @@ namespace Client_chat
 
         }
   
-        //форма чата
+        /// <summary>
+        /// форма чата
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Chats_main_Load(object sender, EventArgs e)
         {
             try
@@ -523,13 +568,21 @@ namespace Client_chat
             }
         }
 
-        //Задем ширину столбцов
+        /// <summary>
+        /// Задем ширину столбцов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewUser_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {  //Задем ширину столбцов dataGridViewUser
             dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        //При нажатии dataGridViewUser_Click проверяется список сообщений
+        /// <summary>
+        /// При нажатии dataGridViewUser_Click проверяется список сообщений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewUser_Click(object sender, EventArgs e)
         {
             try
@@ -544,7 +597,9 @@ namespace Client_chat
         }
 
 
-        //Запращиваем сообщения из друзей id dataGridViewUser_Click и проверяется список сообщений
+        /// <summary>
+        /// Запращиваем сообщения из друзей id dataGridViewUser_Click и проверяется список сообщений
+        /// </summary>
         private void view_mess()
         {
             try
@@ -608,7 +663,11 @@ namespace Client_chat
         }
 
      
-        //Задем ширину столбцов
+        /// <summary>
+        /// Задем ширину столбцов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewChat_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             //Задем ширину столбцов dataGridViewChat
@@ -621,7 +680,11 @@ namespace Client_chat
 
         }
 
-        //Добавляем друзей
+        /// <summary>
+        /// Добавляем друзей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button4_Click(object sender, EventArgs e)
         {
             try
@@ -654,7 +717,11 @@ namespace Client_chat
             }           
         }
 
-        //Работает но  его скрываем от пользователя так как есть лучше метод визуальный поэтому это не использовал 
+        /// <summary>
+        /// Работает но  его скрываем от пользователя так как есть лучше метод визуальный поэтому это не использовал 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -695,7 +762,11 @@ namespace Client_chat
         }
 
 
-        //Для функций над contextMenuStrip1  там выбор и удобно
+        /// <summary>
+        /// Для функций над contextMenuStrip1  там выбор и удобно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgrdResults_MouseClick(object sender, MouseEventArgs e)
         {
             try
@@ -712,7 +783,11 @@ namespace Client_chat
             }
         }
 
-        //Для функций над contextMenuStrip1 сдесь просто нажать надо  там выбор и удобно
+        /// <summary>
+        /// Для функций над contextMenuStrip1 сдесь просто нажать надо  там выбор и удобно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgrdResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             //handle the row selection on right click
@@ -738,7 +813,11 @@ namespace Client_chat
             }
         }
 
-        //Редактирование работает чатом
+        /// <summary>
+        /// Редактирование работает чатом
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Редактировать запись "+ selectedBiodataId.ToString());
@@ -793,7 +872,11 @@ namespace Client_chat
             }
         }
 
-        //Удалят строку с сообщением
+        /// <summary>
+        /// Удалят строку с сообщением
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             try
@@ -861,7 +944,11 @@ namespace Client_chat
             }
         }
 
-        //Автоматически ширину задают dataGridViewUser_CellClick
+        /// <summary>
+        /// Автоматически ширину задают dataGridViewUser_CellClick
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewUser_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //Автоматически ширину задают dataGridViewUser
@@ -869,7 +956,11 @@ namespace Client_chat
         }
 
 
-        //Автоматически ширину задают dataGridViewChat_CellClick
+        /// <summary>
+        /// Автоматически ширину задают dataGridViewChat_CellClick
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewChat_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //Автоматически ширину задают dataGridViewChat
@@ -882,7 +973,11 @@ namespace Client_chat
             //есть сылка
         }
 
-        //Для обновлений сообщений
+        /// <summary>
+        /// Для обновлений сообщений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
          private void timer1_Tick(object sender, EventArgs e)
          {
             try
@@ -903,7 +998,11 @@ namespace Client_chat
             }
          }
 
-        //Список друзей обновляет но только добавленных поэтому надо будет доделать это 
+        /// <summary>
+        /// Список друзей обновляет но только добавленных поэтому надо будет доделать это 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void timer2_Tick(object sender, EventArgs e)
         {
             try

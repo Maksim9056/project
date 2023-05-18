@@ -163,7 +163,9 @@ namespace Class_chat
     }
 
 
-    // класс отправки MsgUser_Logins
+    /// <summary>
+    /// класс отправки MsgUser_Logins
+    /// </summary>
     public class User_Logins
     {
         User_Logins() { }
@@ -182,7 +184,9 @@ namespace Class_chat
     }
 
 
-    // класс приема User_Logins
+    /// <summary>
+    /// класс приема User_Logins
+    /// </summary>
     public class MsgUser_Logins
     {
         public string Answe { get; }
