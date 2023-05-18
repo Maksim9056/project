@@ -214,7 +214,9 @@ namespace ServersAccept
             }
         }
 
-        //Загружаеться Ip_address и port
+        /// <summary>
+        /// Загружаеться Ip_address и port
+        /// </summary>
         static public void SaveOpen()
         {
             try

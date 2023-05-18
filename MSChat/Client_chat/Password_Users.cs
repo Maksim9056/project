@@ -20,14 +20,26 @@ namespace Client_chat
         {
             InitializeComponent();
         }
-        //Размео постояное значение
+        /// <summary>
+        /// Размео постояное значение
+        /// </summary>
         private const int ButtonSizeIncrease = 20;
-        //Отрисовка
+
+        /// <summary>
+        /// Отрисовка
+        /// </summary>
         private Point _originalButtonLocation;
-        //размерность 
+
+        /// <summary>
+        /// размерность 
+        /// </summary>
         private Size _originalButtonSize;
 
-        //Регестрация
+        /// <summary>
+        /// Регестрация
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             using (User_create Регестрироваться = new User_create())
@@ -52,7 +64,11 @@ namespace Client_chat
 
 
 
-        //При вводе пароля появляються * 
+        /// <summary>
+        /// При вводе пароля появляються * 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Проверяем на пустоту
@@ -75,7 +91,11 @@ namespace Client_chat
             }
         }
 
-        //Для увиличения кнопки
+        /// <summary>
+        /// Для увиличения кнопки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_MouseMove(object sender, MouseEventArgs e)
         {
             //Формула
@@ -87,7 +107,11 @@ namespace Client_chat
         }
 
 
-        //Авторизация пользователя
+        /// <summary>
+        /// Авторизация пользователя
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -158,7 +182,12 @@ namespace Client_chat
 
             }
         }
-        //Постояное значени кнопки
+
+        /// <summary>
+        /// Постояное значени кнопки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Password_Users_Load(object sender, EventArgs e)
         {
             //Сдесь храним постояное значение
@@ -169,7 +198,12 @@ namespace Client_chat
             textBox1.Text = Connect_Client.UserName;
             
         }
-         //Уменьшает размер когда нету  курсора мыши
+
+         /// <summary>
+         /// Уменьшает размер когда нету  курсора мыши
+         /// </summary>
+         /// <param name="sender"></param>
+         /// <param name="e"></param>
         private void button1_MouseLeave(object sender, EventArgs e)
         {
             //Возращает прежний размер кнопки

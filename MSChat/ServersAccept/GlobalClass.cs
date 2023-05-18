@@ -5,66 +5,103 @@ namespace ServersAccept
 {
     public class GlobalClass
     {
-        //Команда для подключения к базе данных в файле (т.к. SQLite)
+        /// <summary>
+        /// Команда для подключения к базе данных в файле (т.к. SQLite)
+        /// </summary>
         public static string connectionString = "Data Source=usersdata.db";
 
-        //Проверка есть ли пользователей в  базы данных
+        /// <summary>
+        /// Проверка есть ли пользователей в  базы данных
+        /// </summary>
         public bool UserConnect { get; set; }
 
-        //Проверяет добавляеться пользователей в  базе данных
+        /// <summary>
+        /// Проверяет добавляеться пользователей в  базе данных
+        /// </summary>
         public bool User_Insert { get; set; }
 
-        //Проверяет есть-ли  пользователей в  базе данных
+        /// <summary>
+        /// Проверяет есть-ли  пользователей в  базе данных
+        /// </summary>
         public bool User_Select_Chats { get; set; }
 
-        //Проверяет  есть-ли  Переписка у пользователей 
+        /// <summary>
+        /// Проверяет  есть-ли  Переписка у пользователей 
+        /// </summary>
         public bool Mess_Chats { get; set; }
 
-        //Содержит id пользователя для проверки  
+        /// <summary>
+        /// Содержит id пользователя для проверки  
+        /// </summary>
         public string Current_User { get; set; }
 
         //Заготовка для фото  добавление  
         //public byte[] Image_User { get; set; }
 
-        //Класс - все аргументы пользователю даже id его изображениея
+        /// <summary>
+        /// Класс - все аргументы пользователю даже id его изображениея
+        /// </summary>
         public User_photo AUser { get; set; }
 
-        //Класс - значение друзей  у   пользователя
+        /// <summary>
+        /// Класс - значение друзей  у   пользователя
+        /// </summary>
         public User_photo[] List_Friend { get; set; }
 
-        //Класс - чат  пользователя их сообщения в его чате
+        /// <summary>
+        /// Класс - чат  пользователя их сообщения в его чате
+        /// </summary>
         public MessСhat[] aChatss { get; set; }
 
         //Заготовки 
         //public MessСhat List_Mess { get; set; }
 
-        //Содержит id пользользователя для проверки сообщений
+        /// <summary>
+        /// Содержит id пользользователя для проверки сообщений
+        /// </summary>
         public string Id_Users { get; set; }
-        //Для пользователя
+
+        /// <summary>
+        /// Для пользователя
+        /// </summary>
         public string Name { get; set; }
 
-        ////Передают Имя  пользользователя и добавляет их список друзей
+        /// <summary>
+        /// Передают Имя  пользользователя и добавляет их список друзей
+        /// </summary>
         public string Searh_Friend { get; set; }
 
-        //Проверяет  Имя  пользользователя и есть ли он таблице пользователи
+        /// <summary>
+        /// Проверяет  Имя  пользользователя и есть ли он таблице пользователи
+        /// </summary>
         public bool _Searh_Freind { get; set; }
 
-        //Содержит id  2 пользользователя (Друга)
+        /// <summary>
+        /// Содержит id  2 пользользователя (Друга)
+        /// </summary>
         public int Insert_Friend_by_id { get; set; }
 
         ////Заготовки
         //public int Id_Users_Name { get; set; }
 
-        //Передают сколько пользователей в чате  и их сообщения
+        /// <summary>
+        /// Передают сколько пользователей в чате  и их сообщения
+        /// </summary>
         public MessСhat[] Frends_Chat_Wath { get; set; }
 
-        //Содержит id картинки для добавления пользователя картинки 
+        /// <summary>
+        /// Содержит id картинки для добавления пользователя картинки 
+        /// </summary>
         public int Id_Image { get; set; }
 
-        //Проверяет если у данного пользователя друзья 
+        /// <summary>
+        /// Проверяет если у данного пользователя друзья 
+        /// </summary>
         public bool Friends { get; set; }
 
-        // Для картинки
+        /// <summary>
+        /// Для картинки
+        /// </summary>
         public UseImage Items_Image { get; set; }
 
         public Friends_Image Friends_Image { get; set; }
@@ -72,7 +109,9 @@ namespace ServersAccept
 
         public int Id { get; set; }
 
-        //Создают таблицу пользователей 
+        /// <summary>
+        /// Создают таблицу пользователей 
+        /// </summary>
         public void CreateTable_Users()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -93,7 +132,9 @@ namespace ServersAccept
             }
         }
 
-        //Создают таблицу друзей 
+        /// <summary>
+        /// Создают таблицу друзей 
+        /// </summary>
         public void CreateTable_Friends()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -112,7 +153,9 @@ namespace ServersAccept
             }
         }
 
-        //Создают таблицу Чат 
+        /// <summary>
+        /// оздают таблицу Чат 
+        /// </summary>
         public void CreateTable_Chat()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -135,7 +178,9 @@ namespace ServersAccept
             }
         }
 
-        //Создают таблицу Картинка 
+        /// <summary>
+        /// Создают таблицу Картинка 
+        /// </summary>
         public void CreateTable_Files()
         {
             using (var connection = new SqliteConnection(GlobalClass.connectionString))
@@ -178,7 +223,13 @@ namespace ServersAccept
         */
 
 
-        //Добавляет пользователей и проверяет при  том что они там уже добавлены
+        /// <summary>
+        /// Добавляет пользователей и проверяет при  том что они там уже добавлены
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="pasword"></param>
+        /// <param name="age"></param>
+        /// <param name="dateTime"></param>
         async public void Insert_User(string data, string pasword, string age, DateTime dateTime)
         {
             try
@@ -217,7 +268,10 @@ namespace ServersAccept
             }
         }
 
-        //Добавляет Картинку в таблицу Files  и педают id картинки для пользователей
+        /// <summary>
+        /// Добавляет Картинку в таблицу Files  и педают id картинки для пользователей
+        /// </summary>
+        /// <param name="buf"></param>
         async public void Insert_Image(byte[] buf)
         {
             try
@@ -243,7 +297,11 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет  в таблицу Пользователи  пользователя и пароль 
+        /// <summary>
+        /// Проверяет  в таблицу Пользователи  пользователя и пароль 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="pasword"></param>
         async public void Select_Users(string data, string pasword)
         {
             //string Name = "";
@@ -316,7 +374,10 @@ namespace ServersAccept
 
         }
 
-        // Поиск и выборка картинки по ID 
+        /// <summary>
+        /// Поиск и выборка картинки по ID 
+        /// </summary>
+        /// <param name="data"></param>
         async public void Select_Image(Photo data)
         {
             //string Name = "";
@@ -411,7 +472,10 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет  в таблицу Друзья количество друзей 1го пользователя
+        /// <summary>
+        /// Проверяет  в таблицу Друзья количество друзей 1го пользователя
+        /// </summary>
+        /// <param name="curent_user"></param>
         async public void Select_Friend(string curent_user)
         {
             int UserCount = 0;
@@ -506,7 +570,10 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет  в таблицу пользователи по имени пользователя
+        /// <summary>
+        /// Проверяет  в таблицу пользователи по имени пользователя
+        /// </summary>
+        /// <param name="data"></param>
         async public void Select_From_Users(string data)
         {
             string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data}'";
@@ -535,7 +602,11 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет  в таблицу Друзья  добавляет друзей по id 
+        /// <summary>
+        /// Проверяет  в таблицу Друзья  добавляет друзей по id 
+        /// </summary>
+        /// <param name="IdUserFrom"></param>
+        /// <param name="IdUserTo"></param>
         async public void Select_From_Users(string IdUserFrom, string IdUserTo)
         {
             Select_From_Users(IdUserFrom);
@@ -560,7 +631,10 @@ namespace ServersAccept
             }
         }
 
-        //Добавляет  в таблицу Чат  сообщение от пользователя 
+        /// <summary>
+        /// Добавляет  в таблицу Чат  сообщение от пользователя 
+        /// </summary>
+        /// <param name="messСhat"></param>
         async public void Insert_Message(MessСhat messСhat)
         {
             string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
@@ -625,7 +699,10 @@ namespace ServersAccept
             }
         }
 
-        //Обновляет  редактирования сообщение в чате у  1 до 2 и от 2 до 1 и их передает 
+        /// <summary>
+        /// Обновляет  редактирования сообщение в чате у  1 до 2 и от 2 до 1 и их передает 
+        /// </summary>
+        /// <param name="messСhat"></param>
         async public void Update_Message(MessСhat messСhat)
         {
             DateTime dateTime = DateTime.Now;
@@ -686,7 +763,10 @@ namespace ServersAccept
             }
         }
 
-        //Удаляет сообщение в чате  сообщение в чате у данного пользователя по 
+        /// <summary>
+        /// Удаляет сообщение в чате  сообщение в чате у данного пользователя по 
+        /// </summary>
+        /// <param name="messСhat"></param>
         async public void Delete_Message_make_up(MessСhat messСhat)
         {
             string sqlExpression = $"DELETE   FROM Chat  WHERE Id = '{messСhat.Id}'";
@@ -745,7 +825,10 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет чат  количество записей  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
+        /// <summary>
+        /// Проверяет чат  количество записей  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
+        /// </summary>
+        /// <param name="data"></param>
         async public void Select_Message_Users(User_photo data)
         {
 
@@ -810,7 +893,10 @@ namespace ServersAccept
             }
         }
 
-        //Проверяет по имени пользователя и передают его Id
+        /// <summary>
+        /// Проверяет по имени пользователя и передают его Id
+        /// </summary>
+        /// <param name="data"></param>
         async public void Searh_Users(Searh_Friends data)
         {
             string sqlExpressio = $"SELECT * FROM Users  WHERE Name = '{data.Name}'";

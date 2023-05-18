@@ -10,7 +10,12 @@ namespace ServersAccept
 {
     internal class Command
     {
-        //002-Регистрация пользователей
+        /// <summary>
+        /// 002-Регистрация пользователей
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
               using (MemoryStream tt2 = new MemoryStream())
@@ -32,7 +37,12 @@ namespace ServersAccept
               }       
         }
 
-        //003-Проверка логина и пароля
+        /// <summary>
+        /// 003-Проверка логина и пароля
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Checks_User_and_password(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -120,7 +130,12 @@ namespace ServersAccept
             }
         }
 
-        //004-выборка друзей пользователя
+        /// <summary>
+        /// 004-выборка друзей пользователя
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Sampling_Users_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -148,7 +163,12 @@ namespace ServersAccept
             }
         }
 
-        //005-Выборка сообщений переписки с другом пользователя
+        /// <summary>
+        /// 005-Выборка сообщений переписки с другом пользователя
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Sampling_Messages_Correspondence(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -177,7 +197,12 @@ namespace ServersAccept
             }
         }
 
-        //006-Проверяет сообщение для друга
+        /// <summary>
+        /// 006-Проверяет сообщение для друга
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Select_Message_Friend(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -219,7 +244,12 @@ namespace ServersAccept
             }
         }
 
-        //007- Получение картинки по ID
+        /// <summary>
+        /// 007- Получение картинки по ID
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Search_Image(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -248,7 +278,12 @@ namespace ServersAccept
             }
         }
 
-        //008-Добавляет Друзей в чат
+        /// <summary>
+        /// 008-Добавляет Друзей в чат
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Searh_Friends(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -278,7 +313,12 @@ namespace ServersAccept
             }
         }
 
-        //009*Добавляет сообщение в чат
+        /// <summary>
+        /// 009*Добавляет сообщение в чат
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Insert_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -307,7 +347,12 @@ namespace ServersAccept
             }
         }
 
-        // 010- редактировать сообщение
+        /// <summary>
+        /// 010- редактировать сообщение
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Update_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -338,7 +383,12 @@ namespace ServersAccept
             }
         }
 
-        //011 - удаление сообщения из чата
+        /// <summary>
+        /// 011 - удаление сообщения из чата
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Delete_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -389,7 +439,12 @@ namespace ServersAccept
             }
         }
 
-        //012 - получение списка сообщений (обновление)
+        /// <summary>
+        /// 012 - получение списка сообщений (обновление)
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void List_Friens_Message(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -438,7 +493,12 @@ namespace ServersAccept
             }
         }
 
-        //013 - получение списка друзей (обновление)
+        /// <summary>
+        /// 013 - получение списка друзей (обновление)
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void List_Friens(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
@@ -504,7 +564,12 @@ namespace ServersAccept
             }
         }
 
-        //014 - получение списка друзей (обновление)
+        /// <summary>
+        /// 014 - получение списка друзей (обновление)
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
         public void Search_Image_Friends(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
             try
