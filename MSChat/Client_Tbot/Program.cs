@@ -1,10 +1,11 @@
 ﻿
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using File = System.IO.File;
-
+using System.Drawing;
 namespace Client_Tbot
 {
     internal class Program
@@ -29,8 +30,36 @@ namespace Client_Tbot
                 message = update.Message;
                 if (message != null)
                 {
+                    if (message.Photo != null)
+                    {
+               
+                 
+                        
+                                              
+                            await botClient.SendDocumentAsync(message.Chat.Id, InputFile.FromFileId(message.Photo[0].FileSize.ToString()));
 
-                    if(message.Document != null)
+                         
+                        
+                        //  var  voiceMessage = message.Photo[i].FileId;
+           
+                           
+                      }
+                       
+
+
+                     
+
+                    }
+                    if (message.Video != null)
+                    {
+                        var voiceMessage = await botClient.GetFileAsync(message.Video.FileId);
+
+
+                        await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+
+
+                    }
+                        if (message.Document != null)
                     {
                       
                             var voiceMessage = await botClient.GetFileAsync(message.Document.FileId);
@@ -67,7 +96,7 @@ namespace Client_Tbot
 
                     if (message.Text != null)
                     {
-                        if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text)
+                        if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text || message.Text.Substring(0,5) == "https")
                         {
                             await botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
                             return;
@@ -86,7 +115,7 @@ namespace Client_Tbot
                 }
 
             }
-        } 
+         
 
         private static Task Error(ITelegramBotClient arg1, Exception arg2, CancellationToken arg3)
         {
