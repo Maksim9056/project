@@ -106,7 +106,6 @@
     <Compile Include="Chats_main.Designer.cs">
       <DependentUpon>Chats_main.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommandCL.cs" />
     <Compile Include="IP_ADRES.cs" />
     <Compile Include="Password_Users.cs">
       <SubType>Form</SubType>

@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 //using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Client_chat
@@ -296,17 +296,17 @@ namespace Client_chat
                     }
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+              //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+                //MessageBox.Show("SocketException: {0}", e.Message);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message);
+             //   MessageBox.Show(e.Message);
             }
 
         }
@@ -353,17 +353,17 @@ namespace Client_chat
                     }
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException )
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException )
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+              //  MessageBox.Show("SocketException: {0}", e.Message);
             }
-            catch (Exception e)
+            catch (Exception )
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
             }
         }
 
@@ -410,17 +410,17 @@ namespace Client_chat
 
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException )
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+             //   MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException )
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+                //MessageBox.Show("SocketException: {0}", e.Message);
             }
-            catch (Exception e)
+            catch (Exception )
             {
-                MessageBox.Show(e.Message);
+               // MessageBox.Show(e.Message);
             }
 
         }
@@ -455,13 +455,13 @@ namespace Client_chat
                     _Friends = searh_Friends;                             
                 }                                                                 
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException )
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+                //MessageBox.Show("SocketException: {0}", e.Message);
             }
         }
 
@@ -495,13 +495,13 @@ namespace Client_chat
                     _AClass = AClass;                                
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+              //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+              //  MessageBox.Show("SocketException: {0}", e.Message);
             }
         }
 
@@ -536,13 +536,13 @@ namespace Client_chat
                     _AClass = AClass;
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+               // MessageBox.Show("SocketException: {0}", e.Message);
             }
         }  
 
@@ -578,13 +578,13 @@ namespace Client_chat
                     _AClass = AClass;
                 }
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                //MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                MessageBox.Show("SocketException: {0}", e.Message);
+              //  MessageBox.Show("SocketException: {0}", e.Message);
             }
         }   
     }

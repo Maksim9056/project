@@ -14,11 +14,11 @@ namespace Client_Tbot
 {
     public class Ip_adres
     {
-      
-        public   Int32 port { get; set; }
-       public   string Ip_adress { get; set; }
+
+        public Int32 port { get; set; }
+        public string Ip_adress { get; set; }
         public static string path = Environment.CurrentDirectory.ToString();
-        public Ip_adres(string ip,Int32 Port)
+        public Ip_adres(string ip, Int32 Port)
         {
             Ip_adress = ip;
             port = Port;
@@ -45,23 +45,21 @@ namespace Client_Tbot
                 }
                 else
                 {
+                    //Если нету файла то создаем новый!
                     using (FileStream file = new FileStream("Tbot.json", FileMode.OpenOrCreate))
                     {
-
                         //Заполняем класс Ip_adres
                         Ip_adres ip_Adres = new Ip_adres("192.168.0.110", 9595);
 
                         //Серелизуем класс Ip_adres
                         JsonSerializer.Serialize<Ip_adres>(file, ip_Adres);
-
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            // public static string Ip_adress =
         }
     }
 }

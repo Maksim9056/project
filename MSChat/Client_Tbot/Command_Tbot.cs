@@ -11,7 +11,9 @@ namespace Client_Tbot
 
     public class Command_Tbot
     {
-      public  Ip_adres Seting = new Ip_adres();
+       //Запращиваем настройки Ip adress,port для отсылания на ServersAcept
+       public  Ip_adres Seting = new Ip_adres();
+
 
         //Запращиваем Сообщения из чата
         public void Select_Message_From_Chats()
@@ -19,9 +21,5 @@ namespace Client_Tbot
 
 
         }
-
-
-
-
     }   
 }

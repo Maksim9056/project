@@ -21,9 +21,9 @@ namespace Client_Tbot
 
         static void Main(string[] args)
         {
-          var client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
-          client.StartReceiving( Update, Error);
-          Console.ReadLine();
+            var client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
+            client.StartReceiving(Update, Error);
+            Console.ReadLine();
 
         }
 
@@ -32,7 +32,7 @@ namespace Client_Tbot
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
             Command_Tbot command_Tbot = new Command_Tbot();
-       
+
             Message message;
 
 
@@ -49,23 +49,9 @@ namespace Client_Tbot
                     if (message.Photo != null)
                     {
 
-
-
-
                         await botClient.SendDocumentAsync(message.Chat.Id, InputFile.FromFileId(message.Photo[0].FileSize.ToString()));
-
-
-
                         //  var  voiceMessage = message.Photo[i].FileId;
-
-
                     }
-
-
-
-
-
-
                     if (message.Video != null)
                     {
                         var voiceMessage = await botClient.GetFileAsync(message.Video.FileId);
@@ -111,8 +97,8 @@ namespace Client_Tbot
 
                     if (message.Text != null)
                     {
-                        
 
+                        //Пример
                         if (message.Text == "/start")
                         {
 
@@ -152,10 +138,11 @@ namespace Client_Tbot
                         }
                         else
                         {
+                            //Обрабатываем кнопку 
                             if (message.Text == "Вывести список сообщений из Программы MSChat")
                             {
-                                
-                            //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
+
+                                //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
 
                                 await botClient.SendTextMessageAsync(message.Chat.Id, "Список сообщений не работает !");
 
@@ -195,7 +182,7 @@ namespace Client_Tbot
 
             }
         }
-    
+
         private static IReplyMarkup GetButons()
         {
 
@@ -224,7 +211,7 @@ namespace Client_Tbot
             //},
             // });
             //return inlineKeyboard;
-            
+
 
         }
 
