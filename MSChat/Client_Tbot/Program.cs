@@ -31,7 +31,8 @@ namespace Client_Tbot
 
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
-
+            Command_Tbot command_Tbot = new Command_Tbot();
+       
             Message message;
 
 
@@ -89,7 +90,6 @@ namespace Client_Tbot
 
                         //string bity = message.Voice.MimeType;
 
-
                         //      byte[] data = Convert.FromBase64String(bity); 
 
                         //FileStream memoryStream = new FileStream(bity, FileMode.Open);
@@ -132,7 +132,6 @@ namespace Client_Tbot
                                     buttons[i][j] = InlineKeyboardButton.WithCallbackData(data[i][j]);
                                 }
                             }
-
                             // Отправляем сообщение с таблицей
                             var replyMarkup = new InlineKeyboardMarkup(buttons);
                             //  parseMode: ParseMode.MarkdownV2)
@@ -149,13 +148,13 @@ namespace Client_Tbot
                             //        }
                             //  }
                             // )
-                            // ); 
+                            // );
                         }
                         else
                         {
                             if (message.Text == "Вывести список сообщений из Программы MSChat")
                             {
-
+                                
                             //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
 
                                 await botClient.SendTextMessageAsync(message.Chat.Id, "Список сообщений не работает !");
@@ -209,7 +208,6 @@ namespace Client_Tbot
             };
 
             return replyKeyboardMarkup;
-
             //InlineKeyboardMarkup inlineKeyboard = new(new[]
             //{
             //// first row
