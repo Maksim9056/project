@@ -19,4 +19,8 @@
     <None Include="C:\Users\Максим\source\project\MSChat\Client_Tbot\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ServersAccept\ServersAccept.csproj" />
+  </ItemGroup>
+
 </Project>

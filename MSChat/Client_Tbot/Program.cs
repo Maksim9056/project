@@ -13,7 +13,7 @@ using System.Globalization;
 using Telegram.Bot.Types.ReplyMarkups;
 using static System.Net.Mime.MediaTypeNames;
 using Telegram.Bot.Types.Enums;
-
+using static System.Net.WebRequestMethods;
 namespace Client_Tbot
 {
     internal class Program
@@ -22,9 +22,8 @@ namespace Client_Tbot
         static void Main(string[] args)
         {
           var client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
-
-            client.StartReceiving( Update, Error);
-            Console.ReadLine();
+          client.StartReceiving( Update, Error);
+          Console.ReadLine();
 
         }
 
@@ -138,10 +137,6 @@ namespace Client_Tbot
                             var replyMarkup = new InlineKeyboardMarkup(buttons);
                             //  parseMode: ParseMode.MarkdownV2)
                             var tt = await botClient.SendTextMessageAsync(message.Chat.Id, $"Here is your Button :", replyMarkup: GetButons());
-
-
-
-
                             //await botClient.SendTextMessageAsync(
                             //      chatId: message.Chat.Id,
                             //       text: "Please choose:",
@@ -155,26 +150,42 @@ namespace Client_Tbot
                             //  }
                             // )
                             // ); 
-
-
-
-
-
-
                         }
                         else
                         {
-
-                            if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text || message.Text.Substring(0, 5) == "https")
+                            if (message.Text == "Вывести список сообщений из Программы MSChat")
                             {
-                                await botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
-                                return;
+
+                            //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
+
+                                await botClient.SendTextMessageAsync(message.Chat.Id, "Список сообщений не работает !");
+
 
                             }
                             else
                             {
-                                await botClient.SendTextMessageAsync(message.Chat.Id, "Привет!");
-                                return;
+
+                                if (message.Text == "Проверить все соообщения")
+                                {
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, "Проверить все  сообщения не работает !");
+                                }
+                                else
+                                {
+
+
+
+                                    if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text || message.Text.Substring(0, 5) == "https")
+                                    {
+                                        await botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
+                                        return;
+
+                                    }
+                                    else
+                                    {
+                                        await botClient.SendTextMessageAsync(message.Chat.Id, "Привет!");
+                                        return;
+                                    }
+                                }
                             }
                         }
 
@@ -189,32 +200,32 @@ namespace Client_Tbot
         private static IReplyMarkup GetButons()
         {
 
-            //ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
-            //{
-            //    new KeyboardButton[] { "Help me", "Call me ☎️" },
-            //    })
-            //{
-            //    ResizeKeyboard = true
-            //};
+            ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+            {
+                new KeyboardButton[] { "Привет", "Проверить все соообщения", "Вывести список сообщений из Программы MSChat"},
+                })
+            {
+                ResizeKeyboard = true
+            };
 
-            //return replyKeyboardMarkup;
+            return replyKeyboardMarkup;
 
-            InlineKeyboardMarkup inlineKeyboard = new(new[]
-            {
-            // first row
-            new []
-            {
-                InlineKeyboardButton.WithCallbackData(text: "1.1", callbackData: "11"),
-                InlineKeyboardButton.WithCallbackData(text: "1.2", callbackData: "12"),
-            },
-            // second row
-             new []
-            {
-                InlineKeyboardButton.WithCallbackData(text: "2.1", callbackData: "21"),
-                InlineKeyboardButton.WithCallbackData(text: "2.2", callbackData: "22"),
-            },
-             });
-            return inlineKeyboard;
+            //InlineKeyboardMarkup inlineKeyboard = new(new[]
+            //{
+            //// first row
+            //new []
+            //{
+            //    InlineKeyboardButton.WithCallbackData(text: "1.1", callbackData: "11"),
+            //    InlineKeyboardButton.WithCallbackData(text: "1.2", callbackData: "12"),
+            //},
+            //// second row
+            // new []
+            //{
+            //    InlineKeyboardButton.WithCallbackData(text: "2.1", callbackData: "21"),
+            //    InlineKeyboardButton.WithCallbackData(text: "2.2", callbackData: "22"),
+            //},
+            // });
+            //return inlineKeyboard;
             
 
         }
