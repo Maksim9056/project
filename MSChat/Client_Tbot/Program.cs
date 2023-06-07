@@ -53,6 +53,7 @@ namespace Client_Tbot
         {
             try
             {
+
                 Command_Tbot command_Tbot = new Command_Tbot();
                 Message message;
                 if (update != null)
@@ -62,87 +63,25 @@ namespace Client_Tbot
                     {
                         //   var Result = Class.Substring(0, Class.Length - 5);
 
-                        var Class = update.Message?.Text;
-                        var Result = Class?.Split(new char[] { ',', ':' });
-                        if (Result[0] == "Comand ")
+                        if (update.Message?.Text == null)
                         {
-                            //Result[1];
-                            //Result[2];
-                            //var Class = update.Message?.Text;
-                            //var Result = Class?.Split(new char[] { ',', ':' });
-                            using (MemoryStream fs = new MemoryStream())
-                            {
-                                //Создаем  экземпляр класс CommandCL
-                                //CommandCL command = new CommandCL();
-                                //Для класс серилизации используем для строки FileFS
-                                string FileFS = "";
-                                //Собрали класс UserLogin
-                                UserLogin tom = new UserLogin(Result[1], Result[2]);
-                                //Серилизовали класс UserLogin в MemoryStream fs 
-                                JsonSerializer.Serialize<UserLogin>(fs, tom);
-                                //Декодировали в строку  MemoryStream fs   
-                                FileFS = Encoding.Default.GetString(fs.ToArray());
-                                //Отправили и получили результат
-                                Task.Run(async () => await command.Check_User_Possword("127.0.0.1", FileFS, "003")).Wait();
-                                //Проверяем есть ли пользователь 
-                                FileFS = "";
-              
-
-                                if (CommandCL.User_Logins_and_Friends.User_ != null)
-                                {
-                                  MemoryStream memoryStream = new MemoryStream();
-                                    User_photo user_Photo = CommandCL.User_Logins_and_Friends.User_;
-                                   JsonSerializer.Serialize(memoryStream, user_Photo);
-                                  CommandCL.User_Logins_and_Friends.User_.Current = CommandCL.User_Logins_and_Friends.AClass[0].Current;
-                        //         JsonSerializer.Serialize<User_photo> (memoryStream, user_Photo);
-
-                                    FileFS = Encoding.Default.GetString(memoryStream.ToArray());
-
-
-
-                                    Task.Run(async () => await command.Check_Mess_Friend("127.0.0.1", FileFS, "006")).Wait();
-
-                                    if(command._Answe.ToString() == "true")
-                                    {
-                                        MessСhat[] les = new MessСhat[command._AClass.Count()];
-                                        //Десерилизуем класс и получаем класс MessСhat 
-                                        for (int i = 0; i < command._AClass.Count(); i++)
-                                        {
-                                            string yu = command._AClass[i].ToString();
-                                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                                            les[i] = useTravel;
-                                            await botClient.SendTextMessageAsync(message.Chat.Id, les[i].Message);
-                                        }                                   
-                                    }
-                                    else
-                                    {
-                                        await botClient.SendTextMessageAsync(message.Chat.Id,"Сообщений нету");
-                                    }
-                                    //command.
-                                    //Chats_main a = new Chats_main();
-                                    //Chats_main parent = (Chats_main)this.Owner;
-                                    //parent.NotifyMe(CommandCL.User_Logins_and_Friends);
-                                    //parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
-                                    //CommandCL.User_Logins_and_Friends = null;
-                                    //this.Close();
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            message = update?.Message;
-
-                            //UserLogin person5 = JsonSerializer.Deserialize<UserLogin>(FileFS);
-                            // pasword = person5.Name;
-                            // пароль = person5.Pass;
 
                             if (message.Photo != null)
                             {
+                                for (int i = 0; i < message.Photo.Length; i++)
+                                {
 
-                                await botClient.SendDocumentAsync(message.Chat.Id, InputFile.FromFileId(message.Photo[0].FileSize.ToString()));
-                                //  var  voiceMessage = message.Photo[i].FileId;
+                                    await botClient.SendPhotoAsync(message.Chat.Id, InputFile.FromFileId(message.Photo[i].FileId.ToString()));
+
+
+                                    //  var  voiceMessage = message.Photo[i].FileId;
+                                    break;
+
+                                }
                             }
+
+
+
                             if (message.Video != null)
                             {
                                 var voiceMessage = await botClient.GetFileAsync(message.Video.FileId);
@@ -182,97 +121,188 @@ namespace Client_Tbot
                                 return;
 
                             }
-
-                            if (message.Text != null)
+                        }
+                        else
+                        {
+                            var Class = update.Message?.Text;
+                            var Result = Class?.Split(new char[] { ',', ':' });
+                            if (Result[0] == "Comand ")
                             {
+                                //Result[1];
+                                //Result[2];
+                                //var Class = update.Message?.Text;
+                                //var Result = Class?.Split(new char[] { ',', ':' });
+                                using (MemoryStream fs = new MemoryStream())
+                                {
+                                    //Создаем  экземпляр класс CommandCL
+                                    //CommandCL command = new CommandCL();
+                                    //Для класс серилизации используем для строки FileFS
+                                    string FileFS = "";
+                                    //Собрали класс UserLogin
+                                    UserLogin tom = new UserLogin(Result[1], Result[2]);
+                                    //Серилизовали класс UserLogin в MemoryStream fs 
+                                    JsonSerializer.Serialize<UserLogin>(fs, tom);
+                                    //Декодировали в строку  MemoryStream fs   
+                                    FileFS = Encoding.Default.GetString(fs.ToArray());
+                                    //Отправили и получили результат
+                                    Task.Run(async () => await command.Check_User_Possword("127.0.0.1", FileFS, "003")).Wait();
+                                    //Проверяем есть ли пользователь 
+                                    FileFS = "";
 
-                                //Пример
-                                if (message.Text == "/start")
+
+
+
+
+                                    if (CommandCL.User_Logins_and_Friends.User_ != null)
+                                    {
+                                        for (int j = 0; j < CommandCL.User_Logins_and_Friends.AClass.Count(); j++)
+                                        {
+
+                                            MemoryStream memoryStream = new MemoryStream();
+                                            User_photo user_Photo = CommandCL.User_Logins_and_Friends.User_;
+                                            user_Photo.Current = CommandCL.User_Logins_and_Friends.AClass[j].Id;
+                                            JsonSerializer.Serialize(memoryStream, user_Photo);
+                                            CommandCL.User_Logins_and_Friends.User_.Current = CommandCL.User_Logins_and_Friends.AClass[j].Current;
+                                            //         JsonSerializer.Serialize<User_photo> (memoryStream, user_Photo);
+
+
+                                            FileFS = Encoding.Default.GetString(memoryStream.ToArray());
+                                            user_Photo.Current = 0;
+                                            Task.Run(async () => await command.Check_Mess_Friend("127.0.0.1", FileFS, "006")).Wait();
+
+                                            if (command._Answe.ToString() == "true")
+                                            {
+                                                MessСhat[] les = new MessСhat[command._AClass.Count()];
+                                                //Десерилизуем класс и получаем класс MessСhat 
+                                                using (MemoryStream ms = new MemoryStream())
+                                                {
+
+                                                    for (int i = 0; i < command._AClass.Count(); i++)
+                                                    {
+                                                        string yu = command._AClass[i].ToString();
+                                                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                                        les[i] = useTravel;
+                                                        await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                await botClient.SendTextMessageAsync(message.Chat.Id, "Сообщений нету : у пользователя " + " " + CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString());
+                                            }
+                                            //command.
+                                            //Chats_main a = new Chats_main();
+                                            //Chats_main parent = (Chats_main)this.Owner;
+                                            //parent.NotifyMe(CommandCL.User_Logins_and_Friends);
+                                            //parent.SaveConfig(ConnectSettings.port, IP_ADRES.Ip_adress, CommandCL.User_Logins_and_Friends.User_.Name);
+                                            //CommandCL.User_Logins_and_Friends = null;
+                                            //this.Close();
+                                        }
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                message = update?.Message;
+
+                                //UserLogin person5 = JsonSerializer.Deserialize<UserLogin>(FileFS);
+                                // pasword = person5.Name;
+                                // пароль = person5.Pass;
+
+
+
+                                if (message.Text != null)
                                 {
 
-                                    string[][] data = new string[][] {
+                                    //Пример
+                                    if (message.Text == "/start")
+                                    {
+
+                                        string[][] data = new string[][] {
                              new string[] { "A1", "A2", "A3" },
                              new string[] { "B1", "B2", "B3" },
                              new string[] { "C1", "C2", "C3" },
                              };
 
-                                    // Создаем объект таблицы
-                                    InlineKeyboardButton[][] buttons = new InlineKeyboardButton[data.Length][];
-                                    for (int i = 0; i < data.Length; i++)
-                                    {
-                                        buttons[i] = new InlineKeyboardButton[data[i].Length];
-                                        for (int j = 0; j < data[i].Length; j++)
+                                        // Создаем объект таблицы
+                                        InlineKeyboardButton[][] buttons = new InlineKeyboardButton[data.Length][];
+                                        for (int i = 0; i < data.Length; i++)
                                         {
-                                            buttons[i][j] = InlineKeyboardButton.WithCallbackData(data[i][j]);
+                                            buttons[i] = new InlineKeyboardButton[data[i].Length];
+                                            for (int j = 0; j < data[i].Length; j++)
+                                            {
+                                                buttons[i][j] = InlineKeyboardButton.WithCallbackData(data[i][j]);
+                                            }
                                         }
-                                    }
-                                    // Отправляем сообщение с таблицей
-                                    var replyMarkup = new InlineKeyboardMarkup(buttons);
-                                    //  parseMode: ParseMode.MarkdownV2)
-                                    var tt = await botClient.SendTextMessageAsync(message.Chat.Id, $"Here is your Button :", replyMarkup: GetButons());
-                                    //await botClient.SendTextMessageAsync(
-                                    //      chatId: message.Chat.Id,
-                                    //       text: "Please choose:",
-                                    // replyMarkup: new InlineKeyboardMarkup(new[]
-                                    // {
-                                    //       new InlineKeyboardButton[]
-                                    //        {
-                                    //         InlineKeyboardButton.WithCallbackData("Option 1", "1"),
-                                    //         InlineKeyboardButton.WithCallbackData("Option 2", "2"),
-                                    //        }
-                                    //  }
-                                    // )
-                                    // );
-                                }
-                                else
-                                {
-
-                                    //Обрабатываем кнопку 
-                                    if (message.Text == "Вывести список сообщений из Программы MSChat")
-                                    {
-
-                                        //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
-
-                                        await botClient.SendTextMessageAsync(message.Chat.Id, "Список сообщений не работает !");
-
-
+                                        // Отправляем сообщение с таблицей
+                                        var replyMarkup = new InlineKeyboardMarkup(buttons);
+                                        //  parseMode: ParseMode.MarkdownV2)
+                                        var tt = await botClient.SendTextMessageAsync(message.Chat.Id, $"Here is your Button :", replyMarkup: GetButons());
+                                        //await botClient.SendTextMessageAsync(
+                                        //      chatId: message.Chat.Id,
+                                        //       text: "Please choose:",
+                                        // replyMarkup: new InlineKeyboardMarkup(new[]
+                                        // {
+                                        //       new InlineKeyboardButton[]
+                                        //        {
+                                        //         InlineKeyboardButton.WithCallbackData("Option 1", "1"),
+                                        //         InlineKeyboardButton.WithCallbackData("Option 2", "2"),
+                                        //        }
+                                        //  }
+                                        // )
+                                        // );
                                     }
                                     else
                                     {
 
-                                        if (message.Text == "Проверить все соообщения")
+                                        //Обрабатываем кнопку 
+                                        if (message.Text == "Вывести список сообщений из Программы MSChat")
                                         {
-                                            await botClient.SendTextMessageAsync(message.Chat.Id, "Проверить все  сообщения не работает !");
+
+                                            //    Task.Run(async () => await command.Update_Message_make_up("192.168.0.110" , "010")).;
+
+                                            await botClient.SendTextMessageAsync(message.Chat.Id, "Список сообщений не работает !");
+
+
                                         }
                                         else
                                         {
 
-
-
-                                            if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text || message.Text.Substring(0, 5) == "https")
+                                            if (message.Text == "Проверить все соообщения")
                                             {
-                                                await botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
-                                                return;
-
+                                                await botClient.SendTextMessageAsync(message.Chat.Id, "Проверить все  сообщения не работает !");
                                             }
                                             else
                                             {
-                                                await botClient.SendTextMessageAsync(message.Chat.Id, "Привет!");
-                                                return;
+
+
+
+                                                if (message.Text.ToLower().Contains("Привет") || message.Text.ToLower() == message.Text || message.Text.Substring(0, 5) == "https")
+                                                {
+                                                    await botClient.SendTextMessageAsync(message.Chat.Id, message.Text);
+                                                    return;
+
+                                                }
+                                                else
+                                                {
+                                                    await botClient.SendTextMessageAsync(message.Chat.Id, "Привет!");
+                                                    return;
+                                                }
                                             }
                                         }
                                     }
+
+
                                 }
-
-
                             }
+
+
                         }
-
-
                     }
                 }
-             }
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
