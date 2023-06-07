@@ -133,12 +133,25 @@ namespace Class_chat
                     //}
                     */
 
-
                     //Функция получаем
-                    responseData = await Task<string>.Run(() =>
+                    //responseData = await Task<string>.Run(() =>
+                    //{
+                    //    return Func_Read(stream, data.Length, client);
+                    //});
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
                     {
-                        return Func_Read(stream, data.Length, client);
-                    });
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
+
+
                     //Проверяем
                     if (responseData == "false")
                     {
@@ -380,13 +393,28 @@ namespace Class_chat
                     //Отправили  на сервер
                     await stream.WriteAsync(data, 0, data.Length);
                     //Назначаем длину 1024
-                    data = new Byte[1024];
+                    //data = new Byte[1024];
                     String responseData = String.Empty;
                     //функция получения но обрезающая 
-                    responseData = await Task<string>.Run(() =>
+                    //responseData = await Task<string>.Run(() =>
+                    //{
+                    //    return Func_Read(stream, data.Length, client);
+                    //});
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
                     {
-                        return Func_Read(stream, data.Length, client);
-                    });
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
+
+
+
+
                     //получить перечень сообщений
                     if (responseData == "false")
                     {   //Если нету списка
