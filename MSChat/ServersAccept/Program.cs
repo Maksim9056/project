@@ -238,6 +238,7 @@ namespace ServersAccept
                     {
                         Connect_server_ connect_Server_ = new Connect_server_(IPAddress.Loopback.ToString(), ConnectSettings.port);
                         JsonSerializer.Serialize<Connect_server_>(fileStream, connect_Server_);
+
                     }
 
                     using (FileStream fileStream = new FileStream("Server.json", FileMode.OpenOrCreate))
@@ -245,6 +246,10 @@ namespace ServersAccept
                         Connect_server aFile = JsonSerializer.Deserialize<Connect_server>(fileStream);
                         Ip_Adress = aFile.Ip_address;
                         port = aFile.Port;
+
+
+              
+
                     }
                 }
             }

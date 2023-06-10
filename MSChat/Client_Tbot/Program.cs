@@ -27,24 +27,34 @@ namespace Client_Tbot
 {
 
 
-    public   class Пароль
-    {
-        string пароль { get; set; }
+    //public   class Пароль
+    //{
+    //    string пароль { get; set; }
 
-        public Пароль(string Пароль)
-        {
-            пароль = Пароль;
-        }
-    }
+    //    public Пароль(string Пароль)
+    //    {
+    //        пароль = Пароль;
+    //    }
+    //}
+
+
     internal class Program
     {
         public static CommandCL command = new CommandCL();
+        //    public static  Ip_adres ip_Adres { get; set; }
+
+       public static Sistem sistem = new Sistem();
+
+
         static void Main(string[] args)
         {
+            sistem.Setting();
             var client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
+           
+
             client.StartReceiving(Update, Error);
             Console.ReadLine();
-
+           
         }
 
 
@@ -145,7 +155,7 @@ namespace Client_Tbot
                                     //Декодировали в строку  MemoryStream fs   
                                     FileFS = Encoding.Default.GetString(fs.ToArray());
                                     //Отправили и получили результат
-                                    Task.Run(async () => await command.Check_User_Possword("127.0.0.1", FileFS, "003")).Wait();
+                                    Task.Run(async () => await command.Check_User_Possword(sistem.IP, FileFS, "003")).Wait();
                                     //Проверяем есть ли пользователь 
                                     FileFS = "";
 
@@ -168,7 +178,7 @@ namespace Client_Tbot
 
                                             FileFS = Encoding.Default.GetString(memoryStream.ToArray());
                                             user_Photo.Current = 0;
-                                            Task.Run(async () => await command.Check_Mess_Friend("127.0.0.1", FileFS, "006")).Wait();
+                                            Task.Run(async () => await command.Check_Mess_Friend(sistem.IP, FileFS, "006")).Wait();
 
                                             if (command._Answe.ToString() == "true")
                                             {
