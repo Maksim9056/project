@@ -58,8 +58,9 @@ namespace Client_Tbot
         //    public static  Ip_adres ip_Adres { get; set; }
 
        public static Sistem sistem = new Sistem();
+        public static string Friends { get; set; }
 
-
+        public static User_photo msgUser_Logins  { get; set; }
         static void Main(string[] args)
         {
             sistem.Setting();
@@ -269,8 +270,9 @@ namespace Client_Tbot
                                                 {
                                                     for (int j = 0; j < CommandCL.User_Logins_and_Friends.AClass.Count(); j++)
                                                     {
+                                                        msgUser_Logins = CommandCL.User_Logins_and_Friends.AClass[j];
 
-                                                        await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья в {CommandCL.User_Logins_and_Friends.AClass[j].Name} и id друга  {CommandCL.User_Logins_and_Friends.AClass[j].Id} !");
+                                                   await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья в {CommandCL.User_Logins_and_Friends.AClass[j].Name} и id друга  {CommandCL.User_Logins_and_Friends.AClass[j].Id} !");
                                                     }
                                                 }
                                                 await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_.Name} !");
@@ -310,6 +312,21 @@ namespace Client_Tbot
                                                         MemoryStream memoryStream = new MemoryStream();
                                                         User_photo user_Photo = CommandCL.User_Logins_and_Friends.User_;
                                                         user_Photo.Current = Convert.ToInt32(Results[1]);
+                                                        
+                                                        
+                                                        if(msgUser_Logins.Current == Convert.ToInt32(Results[1]))
+                                                        {
+                                                           // msgUser_Logins.Name ;
+                                                            Friends = msgUser_Logins.Name;
+                                                        }
+                                                        else
+                                                        {
+                                                            Friends = msgUser_Logins.Name;
+                                                        }
+                                                        
+
+
+                                                   //    if( user_Photo.Current == CommandCL.User_Logins_and_Friends.AClass[j].Id)
                                                         JsonSerializer.Serialize(memoryStream, user_Photo);
                                                         CommandCL.User_Logins_and_Friends.User_.Current = CommandCL.User_Logins_and_Friends.AClass[j].Current;
                                                         //         JsonSerializer.Serialize<User_photo> (memoryStream, user_Photo);
@@ -322,18 +339,101 @@ namespace Client_Tbot
                                                         if (command._Answe.ToString() == "true")
                                                         {
                                                             MessСhat[] les = new MessСhat[command._AClass.Count()];
-                                                            //Десерилизуем класс и получаем класс MessСhat 
-                                                            using (MemoryStream ms = new MemoryStream())
-                                                            {
-
+                                                                //Десерилизуем класс и получаем класс MessСhat                                                            
+                                                                //  var test =  command._AClass.Count() - 1;
                                                                 for (int i = 0; i < command._AClass.Count(); i++)
                                                                 {
                                                                     string yu = command._AClass[i].ToString();
                                                                     MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
                                                                     les[i] = useTravel;
-                                                                    await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+
+                                                                //if ()
+                                                                //{
+                                                                //  user == CommandCL.User_Logins_and_Friends.User_.Name &&
+
+
+                                                                //Может нУЖНА
+                                                              //  CommandCL.User_Logins_and_Friends.AClass[i].Id == Convert.ToInt32(Results[1])
+                                                                        // ||les[i].IdUserFrom == Convert.ToInt32(Results[1])
+                                                                    if (les[i].IdUserTo == Convert.ToInt32(Results[1]) || les[i].IdUserTo == Convert.ToInt32(Results[1]) &&
+                                                                    les[i].IdUserFrom == Convert.ToInt32(Results[1])|| 
+                                                                    les[i].IdUserFrom == CommandCL.User_Logins_and_Friends.User_.Id  &&
+                                                                    //Чтоб
+                                                                     CommandCL.User_Logins_and_Friends.AClass[j].Name == Friends
+                                                                    )
+                                                                    {
+                                                                        // var s = les[i].Message;
+                                                                       
+
+                                                                        await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                        //await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                        //await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                        //await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                        //await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                       // break;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                    if (CommandCL.User_Logins_and_Friends.AClass[j].Name == Friends)
+                                                                    {
+                                                                        await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
+                                                                    }
+                                                                  
+
                                                                 }
+                                                                //}
+                                                                //else
+                                                                //{
+
+                                                                //}
                                                             }
+                                                            msgUser_Logins = null;
+                                                            break;
+                                                             
+                                                            
+                                                                //int lastMessageIndex = les.Length - 1; // индекс последнего элемента равен длине массива - 1
+
+                                                                //int k = lastMessageIndex - 1;
+
+                                                                //// выводим последний элемент массива
+
+                                                                //var Index = lastMessageIndex - 4;
+                                                            //    string[] messages = { "Message 1", "Message 2", "Message 3", "Message 4", "Message 5", "Message 6" };
+                                                            //              await botClient.SendTextMessageAsync(message.Chat.Id, les[les.Length-1].Message);
+                                                            //for ( var j=0;  ) // выводим 4 элемента перед последним, если они есть
+                                                            //{
+                                                            //    j =+ 1;
+                                                            //}
+
+                                                            //for (int i=0;i< les.Length; i++)
+                                                            //{
+
+                                                            //    if (i == 5)
+                                                            //    {
+
+                                                            //    }
+                                                            //    else 
+                                                            //    { 
+                                                            //    }
+
+                                                            //}
+                                                            //while (k < lastMessageIndex) 
+                                                            //    {
+
+                                                            //        if (k < Index)
+                                                            //        {
+
+                                                            //        }
+                                                            //        else
+                                                            //        {
+                                                            
+                                                                      
+                                                                     
+                                                            //    }
+                                                            //    k--;
+                                                            //    }
+
+                                                          
                                                         }
                                                         else
                                                         {
@@ -357,7 +457,7 @@ namespace Client_Tbot
                                         {
 
 
-                                            message = update?.Message;
+                                            message = update.Message;
 
                                             //UserLogin person5 = JsonSerializer.Deserialize<UserLogin>(FileFS);
                                             // pasword = person5.Name;
@@ -478,23 +578,34 @@ namespace Client_Tbot
                                                         }
                                                     }
                                                     //"Привет","Для логина в чате введите после имя пользователя: Имя: " }
+                                                
                                                     var replyMarkup = new InlineKeyboardMarkup(buttonss);
 
                                                     Message sesntMessage = await botClient.SendTextMessageAsync(
                                                   chatId: message.Chat.Id,
                                                  text: "A message with an inline keyboard markup",
-                                                 replyMarkup: replyMarkup
-                                                );
+                                                 replyMarkup: new InlineKeyboardMarkup(new[]
+                                                     {
+                                                         new InlineKeyboardButton[]
+                                                            {
+                                                                InlineKeyboardButton.WithCallbackData("Для логина в чате введите после имя пользователя: Имя:","1"),
+                                                                InlineKeyboardButton.WithCallbackData( "Для логина в чате введите после пароль пользователя:Пароль: ","2"),
+                                                                InlineKeyboardButton.WithCallbackData("Для выбора друга  в чате введите id друга  :Friends:","3" ),
+
+                                                            }
+                                                     
+                                                     }  
+                                                    ));
 
 
                                                     //replyMarkup: new InlineKeyboardMarkup(new[]
                                                     //{
                                                     //          new InlineKeyboardButton[]{
 
-                                                    //     InlineKeyboardButton.WithCallbackData ( "Для логина в чате введите после имя пользователя: Имя:","2" } ,
+                                                    //     InlineKeyboardButton.WithCallbackData ( ,"2" } ,
 
-                                                    //          InlineKeyboardButton.WithCallbackData("Для выбора друга  в чате введите id друга  :Friends:","1" ),
-                                                    //         InlineKeyboardButton.WithCallbackData( "Для логина в чате введите после пароль  пользователя:Пароль: "),
+                                                    //          InlineKeyboardButton.WithCallbackData(,"1" ),
+                                                    //         InlineKeyboardButton.WithCallbackData(),
                                                     //         }
                                                     //}
                                                     //"Для логина в чате введите после пароль  пользователя:Пароль: ",
@@ -509,11 +620,6 @@ namespace Client_Tbot
                                                     //                InlineKeyboardButton.WithCallbackData("Option 1", "1"),
                                                     //                InlineKeyboardButton.WithCallbackData("Option 2", "2"),
                                                     //            }
-
-
-
-
-
 
                                                 }
                                                 else
@@ -603,8 +709,21 @@ namespace Client_Tbot
 
                                 break;
 
+                            case "1":
+
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Имя:");
+
+                                break;
+                            case "2":
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Пароль:");
+
+                                break;
+                            case "3":
 
 
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Friends:");
+
+                                break;
                         }
                     }
                 }
