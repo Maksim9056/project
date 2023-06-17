@@ -1,38 +1,11 @@
 ﻿
-//using System.IO;
-//using System.Reflection;
-//using System.Threading;
-//using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types;
-//using File = System.IO.File;
 using Telegram.Bot;
-//using System.Drawing;
 using Telegram.Bot.Types.ReplyMarkups;
-//using System.Collections.Generic;
-//using System.Globalization;
-//using Telegram.Bot.Types.ReplyMarkups;
-//using static System.Net.Mime.MediaTypeNames;
-//using Telegram.Bot.Types.Enums;
-//using static System.Net.WebRequestMethods;
-//using Newtonsoft.Json.Linq;
-//using System.IO.Pipes;
 using Class_chat;
 using System.Text;
 using System.Text.Json;
-using System;
-using System.IO;
-using System.Threading;
-using static System.Net.Mime.MediaTypeNames;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Xml;
-using static System.Net.WebRequestMethods;
-//using Class_chat;
-using Telegram.Bot.Args;
 using System.Collections.Concurrent;
-//using MailKit;
-//using Telegram.Bot.Types;
 namespace Client_Tbot
 {
 
@@ -48,13 +21,13 @@ namespace Client_Tbot
         public static string password { get; set; }
 
         public static CommandCL command = new CommandCL();
-        //    public static  Ip_adres ip_Adres { get; set; }
 
-       public static Sistem sistem = new Sistem();
+        public static Sistem sistem = new Sistem();
         public static string Friends { get; set; }
         public static int id_Friends { get; set; }
 
         public static User_photo[] msgUser_Logins { get; set; }
+
         public static TelegramBotClient client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
         static void Main(string[] args)
         {
@@ -112,6 +85,7 @@ namespace Client_Tbot
                 return userSessions.TryRemove(user.Id, out _);
             }
         }
+
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
 

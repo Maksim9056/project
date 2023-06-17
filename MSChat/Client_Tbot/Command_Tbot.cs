@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Class_chat;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using Class_chat;
 //using Client_chat;
 
 namespace Client_Tbot

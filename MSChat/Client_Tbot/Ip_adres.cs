@@ -30,7 +30,6 @@ namespace Client_Tbot
         public string IP { get; set; } = "";
         public static Int32 PORT { get; set; }
 
-
         public static string path = Environment.CurrentDirectory.ToString();
         public void Setting()
         {
@@ -50,8 +49,6 @@ namespace Client_Tbot
                             //Десерелизуем класс Ip_adres 
                             Connect_Client_ ip = JsonSerializer.Deserialize<Connect_Client_>(fileStream);
 
-
-
                             //Заполняем Ip_adres
                             IP = ip.IP;
                             //Заполняем port
@@ -65,31 +62,28 @@ namespace Client_Tbot
                     using (FileStream file = new FileStream("Tbot.json", FileMode.OpenOrCreate))
                     {
                         //Заполняем класс Ip_adres
-                        Connect_Client_ ip_Adres = new Connect_Client_( 9595,IPAddress.Loopback.ToString(), "");
+                        Connect_Client_ ip_Adres = new Connect_Client_(9595, IPAddress.Loopback.ToString(), "");
 
                         //Серелизуем класс Ip_adres
                         JsonSerializer.Serialize<Connect_Client_>(file, ip_Adres);
                     }
 
-
-
-
                     using (FileStream file = new FileStream("Tbot.json", FileMode.OpenOrCreate))
                     {
 
-                        Connect_Client_ ip =  JsonSerializer.Deserialize<Connect_Client_>(file);
+                        Connect_Client_ ip = JsonSerializer.Deserialize<Connect_Client_>(file);
 
                         IP = ip.IP;
                         //IP = ip_Adres.Ip_adress;
 
                         //Заполняем port
-                       PORT = ip.Port;
+                        PORT = ip.Port;
                     }
                 }
                 //IP = Ip_adress;
                 //PORT = port;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
