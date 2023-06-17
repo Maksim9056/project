@@ -33,7 +33,7 @@ namespace ServersAccept
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
                 SaveOpen();
                 IPAddress localAddr = IPAddress.Parse(Ip_Adress);
-                int counter = 0;
+      
                 Console.WriteLine();
                 server = new TcpListener(localAddr,port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
@@ -54,8 +54,11 @@ namespace ServersAccept
                    Console.WriteLine($"Ip-адрес: {localAddr}");            
                    //127.0.0.1 System.Net.Sockets.AddressFamily family   */
                 //Console.WriteLine("\nСервер запушен");
+                int counter = 0;
                 RegisterCommands();
                 server.Start();
+          
+
                 Console.WriteLine("\nСервер запушен");
                 while (true)
                 {

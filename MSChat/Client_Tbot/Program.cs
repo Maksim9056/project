@@ -29,7 +29,10 @@ using System.Net.Sockets;
 using System.Xml;
 using static System.Net.WebRequestMethods;
 //using Class_chat;
-
+using Telegram.Bot.Args;
+using System.Collections.Concurrent;
+//using MailKit;
+//using Telegram.Bot.Types;
 namespace Client_Tbot
 {
 
@@ -44,7 +47,31 @@ namespace Client_Tbot
     //    }
     //}
 
+//Чтобы реализовать метод, который будет автоматически создавать сессию для каждого пользователя и сохранять их данные в этой сессии, можно использовать словарь, где ключом будет идентификатор пользователя, а значением - экземпляр класса, содержащий данные пользователя.
 
+//Вот пример класса, который хранит данные пользователя:
+
+
+//```
+
+//Для хранения данных пользователей в словаре можно использовать следующий код:
+
+//```csharp
+
+
+
+
+
+//В данном коде используется статическое поле `userSessions`, которое представляет собой словарь для хранения данных пользователей.Метод `GetUserData` получает экземпляр класса `UserData` для данного пользователя.Если пользователь еще не имеет сессии, то создается новая сессия для этого пользователя.
+
+//Метод `RemoveUserData` удаляет сессию для данного пользователя из словаря.
+
+//Теперь можно использовать этот класс для хранения данных пользователей и создания новых сессий автоматически в методе обработки сообщений, например, в обработчике события `OnMessage`:
+
+
+//```
+
+//В данном коде извлекается экземпляр класса `UserData` для текущего пользователя с помощью метода `SessionManager.GetUserData`. Затем проводится логика обработки сообщения и обновления данных пользователя, и в конце - отправка ответного сообщения.
     internal class Program
     {
 
@@ -63,27 +90,72 @@ namespace Client_Tbot
         public static int id_Friends { get; set; }
 
         public static User_photo[] msgUser_Logins { get; set; }
+        public static TelegramBotClient client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
         static void Main(string[] args)
         {
-            sistem.Setting();
-            var client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
+            sistem.Setting();           
+          
            
-
-            client.StartReceiving(Update, Error);
+            client.StartReceiving(Update, Error );
+       
             Console.ReadLine();
            
         }
+        private static  async void Bot_OnMessage( Update e)
+        {
+            var message = e.Message;
 
+            if (message == null || message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
+                return;
 
-        
+            var user = message.From;
+            var userData = SessionManager.GetUserData(user);
+
+            // Добавляем логику обработки сообщения и обновления данных пользователя
+
+            await client.SendTextMessageAsync(message.Chat.Id, "Echo: " + message.Text);
+        }
+
+        public class UserData
+        {
+            public static string user { get; set; }
+            public static string password { get; set; }
+            public static CommandCL command = new CommandCL();
+            //    public static  Ip_adres ip_Adres { get; set; }
+
+            public static Sistem sistem = new Sistem();
+            public static string Friends { get; set; }
+            public static int id_Friends { get; set; }
+
+            public static User_photo[] msgUser_Logins { get; set; }
+            // Другие свойства, необходимые для хранения данных пользователя
+        }
+
+        public class SessionManager
+        {
+            private static readonly ConcurrentDictionary<long, UserData> userSessions = new ConcurrentDictionary<long, UserData>();
+
+            public static UserData GetUserData(User user)
+            {
+                return userSessions.GetOrAdd(user.Id, key => new UserData());
+            }
+
+            public static bool RemoveUserData(User user)
+            {
+                return userSessions.TryRemove(user.Id, out _);
+            }
+        }
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
+
+
+            Bot_OnMessage(update);
+
             try
             {
+            //    Authorization authorization = new Authorization(update.Poll.)
 
 
-
-                Command_Tbot command_Tbot = new Command_Tbot();
                 Message message = null;
                 if (update != null)
                 {
@@ -314,6 +386,7 @@ namespace Client_Tbot
 
 
 
+                                         
 
 
                                                 if (CommandCL.User_Logins_and_Friends.User_ != null)
@@ -389,6 +462,7 @@ namespace Client_Tbot
                                                                         await botClient.SendTextMessageAsync(message.Chat.Id, user + ":" + les[i].Message);
                                                                     }
                                                                 }
+                                                            
                                                                 //if ()
                                                                 //{
                                                                 //  user == CommandCL.User_Logins_and_Friends.User_.Name &&
