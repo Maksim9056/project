@@ -22,7 +22,7 @@ namespace Client_Tbot
         public void Select_Message_From_Chats()
         {
 
-            //Task.Run(async () => await command.Check_User_Possword(Seting.Ip_adress, FileFS, "003")).Wait();
+            Task.Run(async () => await command.Select_User_Bot(Program.sistem.IP , "", "015")).Wait();
             ////Проверяем есть ли пользователь 
             //if (CommandCL.User_Logins_and_Friends.User_ != null)
             //{

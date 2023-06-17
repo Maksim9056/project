@@ -6,6 +6,37 @@ using System.Runtime.Serialization;
 
 namespace Class_chat
 {
+    [Serializable]
+    public class Bot_Telegram
+    {
+        Bot_Telegram() { }
+        public int Id_user { get; set; }
+        public int Id_Bot { get; set; }
+        public Bot_Telegram(int id_user, int id_bot)
+        {
+            Id_user = id_user;
+            Id_Bot = id_bot;
+        }
+    }
+
+    public class Bot
+    {
+        Bot() { }
+       public  Bot_Telegram[] Bot_Telegram { get; set; }
+        public Bot(Bot_Telegram[] bot_Telegram)
+        {
+            Bot_Telegram = bot_Telegram;
+        }
+    }
+
+    [Serializable]
+    public class List_Bot_Telegram
+    {
+       public List<Bot_Telegram> Bot_Telegram { get; set; } = new List<Bot_Telegram>();
+
+    }
+
+
     public static class Connect_Client
     {
         public static Int32 Port { get; set; }
@@ -73,10 +104,12 @@ namespace Class_chat
         //public UserLogin() { }
         public string Name { get; }
         public string Pass { get; set; }
-        public UserLogin(string name, string pass)
+        public int  Telegram_id { get; set; }
+        public UserLogin(string name, string pass, int telegram_id)
         {
             Name = name;
             Pass = pass;
+            Telegram_id = telegram_id;
         }
     }
 
@@ -97,23 +130,26 @@ namespace Class_chat
     }
 
 
-    [DataContract]
+
+    [Serializable]
     public class User_regis
     {
-        //User_regis() { }
+     //   User_regis() { }
         public string Name { get; set; }
         public string Pass { get; set; }
         public string Age { get; set; }
         public byte[] Photo { get; set; }
         public int Id { get; set; }
-
-        public User_regis(string name, string pass, string age, byte[] photo, int id)
+        public int Id_Telegram { get; set; }
+       
+        public User_regis(string name, string pass, string age, byte[] photo, int id, int id_Telegram)
         {
             Name = name;
             Pass = pass;
             Age = age;
             Photo = photo;
             Id = id;
+            Id_Telegram = id_Telegram;
         }
     }
 
@@ -126,7 +162,6 @@ namespace Class_chat
         public int Photo { get; set; }
         public int Id { get; set; }
         public int Current { get; set; }
-
         public User_photo(string name, string pass, string age, int photo, int id, int current)
         {
             Name = name;
@@ -173,6 +208,7 @@ namespace Class_chat
         public User_photo User_ { get; set; }
         public int List_Mess { get; set; }
         public User_photo[] AClass { get; set; }
+     
 
         public User_Logins (string answe, User_photo user_, int list_Mess, User_photo[] aClass)
         {

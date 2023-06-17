@@ -1,6 +1,11 @@
 ﻿using Class_chat;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Telegram.Bot.Types;
+
 namespace ServersAccept
 {
     public class GlobalClass
@@ -104,10 +109,20 @@ namespace ServersAccept
         /// </summary>
         public UseImage Items_Image { get; set; }
 
+        /// <summary>
+        /// Перечень  зарегистрированых пользователь телеграм бота
+        /// </summary>
+        public Bot_Telegram[] list_Bot_Telegram { get; set; }
+
+
         public Friends_Image Friends_Image { get; set; }
         /// <Блок процедур >
 
         public int Id { get; set; }
+
+
+
+
 
         /// <summary>
         /// Создают таблицу пользователей 
@@ -120,6 +135,7 @@ namespace ServersAccept
                 SqliteCommand command = new SqliteCommand();
                 command.CommandText = "CREATE TABLE IF NOT EXISTS Users (Id INTEGER NOT NULL UNIQUE," +
                                       "Age INTEGER," +
+                                      "Id_Telegram NOT NULL ," +
                                       "Name TEXT  NOT NULL UNIQUE," +
                                       "Password TEXT NOT NULL, " +
                                       "Image INTEGER ," +
@@ -230,11 +246,11 @@ namespace ServersAccept
         /// <param name="pasword"></param>
         /// <param name="age"></param>
         /// <param name="dateTime"></param>
-        async public void Insert_User(string data, string pasword, string age, DateTime dateTime)
+        async public void Insert_User(string data, string pasword, string age, DateTime dateTime, int id_telegram)
         {
             try
             {
-                string sq = $"INSERT INTO Users (Age,Name,Image,Password,DataMess,Mark) VALUES ({age},'{data}','{Id_Image}','{pasword}','{dateTime:s}','1')";
+                string sq = $"INSERT INTO Users (Age,Id_Telegram,Name,Image,Password,DataMess,Mark) VALUES ({age},{id_telegram},'{data}','{Id_Image}','{pasword}','{dateTime:s}','1')";
                 using (var connection = new SqliteConnection(GlobalClass.connectionString))
                 {
                     await connection.OpenAsync();
@@ -297,12 +313,16 @@ namespace ServersAccept
             }
         }
 
+
+
+
+
         /// <summary>
         /// Проверяет  в таблицу Пользователи  пользователя и пароль 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="pasword"></param>
-        async public void Select_Users(string data, string pasword)
+        async public void Select_Users(string data, string pasword, int id_telegram)
         {
             //string Name = "";
             string sqlExpressio = $"SELECT * FROM Users  WHERE Name = '{data}' and Password='{pasword}'";
@@ -317,6 +337,7 @@ namespace ServersAccept
 
                 if (n.HasRows == true)
                 {
+
                     Console.WriteLine("Такое имя уже есть");
                     UserConnect = true;
                     // Always call Read before accessing data.
@@ -326,9 +347,27 @@ namespace ServersAccept
                         Current_User = sqReader["Id"].ToString();
                         int Image = Convert.ToInt32(sqReader["Image"].ToString());
                         int Id = Convert.ToInt32(Current_User);
-                        //  byte[] foto = null;
-                        AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
 
+
+
+                        int id_telegram_user = Convert.ToInt32(sqReader["Id_Telegram"]);
+
+
+                        if (id_telegram_user == 0)
+                        {
+                            string buton = $"UPDATE Users SET Id_Telegram = {id_telegram}  WHERE Id = {Current_User}";
+                            SqliteCommand commands = new SqliteCommand(buton, connection);
+                            await commands.ExecuteNonQueryAsync();
+                            commands.CommandText = buton;
+                            AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
+                        }
+                        else
+                        {
+                            //  byte[] foto = null;
+                            AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
+
+
+                        }
                         Console.WriteLine(Current_User);
                     }
                 }
@@ -1015,6 +1054,59 @@ namespace ServersAccept
                 Id_Users = "";
                 Insert_Friend_by_id = 0;
             }
+        }
+    
+
+        /// <summary>
+        /// 015 - получение списка пользователей зарегистрированых в телеграм боте (обновление)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="pasword"></param>
+        async public void Select_User_From_Bot()
+        {
+            int UserCount = 0;
+            string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Users  WHERE Id_Telegram > 0";
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
+                SqliteDataReader sqReader = command.ExecuteReader();
+                sqReader.Read();
+                UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
+            }
+
+            string sqlExpressio = $"SELECT * FROM Users  WHERE Id_Telegram > 0";
+
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                var n = await command.ExecuteReaderAsync();
+                SqliteDataReader sqReader = commandS.ExecuteReader();
+
+                Bot_Telegram[] alist_Bot_Telegram = new Bot_Telegram[UserCount];
+                if (n.HasRows == true)
+                {
+                    UserConnect = true;
+                    int i = 0;
+                    while (sqReader.Read())
+                    {
+                        int id_user = Convert.ToInt32(sqReader["Id"]);
+                        int id_bot = Convert.ToInt32(sqReader["Id_Telegram"]);
+                        Bot_Telegram list_Bot = new Bot_Telegram(id_user, id_bot);
+                        alist_Bot_Telegram[i] = list_Bot;
+                        i++;
+                    }
+                }
+                else
+                {
+                }
+                list_Bot_Telegram = alist_Bot_Telegram;
+            }
+
+
+
         }
     }
     /// </summary>

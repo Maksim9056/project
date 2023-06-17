@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using System.IO;
 using System.Net.Sockets;
+using Newtonsoft.Json.Linq;
 //using System.Threading;
 //using System.Collections.Generic;
 
@@ -16,25 +17,32 @@ namespace ServersAccept
         /// <param name="msg"></param>
         /// <param name="globalClass"></param>
         /// <param name="stream"></param>
-        public void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+  
+     
+        public   void Registration_users(byte[] msg, GlobalClass globalClass, NetworkStream stream)
         {
               using (MemoryStream tt2 = new MemoryStream())
               {
-                    DateTime dateTime = DateTime.Now;
-                    User_regis person2 = JsonSerializer.Deserialize<User_regis>(msg);
-                    globalClass.Insert_Image(person2.Photo);
-                    globalClass.Insert_User(person2.Name, person2.Pass, person2.Age, dateTime);
-                    if (globalClass.User_Insert == true)
-                    {
-                        byte[] msgAnswe = System.Text.Encoding.Default.GetBytes(person2.Name);
-                        stream.Write(msgAnswe, 0, msgAnswe.Length);
-                    }
-                    else
-                    {
-                        byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
-                        stream.Write(msgAnswe, 0, msgAnswe.Length);
-                    }
-              }       
+
+
+                string Class = Program.data_;
+                DateTime dateTime = DateTime.Now;
+                string responseData = Class;
+                User_regis person2 = JsonSerializer.Deserialize<User_regis>(msg);
+                globalClass.Insert_Image(person2.Photo);
+                globalClass.Insert_User(person2.Name, person2.Pass, person2.Age, dateTime, person2.Id_Telegram);
+                if (globalClass.User_Insert == true)
+                {
+                    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes(person2.Name);
+                    stream.Write(msgAnswe, 0, msgAnswe.Length);
+                }
+                else
+                {
+                    byte[] msgAnswe = System.Text.Encoding.Default.GetBytes("false");
+                    stream.Write(msgAnswe, 0, msgAnswe.Length);
+                }
+
+            }
         }
 
         /// <summary>
@@ -55,7 +63,7 @@ namespace ServersAccept
                         AllowTrailingCommas = true
                     };
 
-                    globalClass.Select_Users(person3.Name, person3.Pass);
+                    globalClass.Select_Users(person3.Name, person3.Pass, person3.Telegram_id);
                     if (globalClass.Name != null)
                     {
                         using (MemoryStream ms = new MemoryStream())
@@ -598,5 +606,48 @@ namespace ServersAccept
                 Console.WriteLine(e.Message.ToString());
             }
         }
+
+
+        /// <summary>
+        /// 015 - получение списка пользователей зарегистрированых в телеграм боте (обновление)
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
+        public void Select_User_Bot(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try
+            {
+                using (MemoryStream tt2 = new MemoryStream())
+                {
+                   
+                    globalClass.Select_User_From_Bot();
+                    if (globalClass.UserConnect)
+                    {
+                       
+                        using (MemoryStream Byte_Image = new MemoryStream())
+                        {
+                            Bot_Telegram[] bot_Telegrams = new Bot_Telegram[globalClass.list_Bot_Telegram.Length];
+                            for(int i=0; i< bot_Telegrams.Length; i++)
+                            {
+                                bot_Telegrams[i] = globalClass.list_Bot_Telegram[i];
+                            }
+                            Bot Bot_Telegram = new Bot(bot_Telegrams);
+                            JsonSerializer.Serialize<Bot>(Byte_Image ,Bot_Telegram);
+                            stream.Write(Byte_Image.ToArray(), 0, Byte_Image.ToArray().Length);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
+        }
+
     }
 }

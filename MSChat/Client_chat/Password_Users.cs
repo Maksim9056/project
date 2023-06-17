@@ -132,7 +132,7 @@ namespace Client_chat
                             //Для класс серилизации используем для строки FileFS
                             string FileFS = "";
                             //Собрали класс UserLogin
-                            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text);
+                            UserLogin tom = new UserLogin(textBox1.Text, textBox2.Text,0);
                             //Серилизовали класс UserLogin в MemoryStream fs 
                             JsonSerializer.Serialize<UserLogin>(fs, tom);
                             //Декодировали в строку  MemoryStream fs   
@@ -170,8 +170,6 @@ namespace Client_chat
                             {
                                 MessageBox.Show("Такой учетной записи нет");
                             }
-
-
                         }
                         Form.Close();
                     }

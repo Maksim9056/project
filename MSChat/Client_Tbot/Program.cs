@@ -36,42 +36,6 @@ using System.Collections.Concurrent;
 namespace Client_Tbot
 {
 
-
-    //public   class Пароль
-    //{
-    //    string пароль { get; set; }
-
-    //    public Пароль(string Пароль)
-    //    {
-    //        пароль = Пароль;
-    //    }
-    //}
-
-//Чтобы реализовать метод, который будет автоматически создавать сессию для каждого пользователя и сохранять их данные в этой сессии, можно использовать словарь, где ключом будет идентификатор пользователя, а значением - экземпляр класса, содержащий данные пользователя.
-
-//Вот пример класса, который хранит данные пользователя:
-
-
-//```
-
-//Для хранения данных пользователей в словаре можно использовать следующий код:
-
-//```csharp
-
-
-
-
-
-//В данном коде используется статическое поле `userSessions`, которое представляет собой словарь для хранения данных пользователей.Метод `GetUserData` получает экземпляр класса `UserData` для данного пользователя.Если пользователь еще не имеет сессии, то создается новая сессия для этого пользователя.
-
-//Метод `RemoveUserData` удаляет сессию для данного пользователя из словаря.
-
-//Теперь можно использовать этот класс для хранения данных пользователей и создания новых сессий автоматически в методе обработки сообщений, например, в обработчике события `OnMessage`:
-
-
-//```
-
-//В данном коде извлекается экземпляр класса `UserData` для текущего пользователя с помощью метода `SessionManager.GetUserData`. Затем проводится логика обработки сообщения и обновления данных пользователя, и в конце - отправка ответного сообщения.
     internal class Program
     {
 
@@ -82,6 +46,7 @@ namespace Client_Tbot
 
         public static string user { get;  set; }
         public static string password { get; set; }
+
         public static CommandCL command = new CommandCL();
         //    public static  Ip_adres ip_Adres { get; set; }
 
@@ -93,9 +58,11 @@ namespace Client_Tbot
         public static TelegramBotClient client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
         static void Main(string[] args)
         {
-            sistem.Setting();           
-          
-           
+            sistem.Setting();
+
+            Command_Tbot Select_users_Id_telegram = new Command_Tbot();
+            Select_users_Id_telegram.Select_Message_From_Chats();
+                
             client.StartReceiving(Update, Error );
        
             Console.ReadLine();
@@ -244,7 +211,7 @@ namespace Client_Tbot
                                     //Для класс серилизации используем для строки FileFS
                                     string FileFS = "";
                                     //Собрали класс UserLogin
-                                    UserLogin tom = new UserLogin(Result[1], Result[2]);
+                                    UserLogin tom = new UserLogin(Result[1], Result[2], Convert.ToInt32(message.From.Id));
                                     //Серилизовали класс UserLogin в MemoryStream fs 
                                     JsonSerializer.Serialize<UserLogin>(fs, tom);
                                     //Декодировали в строку  MemoryStream fs   
@@ -333,7 +300,7 @@ namespace Client_Tbot
                                             using (MemoryStream memoryStream = new MemoryStream())
                                             {
                                                 password = Results[1];
-                                                UserLogin tom = new UserLogin(user, password);
+                                                UserLogin tom = new UserLogin(user, password,Convert.ToInt32(message.From.Id));
 
 
                                                 string FileFS = "";
@@ -360,7 +327,10 @@ namespace Client_Tbot
                                                
                                                 }
                                         
-                                                await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_.Name} !");
+                                                
+                                            
+                                            
+                                            await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_.Name} !");
                                             }
                                    }                                    
                                     else
@@ -374,7 +344,7 @@ namespace Client_Tbot
                                                 //Для класс серилизации используем для строки FileFS
                                                 string FileFS = "";
                                                 //Собрали класс UserLogin
-                                                UserLogin tom = new UserLogin(user, password);
+                                                UserLogin tom = new UserLogin(user, password, Convert.ToInt32(message.From.Id));
                                                 //Серилизовали класс UserLogin в MemoryStream fs 
                                                 JsonSerializer.Serialize<UserLogin>(fs, tom);
                                                 //Декодировали в строку  MemoryStream fs   

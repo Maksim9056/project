@@ -39,8 +39,11 @@ namespace Class_chat
 
         public JToken List_Friends { get; set; }
 
-        //Функция считывания байт из потока и формирование единой строки
-        public string Func_Read(Stream str, int length, TcpClient client)
+        //Класс пользователей зарестрированых в телеграм
+        public List_Bot_Telegram Id_Telegram{ get; set; }
+
+    //Функция считывания байт из потока и формирование единой строки
+    public string Func_Read(Stream str, int length, TcpClient client)
         {
             string Result = string.Empty;
             using (MemoryStream ms = new MemoryStream())
@@ -614,6 +617,66 @@ namespace Class_chat
             {
               //  MessageBox.Show("SocketException: {0}", e.Message);
             }
-        }   
+        }
+
+        // 015 Запрашивает перечень телеграм пользователей
+        async public Task Select_User_Bot(String server, string fs, string command)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    //Декодируем Bite []
+                    byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    string Host = System.Net.Dns.GetHostName();
+                    NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
+                    await stream.WriteAsync(data, 0, data.Length);
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
+
+
+                    //Проверяем
+                    if (responseData == "false")
+                    {
+                       // User_Logins_and_Friends = null;
+                    }
+                    else
+                    {
+                        //Десерилизуем класс
+                        List_Bot_Telegram person3 = JsonSerializer.Deserialize<List_Bot_Telegram>(responseData);
+                        Id_Telegram = person3;
+                        //User_Logins_and_Friends = person3;
+                    }
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("SocketException: {0}", e.Message);
+            }
+
+        }
+
+
+
+
     }
 }

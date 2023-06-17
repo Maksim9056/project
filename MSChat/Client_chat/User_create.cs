@@ -35,13 +35,15 @@ namespace Client_chat
 
                 if (textBox2.Text == textBox3.Text)
                 {
-                    using (MemoryStream Reg_user_Dispons = new MemoryStream())
-                    {
+                
+                     using (MemoryStream Reg_user_Dispons = new MemoryStream())
+                     {
                         CommandCL command = new CommandCL();
                         string FileFS = "";
                         using (MemoryStream fs = new MemoryStream())
                         {
-                            User_regis tom = new User_regis(textBox1.Text, textBox2.Text, textBox4.Text, buf, 0);
+                     
+                         User_regis tom = new User_regis(textBox1.Text, textBox2.Text, textBox4.Text, buf, 0, 0);
                             JsonSerializer.Serialize<User_regis>(fs, tom);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
                         }
@@ -61,8 +63,16 @@ namespace Client_chat
                             }
                             else
                             {
-                                MessageBox.Show("Добавление пользователя разрешено");
-                                this.Close();
+                                if(string.IsNullOrWhiteSpace(User_reg.UserName))
+                                {
+
+                                }
+                                else
+                                {
+                                  MessageBox.Show("Добавление пользователя разрешено");
+                                  this.Close();
+                                }
+                                
                             }
 
                             //using (Password_Users a = new Password_Users())

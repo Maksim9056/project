@@ -9,16 +9,21 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Windows.Input;
+using System.Reflection.Emit;
 //using static System.Net.WebRequestMethods;
 
 namespace ServersAccept
-{
+{   
     internal class Program
     {
         public bool Users = false;
         static public string Ip_Adress { get; set; }
         static public Int32 port { get; set; }
         //[Obsolete]
+      public static string data_ { get; set; }
+
+    
         static void Main(string[] args)
         {
             GlobalClass globalClass = new GlobalClass();
@@ -98,41 +103,77 @@ namespace ServersAccept
             FDictCommands.Add("012", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens_Message));
             FDictCommands.Add("013", new Action<byte[], GlobalClass, NetworkStream>(command.List_Friens));
             FDictCommands.Add("014", new Action<byte[], GlobalClass, NetworkStream>(command.Search_Image_Friends));
+            FDictCommands.Add("015", new Action<byte[], GlobalClass, NetworkStream>(command.Select_User_Bot));
+
         }
-        
+
         static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)
         {
             Action<byte[], GlobalClass, NetworkStream> actionCommand;
             if (FDictCommands.TryGetValue(aCommand, out actionCommand)) actionCommand(data, cls, ns);
             else
             {
-                // Если не нашли, то обрабатываем это             }
+                // Если не нашли, то обрабатываем это }
             }
         }
 
-        async static void ClientProcessing(object client_obj)
+        private static void ClientProcessing(object client_obj)
         {
             try
             {
                 using (TcpClient client = client_obj as TcpClient)
-                {
-                    byte[] bytes = new byte[99999999];
-                    string data;
+                {   
+                    /*
+                    //byte[] bytes = new byte[99999999];
+                   //    string data;
+                   // StringBuilder data;
+                   // /*
+                    //int i;
+                    //while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
+                    //{
+                    //    data = Encoding.Default.GetString(bytes, 0, i);
+                    //    string comand = data.Substring(0, 3);
+                    //    string json = data.Substring(3, data.Length - 3);
+                    //    byte[] msg = Encoding.Default.GetBytes(json);
+
+                    //    //Заменяет работу switch (comand)
+                    //    HandleCommand(comand, msg, globalClass, stream);
+
+
+                    //}                */
+
                     GlobalClass globalClass = new GlobalClass();
                     NetworkStream stream = client.GetStream();
                     Command command = new Command();
-                    int i;
-                    while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
+      
+                    String responseData = String.Empty;
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
                     {
-                        data = Encoding.Default.GetString(bytes, 0, i);
-                        string comand = data.Substring(0, 3);
-                        string json = data.Substring(3, data.Length - 3);
-                        byte[] msg = Encoding.Default.GetBytes(json);
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
 
-                        //Заменяет работу switch (comand)
-                        HandleCommand(comand, msg, globalClass, stream);
+                    responseData = completeMessage.ToString();
 
-                        /*             //switch (comand)
+                    string comand = responseData.Substring(0, 3);
+                    string json = responseData.Substring(3, responseData.Length - 3);
+
+                    data_ = json;
+                    byte[] msg = Encoding.Default.GetBytes(json);
+                    HandleCommand(comand, msg, globalClass, stream);
+                }
+            }
+            catch(Exception e) 
+            {/*Exception e*/
+                // Console.WriteLine(e.Source);
+                Console.WriteLine(e.Message);
+            }
+        }
+ /*             //switch (comand)
                                      //{
                                      //    case "001":
                                      //       
@@ -207,15 +248,8 @@ namespace ServersAccept
                                      //    default:
                                      //        break;
                                      //}*/
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-             //   Console.WriteLine(e.Source);
-                Console.WriteLine(e.Message);
-            }
-        }
+
+
 
         /// <summary>
         /// Загружаеться Ip_address и port
