@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ServersAccept;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using Class_chat;
 using System.Text.Json;
-using System.IO.Pipes;
-
 namespace Client_Tbot
 {
-
+    //Класс для настроек
     public class Ip_adres
     {
+        //Порт 
         public Int32 port { get; set; }
+        // Ip_adress для отправки
         public string Ip_adress { get; set; }
-
         public Ip_adres(string ip, Int32 Port)
         {
             Ip_adress = ip;
@@ -25,12 +17,16 @@ namespace Client_Tbot
         }
     }
 
+    //Класс настроек
     public class Sistem
     {
+        //IP
         public string IP { get; set; } = "";
+        //PORT
         public static Int32 PORT { get; set; }
-
+        //Путь до настроек
         public static string path = Environment.CurrentDirectory.ToString();
+        //Метод настрока
         public void Setting()
         {
             //Что то случичилось
@@ -70,7 +66,7 @@ namespace Client_Tbot
 
                     using (FileStream file = new FileStream("Tbot.json", FileMode.OpenOrCreate))
                     {
-
+                        
                         Connect_Client_ ip = JsonSerializer.Deserialize<Connect_Client_>(file);
 
                         IP = ip.IP;
