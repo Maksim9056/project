@@ -40,7 +40,7 @@ namespace Class_chat
         public JToken List_Friends { get; set; }
 
         //Класс пользователей зарестрированых в телеграм
-        public List_Bot_Telegram Id_Telegram{ get; set; }
+        public static List_Bot_Telegram Id_Telegram { get; set; }
 
     //Функция считывания байт из потока и формирование единой строки
     public string Func_Read(Stream str, int length, TcpClient client)
@@ -658,6 +658,8 @@ namespace Class_chat
                         List_Bot_Telegram person3 = JsonSerializer.Deserialize<List_Bot_Telegram>(responseData);
                         Id_Telegram = person3;
                         //User_Logins_and_Friends = person3;
+
+                        JObject keyValuePairs= new JObject();
                     }
                 }
             }

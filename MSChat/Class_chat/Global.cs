@@ -6,6 +6,19 @@ using System.Runtime.Serialization;
 
 namespace Class_chat
 {
+    
+   
+    public class Travel
+    {
+        int Id;
+
+
+        public Travel(int id)
+        {
+            Id = id;
+        }
+    }
+    
     [Serializable]
     public class Bot_Telegram
     {

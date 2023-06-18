@@ -31,8 +31,10 @@ namespace Client_Tbot
         //Класс из библиотека Chat
         public static CommandCL command = new CommandCL();
 
-        //Клас настроек
+        //Класс настроек
         public static Sistem sistem = new Sistem();
+
+
         //Для имени друга
         public static string Friends { get; set; }
 
@@ -279,8 +281,7 @@ namespace Client_Tbot
                                         }
 
                                     }
-                                }
-                            }
+                                }                            }
                             else
                             {
                                 //Получаем команду 
@@ -334,10 +335,11 @@ namespace Client_Tbot
                                                     {
                                                         //Не нащел друга то заного ищет
                                                     }
-
                                                 }
+
                                                 //Заполняет информацию json виде текста о классах
-                                                string FileFS;                                                
+                                                string FileFS; 
+                                                
                                                 //Заполняем в памяти 
                                                 using (MemoryStream Update = new MemoryStream())
                                                 {
@@ -463,12 +465,15 @@ namespace Client_Tbot
 
                                                         //Хранит кнопки
                                                          var replyMarkup = new InlineKeyboardMarkup(buttonss);
+
                                                         //Отправляет кнопки в чат
                                                          Message sesntMessage = await botClient.SendTextMessageAsync(
                                                          //Выбераем из какого чата сообщение и id его 
+
                                                          chatId: message.Chat.Id,
                                                          //Список команд
                                                          text: "A message with an inline keyboard markup",
+
                                                          //Задает параметр кнопок
                                                          replyMarkup: new InlineKeyboardMarkup(new[]
                                                          {
@@ -495,6 +500,7 @@ namespace Client_Tbot
                                                         {      //Отпраляет Нету
                                                             await botClient.SendTextMessageAsync(message.Chat.Id, "Нету".ToString());
                                                         }
+
                                                         //Обрабатываем кнопку 
                                                         if (message.Text == "Вывести список сообщений из Программы MSChat")
                                                         {
