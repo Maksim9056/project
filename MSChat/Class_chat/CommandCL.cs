@@ -18,15 +18,15 @@ namespace Class_chat
     public class CommandCL
     {
         //Передает пользователя имя и его друзей
-        public static  MsgUser_Logins User_Logins_and_Friends { get; set; }
+        public static MsgUser_Logins User_Logins_and_Friends { get; set; }
         //Друзья
-        public Searh_Friends  _Friends { get; set; }   
+        public Searh_Friends _Friends { get; set; }
         //Проверка
-         public  JToken _Answe  { get; set; }
+        public JToken _Answe { get; set; }
         //Количество друзей
-        public  JToken _List_Mess_count  { get; set; }
+        public JToken _List_Mess_count { get; set; }
         //Класс с друзьями и сообщениями
-        public  JToken _AClass  { get; set; }
+        public JToken _AClass { get; set; }
 
         // Проверка редактированых 
         public JToken AnsweIm { get; set; }
@@ -42,8 +42,8 @@ namespace Class_chat
         //Класс пользователей зарестрированых в телеграм
         public static List_Bot_Telegram Id_Telegram { get; set; }
 
-    //Функция считывания байт из потока и формирование единой строки
-    public string Func_Read(Stream str, int length, TcpClient client)
+        //Функция считывания байт из потока и формирование единой строки
+        public string Func_Read(Stream str, int length, TcpClient client)
         {
             string Result = string.Empty;
             using (MemoryStream ms = new MemoryStream())
@@ -99,9 +99,9 @@ namespace Class_chat
             {
                 Console.WriteLine("SocketException: {0}", e.Message);
             }
-            catch(Exception )
+            catch (Exception)
             {
-               // MessageBox.Show(e.Message);
+                // MessageBox.Show(e.Message);
             }
         }
 
@@ -258,7 +258,7 @@ namespace Class_chat
             }
             catch (Exception e)
             {
-                  Console.WriteLine("SocketException: {0}", e.Message);
+                Console.WriteLine("SocketException: {0}", e.Message);
             }
 
         }
@@ -270,13 +270,13 @@ namespace Class_chat
             try
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-                {   
+                {
                     //Декодируем Bite []
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     //Отправляем на сервер
                     await stream.WriteAsync(data, 0, data.Length);
-            
+
                     String responseData = String.Empty;
                     //Функция получения
                     Byte[] readingData = new Byte[256];
@@ -314,7 +314,7 @@ namespace Class_chat
             }
             catch (ArgumentNullException)
             {
-              //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
             catch (SocketException)
             {
@@ -322,7 +322,7 @@ namespace Class_chat
             }
             catch (Exception)
             {
-             //   MessageBox.Show(e.Message);
+                //   MessageBox.Show(e.Message);
             }
 
         }
@@ -362,22 +362,22 @@ namespace Class_chat
                         JObject details = JObject.Parse(responseData);
                         JToken Answe = details.SelectToken("List_Mess");
                         JToken List_Mess = details.SelectToken("Image");
-                        List_Friends = List_Mess;                
+                        List_Friends = List_Mess;
                         //UseImage_OutPut msgImage = JsonSerializer.Deserialize<UseImage_OutPut>(responseData);
                         //UserImage = AClass;
-                 
+
                     }
                 }
             }
-            catch (ArgumentNullException )
+            catch (ArgumentNullException)
             {
-               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException )
+            catch (SocketException)
             {
-              //  MessageBox.Show("SocketException: {0}", e.Message);
+                //  MessageBox.Show("SocketException: {0}", e.Message);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 //MessageBox.Show(e.Message);
             }
@@ -441,17 +441,17 @@ namespace Class_chat
 
                 }
             }
-            catch (ArgumentNullException )
+            catch (ArgumentNullException)
             {
-             //   MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                //   MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException )
+            catch (SocketException)
             {
                 //MessageBox.Show("SocketException: {0}", e.Message);
             }
-            catch (Exception )
+            catch (Exception)
             {
-               // MessageBox.Show(e.Message);
+                // MessageBox.Show(e.Message);
             }
 
         }
@@ -483,14 +483,14 @@ namespace Class_chat
                     responseDat = completeMessage.ToString();
                     //Получили данные в строке и десеризовали класс Searh_Friends
                     Searh_Friends searh_Friends = JsonSerializer.Deserialize<Searh_Friends>(responseDat);
-                    _Friends = searh_Friends;                             
-                }                                                                 
+                    _Friends = searh_Friends;
+                }
             }
             catch (ArgumentNullException)
             {
-               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
-            catch (SocketException )
+            catch (SocketException)
             {
                 //MessageBox.Show("SocketException: {0}", e.Message);
             }
@@ -514,7 +514,7 @@ namespace Class_chat
                     {
                         return Func_Read(stream, data.Length, client);
                     });
-                
+
                     MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseDat);
 
                     JObject details = JObject.Parse(responseDat);
@@ -523,16 +523,16 @@ namespace Class_chat
                     JToken AClass = details.SelectToken("AClass");
                     _Answe = Answe;
                     _List_Mess_count = List_Mess;
-                    _AClass = AClass;                                
+                    _AClass = AClass;
                 }
             }
             catch (ArgumentNullException)
             {
-              //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
             catch (SocketException)
             {
-              //  MessageBox.Show("SocketException: {0}", e.Message);
+                //  MessageBox.Show("SocketException: {0}", e.Message);
             }
         }
 
@@ -544,7 +544,7 @@ namespace Class_chat
             {
                 using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
-                     //Сформировали в Byte массив весь класс и команду
+                    //Сформировали в Byte массив весь класс и команду
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     //Отправли на сервер
@@ -569,16 +569,22 @@ namespace Class_chat
             }
             catch (ArgumentNullException)
             {
-               // MessageBox.Show("ArgumentNullException:{0}", e.Message);
+                // MessageBox.Show("ArgumentNullException:{0}", e.Message);
             }
             catch (SocketException)
             {
-               // MessageBox.Show("SocketException: {0}", e.Message);
+                // MessageBox.Show("SocketException: {0}", e.Message);
             }
-        }  
+        }
 
 
-        // Процедура отправки 011
+        /// <summary>
+        /// Процедура отправки 011
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="fs"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
         async public Task Delete_message_make_up(String server, string fs, string command)
         {
             try
@@ -589,7 +595,7 @@ namespace Class_chat
                     Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
                     NetworkStream stream = client.GetStream();
                     //Отправили на сервер
-                    await stream.WriteAsync(data, 0, data.Length);                 
+                    await stream.WriteAsync(data, 0, data.Length);
                     String responseDat = String.Empty;
                     //получаем строку
                     responseDat = await Task<string>.Run(() =>
@@ -615,11 +621,17 @@ namespace Class_chat
             }
             catch (SocketException)
             {
-              //  MessageBox.Show("SocketException: {0}", e.Message);
+                //  MessageBox.Show("SocketException: {0}", e.Message);
             }
         }
 
-        // 015 Запрашивает перечень телеграм пользователей
+        /// <summary>
+        /// 015 Запрашивает перечень телеграм пользователей
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="fs"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
         async public Task Select_User_Bot(String server, string fs, string command)
         {
             try
@@ -650,7 +662,7 @@ namespace Class_chat
                     //Проверяем
                     if (responseData == "false")
                     {
-                       // User_Logins_and_Friends = null;
+                        // User_Logins_and_Friends = null;
                     }
                     else
                     {
@@ -659,7 +671,7 @@ namespace Class_chat
                         Id_Telegram = person3;
                         //User_Logins_and_Friends = person3;
 
-                        JObject keyValuePairs= new JObject();
+                        JObject keyValuePairs = new JObject();
                     }
                 }
             }
@@ -677,8 +689,60 @@ namespace Class_chat
 
         }
 
+        /// <summary>
+        /// Процедура отправки 016
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="fs"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        async public Task Select_User_(String server, string fs, string command)
+        {
+
+            try
+            {
+
+               using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+               {
+                //Декодируем Bite []
+                byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                string Host = System.Net.Dns.GetHostName();
+                NetworkStream stream = client.GetStream();
+                //Отправляем на сервер
+                await stream.WriteAsync(data, 0, data.Length);
+                String responseData = String.Empty;
+
+                Byte[] readingData = new Byte[256];
+                StringBuilder completeMessage = new StringBuilder();
+                int numberOfBytesRead = 0;
+                do
+                {
+                    numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                    completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                }
+                while (stream.DataAvailable);
+                //Получили результат
+                 responseData = completeMessage.ToString();
 
 
 
+
+                    MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
+                    User_Logins_and_Friends = person3;
+                    
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+            }
+            catch (Exception e)
+            {
+               Console.WriteLine("SocketException: {0}", e.Message);
+            }
+        }
     }
 }

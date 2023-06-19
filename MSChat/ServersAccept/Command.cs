@@ -649,5 +649,81 @@ namespace ServersAccept
             }
         }
 
+
+
+
+        /// <summary>
+        /// 016 - получение списка Друзей в телеграм  (обновление)
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
+        public void Select_User_(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try
+            {
+                using (MemoryStream tt = new MemoryStream())
+                {
+                    Travel Select_list_Friends = JsonSerializer.Deserialize<Travel>(msg);
+
+                    if (string.IsNullOrEmpty(Select_list_Friends.Id.ToString()))
+                    {
+
+                    }
+                    else
+                    {
+                        //Проверяем по Id текущего пользователя если 0 то нету
+                        if (Select_list_Friends.Id == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            globalClass.Select_User_Id_telegram(Select_list_Friends.Id, globalClass);
+                          //  globalClass.Select_Friend(Select_list_Friends.Current.ToString());
+                            //Проверяем пустые массив  друзей если есть то пустоту посылаем
+                            if (globalClass.List_Friend == null)
+                            {
+                                using (MemoryStream ms = new MemoryStream())
+                                {   //Заполняем в пустой класс для принятия на клиенте
+                                    User_photo[] json_List_Friends = new User_photo[] { };
+                                    //Собераем класс отправки
+                                    User_photo_Travel user_Logins = new User_photo_Travel("false", json_List_Friends.Length, json_List_Friends);
+                                    //Серилизуем класс User_photo_Travel 
+                                    JsonSerializer.Serialize<User_photo_Travel>(ms, user_Logins);
+                                    //Отправляем
+                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                }
+                            }
+                            else//Друзья есть и массив друзей посылаем
+                            {
+                                //Заполняем размерность массива 
+                                User_photo[] json_List_Friends = new User_photo[globalClass.List_Friend.Length];
+                                //Получаем в цикле друзейй
+                                for (int k = 0; k < globalClass.List_Friend.Length; k++)
+                                {
+                                    json_List_Friends[k] = globalClass.List_Friend[k];
+                                }
+                                //Отправляем
+                                using (MemoryStream ms = new MemoryStream())
+                                {   //Заполняем класс 
+                                    User_photo_Travel json_List_Friends_after = new User_photo_Travel("true", json_List_Friends.Length, json_List_Friends);
+                                    //Серилизуем класс User_photo_Travel 
+                                    JsonSerializer.Serialize<User_photo_Travel>(ms, json_List_Friends_after);
+                                    //Отправка на клиенте
+                                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
+        }
+
+
     }
 }

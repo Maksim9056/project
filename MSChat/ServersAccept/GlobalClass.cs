@@ -1104,9 +1104,33 @@ namespace ServersAccept
                 }
                 list_Bot_Telegram = alist_Bot_Telegram;
             }
+        }
 
 
+        public async void Select_User_Id_telegram(int id,GlobalClass globalClass)
+        {
+            int curent_user = 0;
+            //Проверяет пользователей по имени при ошибки дабавления
+            string sqlExpressio = $"SELECT id FROM Users id WHERE Id_Telegram = '{id}'";
 
+            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            {
+                await connection.OpenAsync();
+                SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                var n = await command.ExecuteReaderAsync();
+                if (n.HasRows == true)
+                {
+
+                    curent_user = Convert.ToInt32(n["Id"]);
+                    User_Insert = true;
+                }
+                else
+                {
+                    User_Insert = false;
+                }
+            }
+
+            globalClass.Select_Friend(curent_user.ToString());
         }
     }
     /// </summary>

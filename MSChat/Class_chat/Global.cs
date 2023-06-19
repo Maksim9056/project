@@ -6,13 +6,11 @@ using System.Runtime.Serialization;
 
 namespace Class_chat
 {
-    
-   
+
+    [Serializable]
     public class Travel
     {
-        int Id;
-
-
+        public int Id;
         public Travel(int id)
         {
             Id = id;

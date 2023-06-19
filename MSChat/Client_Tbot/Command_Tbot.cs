@@ -1,5 +1,6 @@
 ﻿using Class_chat;
 using Org.BouncyCastle.Asn1.Mozilla;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -154,16 +155,34 @@ namespace Client_Tbot
             }
             else
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
-            }
-          
-           
+                // await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
 
 
+               
+                Travel travel = new Travel(Id_Telegram);
+                string FileFS = "";
+                //Обьявим память 
+                MemoryStream memoryStream = new MemoryStream();
+                    //Серилизуем класс UserLogin в json ввиде памяти
+                    JsonSerializer.Serialize<Travel>(memoryStream, travel);
+
+                //Получаем из памяти json строку с классом UserLogin
+                 FileFS = Encoding.Default.GetString(memoryStream.ToArray());
+         
+                 Task.Run(async () => await command.Select_User_(sistem.IP, FileFS,"016")).Wait();
+                FileFS = "";
 
 
+            
 
-
+                User_photo[] A = new User_photo[CommandCL.User_Logins_and_Friends.List_Mess];
+                for (int I = 0; I < CommandCL.User_Logins_and_Friends.AClass.Count(); I++)
+                {
+                    A[I] = CommandCL.User_Logins_and_Friends.AClass[I];
+                    await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья в {CommandCL.User_Logins_and_Friends.AClass[I].Name} и id друга  {CommandCL.User_Logins_and_Friends.AClass[I].Id} !");
+                }
+              
+            }       
         }
         //public async void Friend_Message(ITelegramBotClient botClient, Message message, string user, string password, Sistem sistem)
         // {
