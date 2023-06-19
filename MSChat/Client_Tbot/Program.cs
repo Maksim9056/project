@@ -46,16 +46,17 @@ namespace Client_Tbot
 
         //Токен телеграм
         public static TelegramBotClient client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
+        public static Command_Tbot command_Tbot = new Command_Tbot();
         static void Main(string[] args)
         {
             //Сохраняет настройки
             sistem.Setting();
 
             //Отдельный класс команды
-            Command_Tbot Select_users_Id_telegram = new Command_Tbot();
+
 
             //Запращиваем   регестрированых пользователей
-            Select_users_Id_telegram.Select_Message_From_Chats();
+            command_Tbot.Select_Message_From_Chats();
 
             //Стартуем принятия сообщенией и ошибок
             client.StartReceiving(Update, Error );
@@ -117,7 +118,7 @@ namespace Client_Tbot
         //Команда для принятия сообщений
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
-            Command_Tbot command_Tbot = new Command_Tbot();
+         //   Command_Tbot command_Tbot = new Command_Tbot();
             //Для отправки назад сообщений
             Bot_OnMessage(update);
 
@@ -311,7 +312,7 @@ namespace Client_Tbot
                                         //Проверяем для команды Friends по индексу
                                         if (Results[0] == "Friends")
                                         {
-                                       
+                                            command_Tbot.Friend_Message(botClient, message, sistem);
                                         }
                                         else
                                         {

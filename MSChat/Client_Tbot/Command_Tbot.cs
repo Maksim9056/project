@@ -18,7 +18,7 @@ namespace Client_Tbot
        //Для Отправки команд на сервер
        public CommandCL command = new CommandCL();
 
-        public Bot_Telegram [] list_Bot_Telegram { get; set; }
+        public Bot_Telegram[] list_Bot_Telegram = new Bot_Telegram[] { };  
 
         /// <summary>
         /// Запращиваем Сообщения из чата
@@ -43,7 +43,7 @@ namespace Client_Tbot
                 bot_Telegram[i] = CommandCL.Id_Telegram.Bot_Telegram[i];
             }
             //  bot_Telegram = CommandCL.Id_Telegram.Bot_Telegram as Bot_Telegram;
-            list_Bot_Telegram = bot_Telegram;
+           list_Bot_Telegram = bot_Telegram;
 
             //Блок примерочный
             /////////////////////////////////////////////////////
@@ -127,8 +127,7 @@ namespace Client_Tbot
         /// Требует переделать !
         /// </summary>
         /// 
-
-        public async void Friend_Message(ITelegramBotClient botClient, Message message, string user, string password, Sistem sistem)
+        public async void Friend_Message(ITelegramBotClient botClient, Message message, Sistem sistem)
         {
 
 
@@ -151,11 +150,11 @@ namespace Client_Tbot
             
             if(Id_Telegram == 0)
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Зарегистрируйтесь  пользователь !");                 
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");                 
             }
             else
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  пользователь !");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
             }
           
            
