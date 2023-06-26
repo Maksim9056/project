@@ -24,10 +24,10 @@ namespace ServersAccept
         {
             GlobalClass.TypeSQL = 2;
             GlobalClass globalClass = new GlobalClass();
+            globalClass.CreateTable_Files();
             globalClass.CreateTable_Users();
             globalClass.CreateTable_Friends();
             globalClass.CreateTable_Chat();
-            globalClass.CreateTable_Files();
             TcpListener server = null;
             try
             {

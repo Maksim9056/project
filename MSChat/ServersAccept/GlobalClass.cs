@@ -202,7 +202,7 @@ namespace ServersAccept
                                     "Password Varchar NOT NULL,                     " +
                                     "Image Serial  NOT NULL  REFERENCES files(Id) ,                      " +
                                     "DataMess TIMESTAMP NOT NULL,                               " +
-                                    "Mark boolean NOT NULL );";
+                                    "Mark Serial NOT NULL );";
                         command.ExecuteNonQuery();
                     }
                     break;
@@ -331,8 +331,8 @@ namespace ServersAccept
                         NpgsqlCommand command = new NpgsqlCommand();
                         command.CommandText = "  CREATE TABLE IF NOT EXISTS Files" +
                             "(Id Serial  not null CONSTRAINT PK_Id Primary key" +
-                            ",\r\n Name varchar,\r\n    " +
-                            "Image bytea NOT NULL\r\n);";
+                            ", Name varchar,    " +
+                            "Image bytea NOT NULL);";
                         command.Connection = connection;
                         command.ExecuteNonQuery();
                     }
@@ -397,12 +397,12 @@ namespace ServersAccept
                         string sql = $"INSERT INTO Users (Age,Id_Telegram,Name,Image,Password,DataMess,Mark) VALUES ({age},{id_telegram},'{data}','{Id_Image}','{pasword}','{dateTime:s}','1')";
                         using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                         {
-                            await connection.OpenAsync();
+                             connection.Open();
                             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                             //        command.Parameters.Add(new SqliteParameter("@buf", buf));
 
                             command.CommandText = sql;
-                            await command.ExecuteNonQueryAsync();
+                             command.ExecuteNonQuery();
                         }
                         break;
                 }
@@ -488,11 +488,11 @@ namespace ServersAccept
                         string sql = $"INSERT INTO Files (Image) VALUES (@buf)";
                         using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                         {
-                            await connection.OpenAsync();
+                             connection.Open();
                             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                             command.Parameters.Add(new NpgsqlParameter("@buf", buf));
                             command.CommandText = sql;
-                            await command.ExecuteNonQueryAsync();
+                             command.ExecuteNonQuery();
                             command.CommandText = "SELECT currval(pg_get_serial_sequence('Files', 'id'))";
                             int lastId = Convert.ToInt32(command.ExecuteScalar());
                             //int number = command.ExecuteNonQuery();
@@ -1452,10 +1452,11 @@ namespace ServersAccept
                     string sqL = $"UPDATE Chat SET  IdUserFrom = '{messСhat.IdUserFrom}',IdUserTo = '{messСhat.IdUserTo}',Message ='{messСhat.Message}',DataMess ='{dateTimeS:s}',Mark = '{messСhat.Mark}' WHERE Id = '{messСhat.Id}'";
                     using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                     {
-                        await connection.OpenAsync();
+                         connection.Open();
                         NpgsqlCommand command = new NpgsqlCommand(sqL, connection);
-                        await command.ExecuteNonQueryAsync();
                         command.CommandText = sqL;
+                        command.ExecuteNonQuery();
+                        
                     }
                     int UserCountL = 0;
                     //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
