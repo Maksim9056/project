@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Xml.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using static System.Net.WebRequestMethods;
 //using Client_chat;
 
 namespace Client_Tbot
@@ -155,35 +156,213 @@ namespace Client_Tbot
             }
             else
             {
-                // await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
+             // await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
 
+              Travel travel = new Travel(Id_Telegram);
 
-               
-                Travel travel = new Travel(Id_Telegram);
-                string FileFS = "";
-                //Обьявим память 
-                MemoryStream memoryStream = new MemoryStream();
-                    //Серилизуем класс UserLogin в json ввиде памяти
-                    JsonSerializer.Serialize<Travel>(memoryStream, travel);
+              string FileFS = "";
 
-                //Получаем из памяти json строку с классом UserLogin
-                 FileFS = Encoding.Default.GetString(memoryStream.ToArray());
+              //Обьявим память 
+              MemoryStream memoryStream = new MemoryStream();
+
+              //Серилизуем класс UserLogin в json ввиде памяти
+              JsonSerializer.Serialize<Travel>(memoryStream, travel);
+
+            //Получаем из памяти json строку с классом UserLogin
+             FileFS = Encoding.Default.GetString(memoryStream.ToArray());
          
-                 Task.Run(async () => await command.Select_User_(sistem.IP, FileFS,"016")).Wait();
-                FileFS = "";
+             Task.Run(async () => await command.Select_User_(sistem.IP, FileFS,"016")).Wait();
 
+             FileFS = "";
 
-            
+             User_photo[] A = new User_photo[CommandCL.User_Logins_and_Friends.List_Mess];
 
-                User_photo[] A = new User_photo[CommandCL.User_Logins_and_Friends.List_Mess];
-                for (int I = 0; I < CommandCL.User_Logins_and_Friends.AClass.Count(); I++)
-                {
-                    A[I] = CommandCL.User_Logins_and_Friends.AClass[I];
-                    await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья в {CommandCL.User_Logins_and_Friends.AClass[I].Name} и id друга  {CommandCL.User_Logins_and_Friends.AClass[I].Id} !");
-                }
+              for (int I = 0; I < CommandCL.User_Logins_and_Friends.AClass.Count(); I++)
+              {
+                   A[I] = CommandCL.User_Logins_and_Friends.AClass[I];
+
+                  await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья  {CommandCL.User_Logins_and_Friends.AClass[I].Name} и" +
+                  $" id друга  {CommandCL.User_Logins_and_Friends.AClass[I].Id} !");
+              }
               
             }       
         }
+
+
+        public async void Telegram_Message(ITelegramBotClient botClient, Message message, string Message ,string User , Sistem sistem)
+        {
+
+            int Id_Telegram = 0;
+            string Users = "";
+
+            for (int i = 0; i < list_Bot_Telegram.Length; i++)
+            {
+                if (Convert.ToInt32(message.From.Id) == list_Bot_Telegram[i].Id_Bot)
+                {
+                 //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+
+                    Id_Telegram = list_Bot_Telegram[i].Id_user;
+                    break;
+                }
+                else
+                {
+
+                }
+
+            }
+
+            if (Id_Telegram == 0)
+            {
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");
+            }
+            else
+            {
+
+
+                //Заполняет информацию json виде текста о классах
+                string FileFS;
+                //Заполняем в памяти 
+                using (MemoryStream Update = new MemoryStream())
+                {
+                    //Текущию дату возращает
+                    DateTime dateTime = DateTime.Now;
+
+                    //Класс соберает MessСhat
+                    User_photo Mes_chat = new User_photo("", User, "", 0,Id_Telegram, Id_Telegram);
+
+                    //Впамяти запоминает и считывает класс MessСhat ввиде json 
+                    JsonSerializer.Serialize<User_photo>(Update, Mes_chat);
+
+                    //Воспроизводит из памяти Серилизованный класс MessСhat
+                    FileFS = Encoding.Default.GetString(Update.ToArray());
+                }
+
+
+
+
+                ////Отправляем редактированое сообщение на сервер
+                //Task.Run(async () => await command.Select_Message(sistem.IP, FileFS, "009")).Wait();
+
+            }
+
+
+        }
+
+
+        //  string Message, string User, Sistem sistem
+     
+        /// <summary>
+        /// Добавляет сообщение в чат и выводит сообщения пользователя 
+        /// </summary>
+        /// <param name="botClient"></param>
+        /// <param name="message"></param>
+        public async void Insert_Telegram_Message_Chats(ITelegramBotClient botClient, Message message, Sistem sistem, string Cообщение_пользователя , string Друг )
+        {
+            int Id_Telegram = 0;
+            int Id_Telegrams = 0;
+            string Users = "";
+
+            for (int i = 0; i < list_Bot_Telegram.Length; i++)
+            {
+                if (Convert.ToInt32(message.From.Id) == list_Bot_Telegram[i].Id_Bot)
+                {
+                    //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+
+                    Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+                    Id_Telegrams = list_Bot_Telegram[i].Id_user;
+                    //   Users = list_Bot_Telegram[i];
+                    break;
+                }
+                else
+                {
+
+                }
+            }
+
+            if (Id_Telegram == 0)
+            {
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");
+            }
+            else
+            {  
+                //Заполняет информацию json виде текста о классах
+                string FileFS;
+
+                using (MemoryStream stream = new MemoryStream()) 
+                {
+                    Insert_Message_Telegram insert_Message_Telegram = new Insert_Message_Telegram(Cообщение_пользователя, Друг, Id_Telegram);
+                    JsonSerializer.Serialize<Insert_Message_Telegram>(stream, insert_Message_Telegram);
+                    //Воспроизводит из памяти Серилизованный класс Insert_Message_Telegram
+                    FileFS = Encoding.Default.GetString(stream.ToArray());
+                }
+           
+                //Отправляем Сообщение сообщение на сервер
+                Task.Run(async () => await command.Insert_Message_Telegram(sistem.IP, FileFS, "017")).Wait();
+
+
+
+          
+
+
+         
+                if (command._Answe.ToString() == "true")
+                {
+                    for (int j = 0; j < CommandCL.Travel_Telegram_message.AClass.Count(); j++)
+                    {
+                        //Заполняем класс MessСhat сообщениями
+                        MessСhat[] les = new MessСhat[command._AClass.Count()];
+
+                        //Десерилизуем класс и получаем класс MessСhat
+
+                        //десерилизуем класс по частям MessСhat
+                        for (int i = 0; i < command._AClass.Count(); i++)
+                        {
+                            //Строка ввиде json  класса essСhat
+                            string yu = command._AClass[i].ToString();
+
+                            //Десерилизуем класс MessСhat из json строки в класс MessСhat
+                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                   //Запомнили чат
+                                   les[i] = useTravel;
+
+                         
+
+                            //Условия друг или пользователь пишет кому сообщения  по жтому такие условия 
+                            if (les[i].IdUserTo == Convert.ToInt32(les[i].IdUserFrom)  && les[i].IdUserFrom == Convert.ToInt32(les[i].IdUserTo) )
+                            {
+                                //Пользователь  сообщения  отправляем
+                                await botClient.SendTextMessageAsync(message.Chat.Id, message.Chat.FirstName+ ":" + les[i].Message);
+                            }
+                            else
+                            {
+                                //Сообщения друга к пользователю
+                                if (les[i].IdUserFrom == Convert.ToInt32(les[i].IdUserFrom) && les[i].IdUserTo == Convert.ToInt32(les[i].IdUserTo))
+                                {
+                                    //Отправляем сообщения друга и его имя
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, Друг + ":" + les[i].Message);
+                                }
+                                else
+                                {   //Здесь фильтруем  сообщения пользователя к другу
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, message.Chat.FirstName + ":" + les[i].Message);
+                                }
+                            }
+
+                        }
+                        break;
+                    }
+                }
+                else //Если нету сообщений то отправляет "Сообщений нету : у пользователя " и друга имя
+                {
+                    for (int j = 0; j < CommandCL.User_Logins_and_Friends.AClass.Count(); j++)
+                    {
+                        await botClient.SendTextMessageAsync(message.Chat.Id, "Сообщений нету : у пользователя " + " " + CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString());
+                    }
+                }
+            }
+        }
+
+
+
         //public async void Friend_Message(ITelegramBotClient botClient, Message message, string user, string password, Sistem sistem)
         // {
         //     //Обьявляем память

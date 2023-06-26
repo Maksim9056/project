@@ -4,14 +4,10 @@ using System.Net;
 using System.Threading;
 using Class_chat;
 using System.Text;
-//using System.Diagnostics;
-//using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Windows.Input;
-using System.Reflection.Emit;
-//using static System.Net.WebRequestMethods;
+
 
 namespace ServersAccept
 {   
@@ -38,7 +34,6 @@ namespace ServersAccept
                 ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
                 SaveOpen();
                 IPAddress localAddr = IPAddress.Parse(Ip_Adress);
-      
                 Console.WriteLine();
                 server = new TcpListener(localAddr,port);
                 Console.WriteLine("Конфигурация многопоточного сервера:" + MaxThreadsCount.ToString());
@@ -105,6 +100,7 @@ namespace ServersAccept
             FDictCommands.Add("014", new Action<byte[], GlobalClass, NetworkStream>(command.Search_Image_Friends));
             FDictCommands.Add("015", new Action<byte[], GlobalClass, NetworkStream>(command.Select_User_Bot));
             FDictCommands.Add("016", new Action<byte[], GlobalClass, NetworkStream>(command.Select_User_));
+            FDictCommands.Add("017", new Action<byte[], GlobalClass, NetworkStream>(command.Insert_Message_Telegram));
         }
 
         static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)

@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Telegram.Bot.Types;
 
@@ -122,6 +123,25 @@ namespace ServersAccept
 
 
 
+       public int Id_Telegrams { get; set; }
+
+
+        /// <summary>
+        ///id Пользователя
+        /// </summary>
+         public int Id_Telegram_Useer { get; set; }
+
+
+        /// <summary>
+        ///id Друга
+        /// </summary>
+        public int IdUserTo_Telegram { get; set; }
+
+
+        /// <summary>
+        /// Передают сколько пользователей в чате телеграм и их сообщения
+        /// </summary>
+        public MessСhat[] Frends_Telegram { get; set; }
 
 
         /// <summary>
@@ -517,88 +537,26 @@ namespace ServersAccept
         /// <param name="curent_user"></param>
         async public void Select_Friend(string curent_user)
         {
-            int UserCount = 0;
-            string sqlExpressioCount = $"SELECT COUNT(*)  FROM Friends  WHERE IdUserFrom = '{curent_user}'";
-            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            try
             {
-                await connection.OpenAsync();
-                SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
-                SqliteCommand commandS = new SqliteCommand(sqlExpressioCount, connection);
-                var n = await command.ExecuteReaderAsync();
-
-                SqliteDataReader sqReader = commandS.ExecuteReader();
-                if (n.HasRows == true)
-                {
-                    // UserCount = null;
-                    while (sqReader.Read())
-                    {
-                        UserCount = sqReader.GetInt32(0);
-                    }
-                    Friends = true;
-                }
-                else
-                {
-                    Friends = false;
-                }
-            }
-
-            if (Friends == true)
-            {
-                //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
-                string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
-                int[] Frend = new int[UserCount];
-                int i = 0;
-
+                int UserCount = 0;
+                string sqlExpressioCount = $"SELECT COUNT(*)  FROM Friends  WHERE IdUserFrom = '{curent_user}'";
                 using (var connection = new SqliteConnection(GlobalClass.connectionString))
                 {
                     await connection.OpenAsync();
-                    SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
-                    SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                    SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
+                    SqliteCommand commandS = new SqliteCommand(sqlExpressioCount, connection);
                     var n = await command.ExecuteReaderAsync();
+
                     SqliteDataReader sqReader = commandS.ExecuteReader();
                     if (n.HasRows == true)
                     {
-                        Console.WriteLine("У пользователя есть друзья");
+                        // UserCount = null;
                         while (sqReader.Read())
                         {
-                            Frend[i] = sqReader.GetInt32(0);
-                            i = i + 1;
-                            //Проходим по созданию фильтра для таблицы Users
+                            UserCount = sqReader.GetInt32(0);
                         }
-                        //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
-
-
-                        //Проверяет  в таблицу Пользователи количество у id пользователей 
-                        sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
-                        SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
-                        SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
-                        var _n = await commands_Fr.ExecuteReaderAsync();
-                        SqliteDataReader sqReaders_Fr = _commandS_Fr.ExecuteReader();
-                        if (_n.HasRows == true)
-                        { //sqReader["Image"] as byte[]
-                            int j = 0;
-                            User_photo[] UserRG = new User_photo[UserCount];
-                            while (sqReaders_Fr.Read())
-                            {
-                                int Id = Convert.ToInt32(sqReaders_Fr["Id"].ToString());
-                                //  byte[] image = null;
-                                int Image = Convert.ToInt32(sqReaders_Fr["Image"].ToString());
-
-                                User_photo User = new User_photo(sqReaders_Fr["Name"] as string, "", sqReaders_Fr["Age"] as string, Image, Id, 0);
-                                UserRG[j] = User;
-                                j++;
-                            }
-                            Friends = true;
-
-                            List_Friend = UserRG;
-                            Friends = true;
-                            Console.WriteLine(UserRG);
-                        }
-                        else
-                        {
-                            //друзей нет 
-                            Friends = false;
-                        }
+                        Friends = true;
                     }
                     else
                     {
@@ -606,6 +564,76 @@ namespace ServersAccept
                     }
                 }
 
+                if (Friends == true)
+                {
+                    //Проверяет  в таблицу Друзья количество у данного пользователя по Id 
+                    string sqlExpressio = $"SELECT IdUserTo  FROM Friends  WHERE IdUserFrom = {curent_user}";
+                    int[] Frend = new int[UserCount];
+                    int i = 0;
+
+                    using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                    {
+                        await connection.OpenAsync();
+                        SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                        SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                        var n = await command.ExecuteReaderAsync();
+                        SqliteDataReader sqReader = commandS.ExecuteReader();
+                        if (n.HasRows == true)
+                        {
+                            Console.WriteLine("У пользователя есть друзья");
+                            while (sqReader.Read())
+                            {
+                                Frend[i] = sqReader.GetInt32(0);
+                                i = i + 1;
+                                //Проходим по созданию фильтра для таблицы Users
+                            }
+                            //Делаем запрос к таблице Users с фильтром  по всем id с фильтром  и считываем поля в массив List_Friend
+
+
+                            //Проверяет  в таблицу Пользователи количество у id пользователей 
+                            sqlExpressio = $"SELECT * FROM Users  WHERE Id in ({String.Join(",", Frend)})";
+                            SqliteCommand commands_Fr = new SqliteCommand(sqlExpressio, connection);
+                            SqliteCommand _commandS_Fr = new SqliteCommand(sqlExpressio, connection);
+                            var _n = await commands_Fr.ExecuteReaderAsync();
+
+                            SqliteDataReader sqReaders_Fr = _commandS_Fr.ExecuteReader();
+                            if (_n.HasRows == true)
+                            { //sqReader["Image"] as byte[]
+                                int j = 0;
+                                User_photo[] UserRG = new User_photo[UserCount];
+                                while (sqReaders_Fr.Read())
+                                {
+                                    int Id = Convert.ToInt32(sqReaders_Fr["Id"].ToString());
+                                    //  byte[] image = null;
+                                    int Image = Convert.ToInt32(sqReaders_Fr["Image"].ToString());
+
+                                    User_photo User = new User_photo(sqReaders_Fr["Name"] as string, "", sqReaders_Fr["Age"] as string, Image, Id, 0);
+                                    UserRG[j] = User;
+                                    j++;
+                                }
+                                Friends = true;
+
+                                List_Friend = UserRG;
+                                Friends = true;
+                                Console.WriteLine(UserRG);
+                            }
+                            else
+                            {
+                                //друзей нет 
+                                Friends = false;
+                            }
+                        }
+                        else
+                        {
+                            Friends = false;
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -1055,7 +1083,7 @@ namespace ServersAccept
                 Insert_Friend_by_id = 0;
             }
         }
-    
+
 
         /// <summary>
         /// 015 - получение списка пользователей зарегистрированых в телеграм боте (обновление)
@@ -1107,31 +1135,180 @@ namespace ServersAccept
         }
 
 
-        public async void Select_User_Id_telegram(int id,GlobalClass globalClass)
+
+        public async void Select_User_Id_telegram(int id)
         {
-            int curent_user = 0;
-            //Проверяет пользователей по имени при ошибки дабавления
-            string sqlExpressio = $"SELECT id FROM Users id WHERE Id_Telegram = '{id}'";
-
-            using (var connection = new SqliteConnection(GlobalClass.connectionString))
+            try
             {
-                await connection.OpenAsync();
-                SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
-                var n = await command.ExecuteReaderAsync();
-                if (n.HasRows == true)
-                {
+                int curent_user = 0;
+                //Проверяет пользователей по имени при ошибки дабавления
+                string sqlExpressio = $"SELECT id FROM Users  WHERE Id_Telegram = {id}";
 
-                    curent_user = Convert.ToInt32(n["Id"]);
-                    User_Insert = true;
-                }
-                else
+                using (var connection = new SqliteConnection(GlobalClass.connectionString))
                 {
-                    User_Insert = false;
+                    await connection.OpenAsync();
+                    SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                    SqliteCommand commands = new SqliteCommand(sqlExpressio, connection);
+
+                    var n = await command.ExecuteReaderAsync();
+                    SqliteDataReader sqReader = commands.ExecuteReader();
+
+                    if (n.HasRows == true)
+                    {
+                        while (sqReader.Read())
+                        {
+                            curent_user = Convert.ToInt32(sqReader["Id"]);
+                            User_Insert = true;
+                        
+                        }
+                     
+                    }
+                    else
+                    {
+                        //      curent_user = Convert.ToInt32(n["Id"]);
+                        User_Insert = false;
+                    }
+                }
+                Id_Telegrams = curent_user;
+                Id_Telegram_Useer = curent_user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+
+
+      
+        async public   void Id_Friends(string data)
+        {
+            try
+            {
+                int IdUserTo = 0;
+
+                string sqlExpressi = $"SELECT * FROM Users  WHERE Name = '{data}'";
+                using (var connectio = new SqliteConnection(GlobalClass.connectionString))
+                {
+                    await connectio.OpenAsync();
+                    SqliteCommand _command = new SqliteCommand(sqlExpressi, connectio);
+                    SqliteCommand __commandS = new SqliteCommand(sqlExpressi, connectio);
+                    var ns = await _command.ExecuteReaderAsync();
+                    SqliteDataReader sqReaders = __commandS.ExecuteReader();
+
+                    if (ns.HasRows == true)
+                    {
+                        //   Console.WriteLine("Такое имя уже есть");
+                        // UserConnect = true;
+                        // Always call Read before accessing data.
+                        while (sqReaders.Read())
+                        {
+                            //       Current_User = sqReader["Id"].ToString();
+                            IdUserTo = Convert.ToInt32(sqReaders["Id"]);
+                            //Еще будет нужна
+                            //  int Id = Convert.ToInt32(Current_User);
+                            //string Friend = sqReaders["Name"].ToString();
+
+                            //Name = Friend;
+
+                            //      Console.WriteLine(Current_User);
+                        }
+
+                    }
+                    else
+                    {
+
+                    }
+                    IdUserTo_Telegram = IdUserTo;
                 }
             }
-
-            globalClass.Select_Friend(curent_user.ToString());
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
+
+        /// <summary>
+        /// Добавляет  в таблицу Чат  сообщение от пользователя 
+        /// </summary>
+        /// <param name="messСhat"></param>
+        async public void Insert_Message_From_Telegram(Insert_Message_Telegram messСhat,int IdUserFrom_Telgram,int IdUserTo_Telegram)
+        {
+            try
+            {
+
+                DateTime DataMesss = DateTime.Now;
+
+                string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({IdUserFrom_Telgram},{IdUserTo_Telegram},'{messСhat.Message}','{DataMesss:s}',{1})";
+                using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                {
+                    await connection.OpenAsync();
+                    SqliteCommand command = new SqliteCommand(sq, connection);
+                    await command.ExecuteNonQueryAsync();
+                    command.CommandText = sq;
+                }
+                int UserCount = 0;
+                //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
+                string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{IdUserFrom_Telgram}' and IdUserTo = '{IdUserTo_Telegram}') or " +
+                                                                                         $"(IdUserTo = '{IdUserFrom_Telgram}' and IdUserFrom = '{IdUserTo_Telegram}'))";
+                using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                {
+                    await connection.OpenAsync();
+                    SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
+                    SqliteDataReader sqReader = command.ExecuteReader();
+                    //while (sqReader.Read())
+                    //{
+                    //    UserCount = sqReader.GetInt32(0);
+                    //}
+                    sqReader.Read();
+                    UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
+                }
+                //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
+                string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{IdUserFrom_Telgram}' and IdUserTo = '{IdUserTo_Telegram}') or " +
+                                                                  $"(IdUserTo = '{IdUserFrom_Telgram}' and IdUserFrom = '{IdUserTo_Telegram}'))";
+                using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                {
+                    await connection.OpenAsync();
+                    SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                    SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
+                    var n = await command.ExecuteReaderAsync();
+                    //         // Заполняем Dataset
+                    SqliteDataReader sqReader = command2.ExecuteReader();
+                    // Always call Read before accessing data.
+                    if (n.HasRows == true)
+                    {
+                        MessСhat[] aClats = new MessСhat[UserCount];
+                        int k = 0;
+
+                        while (sqReader.Read())
+                        {
+                            int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
+                            int IdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
+                            int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
+                            DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
+                            int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
+                            MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                            //aChat = mСhat;
+                            aClats[k] = mСhats;
+                            k++;
+                        }
+                        Frends_Telegram = aClats;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
+        /// </summary>
     }
-    /// </summary>
 }

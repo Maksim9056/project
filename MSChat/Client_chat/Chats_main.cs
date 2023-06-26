@@ -95,9 +95,11 @@ namespace Client_chat
                         dataGridViewChat.Rows.Clear();
                         //Устанавливаем количество столбцов
                         dataGridViewChat.RowCount = les.Count();
+
                         //Устанавливаем количество 2 колонок
                         dataGridViewChat.ColumnCount = 2;
                         //Для прочтения
+
                         DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
                         {
                         }

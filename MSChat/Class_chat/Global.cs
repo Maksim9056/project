@@ -10,11 +10,12 @@ namespace Class_chat
     [Serializable]
     public class Travel
     {
-        public int Id;
+        public int Id { get; set; }
         public Travel(int id)
         {
             Id = id;
         }
+        public Travel() { }
     }
     
     [Serializable]
@@ -390,6 +391,28 @@ namespace Class_chat
             User = user;
         }
     }
+
+    /// <summary>
+    /// Для отправки из телеграм сообщений в чат
+    /// </summary>
+    public class Insert_Message_Telegram
+    {
+        public Insert_Message_Telegram() { }
+
+        public string Message { get; set; }
+
+        public string Friend { get; set; }
+
+        public int Id_User { get; set; }
+        public Insert_Message_Telegram(string message, string friend, int id_User)
+        {
+            Message = message;
+            Friend = friend;
+            Id_User = id_User;
+        }
+    }
+
+
 
 }
 

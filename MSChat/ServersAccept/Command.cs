@@ -668,21 +668,20 @@ namespace ServersAccept
 
                     if (string.IsNullOrEmpty(Select_list_Friends.Id.ToString()))
                     {
-
                     }
                     else
                     {
                         //Проверяем по Id текущего пользователя если 0 то нету
                         if (Select_list_Friends.Id == 0)
                         {
-
                         }
                         else
                         {
-                            globalClass.Select_User_Id_telegram(Select_list_Friends.Id, globalClass);
-                          //  globalClass.Select_Friend(Select_list_Friends.Current.ToString());
+                           globalClass.Select_User_Id_telegram(Select_list_Friends.Id);
+                            //  globalClass.Select_Friend(Select_list_Friends.Current.ToString());
                             //Проверяем пустые массив  друзей если есть то пустоту посылаем
-                            if (globalClass.List_Friend == null)
+                            globalClass.Select_Friend(globalClass.Id_Telegrams.ToString());
+                            if (globalClass.Friends == false)
                             {
                                 using (MemoryStream ms = new MemoryStream())
                                 {   //Заполняем в пустой класс для принятия на клиенте
@@ -723,6 +722,70 @@ namespace ServersAccept
                 Console.WriteLine(e.Message.ToString());
             }
         }
+
+
+        /// <summary>
+        /// 017*Добавляет сообщение в чат из телеграма
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
+        public void Insert_Message_Telegram(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try
+            {
+                using (MemoryStream tt2 = new MemoryStream())
+                {
+                    Insert_Message_Telegram Insert_Message = JsonSerializer.Deserialize<Insert_Message_Telegram>(msg);
+                    //Travel Select_list_Friends = JsonSerializer.Deserialize<Travel>(msg);
+
+                    if (string.IsNullOrEmpty(Insert_Message.Id_User.ToString()))
+                    {
+                    }
+                    else
+                    {
+                        //Проверяем по Id текущего пользователя если 0 то нету
+                        if (Insert_Message.Id_User == 0)
+                        {
+                        }
+                        else
+                        {
+
+
+                            globalClass.Id_Friends(Insert_Message.Friend);
+                            globalClass.Select_User_Id_telegram(Insert_Message.Id_User);
+
+                            globalClass.Insert_Message_From_Telegram(Insert_Message, globalClass.Id_Telegram_Useer, globalClass.IdUserTo_Telegram);
+
+
+                            if (globalClass.Frends_Telegram == null)
+                            {
+                            }
+                            else
+                            {
+                                MessСhat[] json_Message = new MessСhat[globalClass.Frends_Telegram.Length];
+                                //        string a = "";  
+                                for (int k = 0; k < globalClass.Frends_Telegram.Length; k++)
+                                {
+                                    json_Message[k] = globalClass.Frends_Telegram[k];
+                                }
+                                UseTravel useTravels = new UseTravel("true", json_Message.Length, json_Message);
+                                using (MemoryStream Friens_Byte = new MemoryStream())
+                                {
+                                    JsonSerializer.Serialize<UseTravel>(Friens_Byte, useTravels);
+                                    stream.Write(Friens_Byte.ToArray(), 0, Friens_Byte.ToArray().Length);
+                                }
+                            }
+                        }
+                    } 
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
+        }
+
 
 
     }

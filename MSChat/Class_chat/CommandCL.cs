@@ -6,6 +6,7 @@ using System;
 using System.IO;
 //using System.Linq;
 using System.Net.Sockets;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 //using System.Text.Json.Nodes;
@@ -42,6 +43,13 @@ namespace Class_chat
         //Класс пользователей зарестрированых в телеграм
         public static List_Bot_Telegram Id_Telegram { get; set; }
 
+
+
+
+        /// <summary>
+        /// Отправки в телеграм в чат
+        /// </summary>
+        public static MsgInfo Travel_Telegram_message { get; set; }
         //Функция считывания байт из потока и формирование единой строки
         public string Func_Read(Stream str, int length, TcpClient client)
         {
@@ -701,35 +709,30 @@ namespace Class_chat
 
             try
             {
-
-               using (TcpClient client = new TcpClient(server, ConnectSettings.port))
-               {
-                //Декодируем Bite []
-                byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
-                string Host = System.Net.Dns.GetHostName();
-                NetworkStream stream = client.GetStream();
-                //Отправляем на сервер
-                await stream.WriteAsync(data, 0, data.Length);
-                String responseData = String.Empty;
-
-                Byte[] readingData = new Byte[256];
-                StringBuilder completeMessage = new StringBuilder();
-                int numberOfBytesRead = 0;
-                do
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
                 {
-                    numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
-                    completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
-                }
-                while (stream.DataAvailable);
-                //Получили результат
-                 responseData = completeMessage.ToString();
+                    //Декодируем Bite []
+                    byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    string Host = System.Net.Dns.GetHostName();
+                    NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
+                    await stream.WriteAsync(data, 0, data.Length);
+                    String responseData = String.Empty;
 
-
-
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
 
                     MsgUser_Logins person3 = JsonSerializer.Deserialize<MsgUser_Logins>(responseData);
                     User_Logins_and_Friends = person3;
-                    
                 }
             }
             catch (ArgumentNullException e)
@@ -741,8 +744,104 @@ namespace Class_chat
             }
             catch (Exception e)
             {
-               Console.WriteLine("SocketException: {0}", e.Message);
+                Console.WriteLine("SocketException: {0}", e.Message);
             }
         }
+
+        // Процедура отправки 016
+        async public Task Select_Message(String server, string fs, string command)
+        {
+
+            try
+            {
+
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    //Декодируем Bite []
+                    byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    string Host = System.Net.Dns.GetHostName();
+                    NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
+                    await stream.WriteAsync(data, 0, data.Length);
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
+
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("SocketException: {0}", e.Message);
+            }
+
+        }
+
+
+        // Процедура отправки 017
+        async public Task Insert_Message_Telegram(String server, string fs, string command)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    await stream.WriteAsync(data, 0, data.Length);
+
+               //     String responseDat = String.Empty;
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
+
+                    MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);
+                    Travel_Telegram_message = msgInfo;
+                    JObject details = JObject.Parse(responseData);
+                    JToken Answe = details.SelectToken("Answe");
+                    JToken List_Mess = details.SelectToken("List_Mess");
+                    JToken AClass = details.SelectToken("AClass");
+                    _Answe = Answe;
+                    _List_Mess_count = List_Mess;
+                    _AClass = AClass;
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+                //  MessageBox.Show("SocketException: {0}", e.Message);
+            }
+        }
+
     }
 }
+
+
