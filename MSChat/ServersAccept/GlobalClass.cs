@@ -1224,18 +1224,18 @@ namespace ServersAccept
                     string sqL = $"INSERT INTO Friends ( IdUserFrom,IdUserTo) VALUES ('{IdUserTo}','{IdUserFrom}')";
                     using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                     {
-                        await connection.OpenAsync();
+                        connection.Open();
                         NpgsqlCommand command = new NpgsqlCommand(sqL, connection);
-                        await command.ExecuteNonQueryAsync();
+                        command.ExecuteNonQuery();
                         command.CommandText = sqL;
                     }
                     //Добавляет друзей  у второго пользователя
                     string sqйL = $"INSERT INTO Friends ( IdUserFrom,IdUserTo) VALUES ('{IdUserFrom}','{IdUserTo}')";
                     using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                     {
-                        await connection.OpenAsync();
+                        connection.Open();
                         NpgsqlCommand command = new NpgsqlCommand(sqйL, connection);
-                        await command.ExecuteNonQueryAsync();
+                        command.ExecuteNonQuery();
                         command.CommandText = sqйL;
                     }
                     break;
@@ -1580,9 +1580,9 @@ namespace ServersAccept
                     using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                     {
 
-                        await connection.OpenAsync();
+                        connection.Open();
                         NpgsqlCommand commandS = new NpgsqlCommand(sqlExpressionL, connection);
-                        await commandS.ExecuteNonQueryAsync();
+                        commandS.ExecuteNonQuery();
                         commandS.CommandText = sqlExpressionL;
                     }
                     int UserCountL = 0;
@@ -2386,9 +2386,9 @@ namespace ServersAccept
                         string sql = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({IdUserFrom_Telgram},{IdUserTo_Telegram},'{messСhat.Message}','{DataMessss:s}',{1})";
                         using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                         {
-                            await connection.OpenAsync();
+                            connection.Open();
                             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-                            await command.ExecuteNonQueryAsync();
+                            command.ExecuteNonQuery();
                             command.CommandText = sql;
                         }
                         int UserCountl = 0;
