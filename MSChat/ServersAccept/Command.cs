@@ -786,6 +786,37 @@ namespace ServersAccept
             }
         }
 
+        /// <summary>
+        /// 008-Добавляет Друзей в чат
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
+        public void Select_id_Friends ( byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try
+            {
+                using (MemoryStream tt2 = new MemoryStream())
+                {
+                    _Name searh_Friends = JsonSerializer.Deserialize<_Name>(msg);
+                    globalClass.Select_From_Table_User_id_Friends(searh_Friends.__Name);
+                  
+                        using (MemoryStream Byte_frends = new MemoryStream())
+                        {
+                            _Name searh = new _Name(globalClass.Searh_Friends_Id_Telegram);
+                            JsonSerializer.Serialize<_Name>(Byte_frends, searh);
+                            stream.Write(Byte_frends.ToArray(), 0, Byte_frends.ToArray().Length);
+                        }
+                    
+                  
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
+        }
+
 
 
     }

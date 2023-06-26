@@ -247,6 +247,7 @@ namespace Class_chat
 
     public class _Name
     {
+        public _Name() { }
         public string __Name { get; set; }
         public _Name(string name)
         {

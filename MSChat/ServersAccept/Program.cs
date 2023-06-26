@@ -22,6 +22,7 @@ namespace ServersAccept
     
         static void Main(string[] args)
         {
+            GlobalClass.TypeSQL = 2;
             GlobalClass globalClass = new GlobalClass();
             globalClass.CreateTable_Users();
             globalClass.CreateTable_Friends();
@@ -101,6 +102,8 @@ namespace ServersAccept
             FDictCommands.Add("015", new Action<byte[], GlobalClass, NetworkStream>(command.Select_User_Bot));
             FDictCommands.Add("016", new Action<byte[], GlobalClass, NetworkStream>(command.Select_User_));
             FDictCommands.Add("017", new Action<byte[], GlobalClass, NetworkStream>(command.Insert_Message_Telegram));
+
+            FDictCommands.Add("018", new Action<byte[], GlobalClass, NetworkStream>(command.Select_id_Friends));
         }
 
         static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)
