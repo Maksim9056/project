@@ -322,7 +322,7 @@ namespace Client_chat
                             using (MemoryStream Update = new MemoryStream())
                             {
                                 DateTime dateTime = DateTime.Now;
-                                MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                                MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1,0);
                                 JsonSerializer.Serialize<MessСhat>(Update, Mes_chat);
                                 FileFS = Encoding.Default.GetString(Update.ToArray());
                             }
@@ -343,7 +343,7 @@ namespace Client_chat
                         using (MemoryStream fs = new MemoryStream())
                         {
                             DateTime dateTime = DateTime.Now;
-                            MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1);
+                            MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1,0);
                             JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
                             FileFS = Encoding.Default.GetString(fs.ToArray());
                         }
@@ -753,7 +753,7 @@ namespace Client_chat
                     using (MemoryStream fs = new MemoryStream())
                     {
                         DateTime dateTime = DateTime.Now;
-                        MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                        MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1,0);
                         JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
                     }
@@ -927,7 +927,7 @@ namespace Client_chat
                                     //Определяем текущию дату
                                     DateTime dateTime = DateTime.Now;
                                     //Заполняем класс
-                                    MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1);
+                                    MessСhat Mes_chat = new MessСhat(Update_id, Users, Friends, textBox1.Text, dateTime, 1, 0);
                                     //Серилизуем класс
                                     JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
                                     //Декодируем в строку

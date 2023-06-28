@@ -264,7 +264,9 @@ namespace Class_chat
         public string Message { get; set; }
         public DateTime DataMess { get; set; }
         public int Mark { get; set; }
-        public MessСhat(int id, int idUserFrom, int idUserTo, string message, DateTime dataMess, int mark)
+        public int Files { get; set; }
+
+        public MessСhat(int id, int idUserFrom, int idUserTo, string message, DateTime dataMess, int mark, int files)
         {
             Id = id;
             IdUserFrom = idUserFrom;
@@ -272,6 +274,7 @@ namespace Class_chat
             Message = message;
             DataMess = dataMess;
             Mark = mark;
+            Files = files;
         }
     }
 

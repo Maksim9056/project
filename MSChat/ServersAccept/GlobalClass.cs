@@ -1304,7 +1304,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark,0);
                                 //aChat = mСhat;
                                 aClats[k] = mСhats;
                                 k++;
@@ -1367,7 +1367,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 //aChat = mСhat;
                                 aClats[k] = mСhats;
                                 k++;
@@ -1438,7 +1438,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1497,7 +1497,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1565,7 +1565,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1624,7 +1624,7 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1690,7 +1690,7 @@ namespace ServersAccept
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
 
-                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 //aChat = mСhat;
                                 aChats[j] = mСhat;
                                 j++;
@@ -1751,7 +1751,7 @@ namespace ServersAccept
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
 
-                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                 //aChat = mСhat;
                                 aChats[j] = mСhat;
                                 j++;
@@ -2371,7 +2371,7 @@ namespace ServersAccept
                                     int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                     DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                     int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                    MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                    MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                     //aChat = mСhat;
                                     aClats[k] = mСhats;
                                     k++;
@@ -2438,7 +2438,7 @@ namespace ServersAccept
                                     int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                     DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                     int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                    MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark);
+                                    MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
                                     //aChat = mСhat;
                                     aClats[k] = mСhats;
                                     k++;

@@ -40,7 +40,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button7 = new System.Windows.Forms.Button();
             this.dataSet1 = new System.Data.DataSet();
             this.dataGridViewUser = new System.Windows.Forms.DataGridView();
             this.dataGridViewChat = new System.Windows.Forms.DataGridView();
@@ -54,7 +53,6 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUser)).BeginInit();
@@ -74,7 +72,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
-            this.toolStrip1.Size = new System.Drawing.Size(1930, 50);
+            this.toolStrip1.Size = new System.Drawing.Size(1926, 50);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             this.toolStrip1.UseWaitCursor = true;
@@ -155,7 +153,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(1409, 956);
+            this.button3.Location = new System.Drawing.Point(1405, 956);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(225, 85);
@@ -177,19 +175,6 @@
             this.toolTip1.SetToolTip(this.textBox2, "Ввидите имя друга");
             this.textBox2.UseWaitCursor = true;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // button7
-            // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button7.Location = new System.Drawing.Point(1694, 956);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(224, 85);
-            this.button7.TabIndex = 15;
-            this.button7.Text = "Записать сообщение";
-            this.toolTip1.SetToolTip(this.button7, "Записать головое сообщени");
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.UseWaitCursor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // dataSet1
             // 
@@ -223,7 +208,7 @@
             this.dataGridViewChat.Name = "dataGridViewChat";
             this.dataGridViewChat.RowHeadersWidth = 82;
             this.dataGridViewChat.RowTemplate.Height = 33;
-            this.dataGridViewChat.Size = new System.Drawing.Size(1267, 788);
+            this.dataGridViewChat.Size = new System.Drawing.Size(1513, 788);
             this.dataGridViewChat.TabIndex = 9;
             this.dataGridViewChat.UseWaitCursor = true;
             this.dataGridViewChat.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewChat_CellClick);
@@ -240,7 +225,7 @@
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(991, 75);
+            this.textBox1.Size = new System.Drawing.Size(987, 75);
             this.textBox1.TabIndex = 10;
             this.textBox1.UseWaitCursor = true;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -295,36 +280,27 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(801, 88);
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button5.Location = new System.Drawing.Point(1680, 956);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(199, 48);
+            this.button5.Size = new System.Drawing.Size(107, 86);
             this.button5.TabIndex = 13;
-            this.button5.Text = "Записать аудио !";
+            this.button5.Text = "Запись";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.UseWaitCursor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(1006, 92);
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.Location = new System.Drawing.Point(1793, 956);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(142, 48);
+            this.button6.Size = new System.Drawing.Size(114, 86);
             this.button6.TabIndex = 14;
-            this.button6.Text = "Остановить запись";
+            this.button6.Text = "Стоп";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.UseWaitCursor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(1703, 877);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 37);
-            this.label1.TabIndex = 16;
-            this.label1.UseWaitCursor = true;
             // 
             // Chats_main
             // 
@@ -332,9 +308,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1930, 1046);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button7);
+            this.ClientSize = new System.Drawing.Size(1926, 1046);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -387,7 +361,5 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Label label1;
     }
 }
