@@ -292,7 +292,7 @@ namespace ServersAccept
                             "IdUserTo Serial REFERENCES Users(Id) ," +
                             "Message Varchar NOT NULL," +
                             "DataMess TIMESTAMP NOT NULL," +
-                            "Image  Serial REFERENCES Files(Id)," +
+                          //  "Image  Serial REFERENCES Files(Id)," +
                             "Mark Serial NOT NULL);";
                         command.Connection = connection;
                         command.ExecuteNonQuery();
@@ -623,7 +623,7 @@ namespace ServersAccept
 
                         if (sqReader.HasRows == true)
                         {
-
+                            int id_telegram_user = 0;
                             Console.WriteLine("Такое имя уже есть");
                             UserConnect = true;
                             // Always call Read before accessing data.
@@ -636,28 +636,32 @@ namespace ServersAccept
 
 
 
-                                int id_telegram_user = Convert.ToInt32(sqReader["Id_Telegram"]);
+                                 id_telegram_user = Convert.ToInt32(sqReader["Id_Telegram"]);
 
-
+                                AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
+                            }
+                            sqReader.Close();
+                  
                                 if (id_telegram_user == 0)
                                 {
-                                    AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
-                                    //sqReader.Close();
 
-                                    //string buton = $"UPDATE Users SET Id_Telegram = {id_telegram}  WHERE Id = '{Current_User}'";
-                                    //NpgsqlCommand commands = new NpgsqlCommand(buton, connection);
-                                    //commands.CommandText = buton;
-                                    //commands.ExecuteNonQuery();
+                                 //sqReader.Close();
+
+                                   string buton = $"UPDATE Users SET Id_Telegram = {id_telegram}  WHERE Id = '{AUser.Id}'";
+                                   NpgsqlCommand commands = new NpgsqlCommand(buton, connection);
+                                   commands.CommandText = buton;
+                                   commands.ExecuteNonQuery();
+
                                 }
                                 else
                                 {
                                     //  byte[] foto = null;
-                                    AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
+                                    //AUser = new User_photo(sqReader["Name"] as string, "", sqReader["Age"] as string, Image, Id, 0);
 
 
                                 }
                                 Console.WriteLine(Current_User);
-                            }
+                            
                         }
                         else
                         {
@@ -2168,9 +2172,9 @@ namespace ServersAccept
                         Id_Telegram_Useer = curent_user;
                         break;
                     case 2:
-                        int curent_userl = 0;
+                        int curent_userl =0;
                         //Проверяет пользователей по имени при ошибки дабавления
-                        string sqlExpressiol = $"SELECT id FROM Users  WHERE Id_Telegram = {id}";
+                        string sqlExpressiol = $"SELECT * FROM Users  WHERE Id_Telegram = '{id}'";
 
                         using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                         {
@@ -2185,9 +2189,10 @@ namespace ServersAccept
                             {
                                 while (sqReader.Read())
                                 {
-                                    curent_user = Convert.ToInt32(sqReader["Id"]);
-                                    User_Insert = true;
+                                    curent_userl = Convert.ToInt32(sqReader["Id"]);
 
+                                    User_Insert = true;
+                          
                                 }
 
                             }
@@ -2276,7 +2281,7 @@ namespace ServersAccept
                                 while (sqReaders.Read())
                                 {
                                     //       Current_User = sqReader["Id"].ToString();
-                                    IdUserTo = Convert.ToInt32(sqReaders["Id"]);
+                                    IdUserTol = Convert.ToInt32(sqReaders["Id"]);
                                     //Еще будет нужна
                                     //  int Id = Convert.ToInt32(Current_User);
                                     //string Friend = sqReaders["Name"].ToString();
@@ -2388,8 +2393,9 @@ namespace ServersAccept
                         {
                             connection.Open();
                             NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                              command.CommandText = sql;
                             command.ExecuteNonQuery();
-                            command.CommandText = sql;
+                          
                         }
                         int UserCountl = 0;
                         //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
@@ -2406,6 +2412,7 @@ namespace ServersAccept
                             //}
                             sqReader.Read();
                             UserCountl = Convert.ToInt32(sqReader["rec_count"].ToString());
+
                         }
                         //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
                         string sqlExpressiol = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{IdUserFrom_Telgram}' and IdUserTo = '{IdUserTo_Telegram}') or " +

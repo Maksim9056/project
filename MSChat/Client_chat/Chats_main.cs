@@ -10,8 +10,10 @@ using System.Text.Json;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-
-
+using NAudio.Wave;
+using NAudio.FileFormats;
+using NAudio.CoreAudioApi;
+using NAudio;
 namespace Client_chat
 {
     public partial class Chats_main : Form
@@ -21,6 +23,7 @@ namespace Client_chat
             InitializeComponent();
         }
 
+      
         /// <summary>
         /// Для Поиска друзей
         /// </summary>
@@ -28,7 +31,7 @@ namespace Client_chat
         /// <summary>
         /// Постояные значения используем для пользователей
         /// </summary>
-        
+
         public User_photo[] Friend { get; set; }
         /// <summary>
         /// Постояные значения используем для фильтра для чата
@@ -360,9 +363,9 @@ namespace Client_chat
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -515,7 +518,7 @@ namespace Client_chat
         {
 
         }
-  
+
         /// <summary>
         /// форма чата
         /// </summary>
@@ -524,7 +527,7 @@ namespace Client_chat
         private void Chats_main_Load(object sender, EventArgs e)
         {
             try
-            {   
+            {
                 string path = Environment.CurrentDirectory.ToString();
 
                 //Проверяем зашел ли пользователь в свою учетную
@@ -532,10 +535,10 @@ namespace Client_chat
                 {
                     //???
                 }
-                else 
+                else
                 {
                     //Заполняем картинку 
-                    toolStripButton1.Image = Image.FromFile(path+ "\\Resources\\Images\\Красный..png"); 
+                    toolStripButton1.Image = Image.FromFile(path + "\\Resources\\Images\\Красный..png");
                 }
 
                 dataGridViewUser.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -549,7 +552,7 @@ namespace Client_chat
                 button1.Visible = false;
 
                 // Ищем файл с настройками подключения
-                FileInfo fileInfo = new FileInfo(path+"\\Client.json");
+                FileInfo fileInfo = new FileInfo(path + "\\Client.json");
                 if (fileInfo.Exists)
                 {
                     using (FileStream fs = new FileStream("Client.json", FileMode.OpenOrCreate))
@@ -593,7 +596,7 @@ namespace Client_chat
                 //Функция сообщения автоматически обновляет при клике
                 view_mess();
             }
-            catch 
+            catch
             {
                 //Если нет нажатия в dataGridViewUser_
             }
@@ -606,7 +609,7 @@ namespace Client_chat
         private void view_mess()
         {
             try
-            {      
+            {
                 //Проверяем не пустая ли таблица друзей 
                 if (dataGridViewUser == null)
                 {
@@ -620,10 +623,10 @@ namespace Client_chat
                     int selectedrowindex = dataGridViewUser.SelectedCells[0].RowIndex;
                     //Проверяем не пустой selectedrowindex   
                     if (false)
-                        //if (selectedrowindex != 0)
+                    //if (selectedrowindex != 0)
                     {
 
-                     }
+                    }
                     else
                     {
                         //Проверяем не пустой selectedrowindex
@@ -644,20 +647,20 @@ namespace Client_chat
                                 //  Friends = person;
                                 User_photo Id_Friend = JsonSerializer.Deserialize<User_photo>(person);
                                 Friends = Id_Friend.Id;
-                       
+
                                 //Отправляем на сервер и получаем соообщения
                                 Task.Run(async () => await command.Check_Mess_Friend(IP_ADRES.Ip_adress, person, "006")).Wait();
 
                                 //Стераем сообщения  dataGridViewChat и потом заполняем
                                 dataGridViewChat.Rows.Clear();
                                 //Заполняем чат
-                                Chat(command);             
+                                Chat(command);
                             }
                         }
                     }
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 //Здесь ошибки есть По этому так чтобы программа не падала переменую и не создал
                 //MessageBox.Show(e.Message);
@@ -665,7 +668,7 @@ namespace Client_chat
             }
         }
 
-     
+
         /// <summary>
         /// Задем ширину столбцов
         /// </summary>
@@ -693,7 +696,7 @@ namespace Client_chat
             try
             {
                 //Заполняем класс Searh_Friends
-                using (MemoryStream Despons_friend = new MemoryStream()) 
+                using (MemoryStream Despons_friend = new MemoryStream())
                 {
                     string FileFS = "";
                     //Серилизуем класс Searh_Friends и заполняем FileFS классом серилизованым
@@ -704,20 +707,20 @@ namespace Client_chat
                         //
                         JsonSerializer.Serialize<Searh_Friends>(fs, New_Friend);
                         FileFS = Encoding.Default.GetString(fs.ToArray());
-                     
+
                     }
                     //Отправляем на сервер поиск такого друга
                     Task.Run(async () => await command.Connect_Friends(IP_ADRES.Ip_adress, FileFS, "008")).Wait();
                     //Просто проверяем и отчищаем
-                    var __Friends =  command._Friends;
+                    var __Friends = command._Friends;
                     command._Friends = null;
                     textBox2.Text = null;
                 }
             }
             catch
             {
-             // если друзей нету то ошибка возможно или просто не найдет  там по имени  то его не добавиться
-            }           
+                // если друзей нету то ошибка возможно или просто не найдет  там по имени  то его не добавиться
+            }
         }
 
         /// <summary>
@@ -775,12 +778,12 @@ namespace Client_chat
             try
             {   //При нажатие на правую кнопку ячейки чат  появляеться contextMenuStrip1
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
-                { 
+                {
                     //Появляеться ячейки чат  появляеться contextMenuStrip1
                     contextMenuStrip1.Show(Cursor.Position.X, Cursor.Position.Y);
                 }
             }
-            catch 
+            catch
             {
                 //Ошибки если будут!
             }
@@ -842,12 +845,12 @@ namespace Client_chat
                         {
                             if (cell.Value.ToString().Contains(dataGridViewChat.SelectedCells[0].Value.ToString()))
                             {
-                               if( cell.Style.ForeColor == Color.Blue)
-                               {
+                                if (cell.Style.ForeColor == Color.Blue)
+                                {
                                     MessageBox.Show("Сообщения друга нельзя редактировать!");
-                               }
-                               else
-                               {
+                                }
+                                else
+                                {
                                     //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
                                     //Выбераем ячейку сообщение
                                     int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
@@ -859,12 +862,12 @@ namespace Client_chat
                                     Update_id = tt.Id;
                                     //ДАЕМ РАЗРЕШЕНИЕ ПРИ РЕДАКТИРОВАНИЕИ ОТПРАВКУ
                                     Update_Message = true;
-                                }                           
+                                }
                             }
                             else
                             {
 
-                             
+
                             }
                             break;
 
@@ -901,10 +904,10 @@ namespace Client_chat
                     foreach (DataGridViewCell cell in dataGridViewChat.SelectedCells)
                     {
                         if (cell.Value.ToString().Contains(dataGridViewChat.SelectedCells[0].Value.ToString()))
-                        {                        
+                        {
                             //Пишим текущему пользователю что сообщения друга нельзя трогать!
 
-                            if(cell.Style.ForeColor == Color.Blue)
+                            if (cell.Style.ForeColor == Color.Blue)
                             {
                                 MessageBox.Show("Сообщения друга нельзя удалять!");
                             }
@@ -950,7 +953,7 @@ namespace Client_chat
                         {
                             //получает id dataGridViewChat                        
                         }
-                     
+
                     }
                 }
             }
@@ -994,8 +997,8 @@ namespace Client_chat
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-         private void timer1_Tick(object sender, EventArgs e)
-         {
+        private void timer1_Tick(object sender, EventArgs e)
+        {
             try
             {
                 //Проверяется авторизовался ли пользователь в учетную запись
@@ -1012,7 +1015,7 @@ namespace Client_chat
             {
                 //Если будет ошибка при пустоте
             }
-         }
+        }
 
         /// <summary>
         /// Список друзей обновляет но только добавленных поэтому надо будет доделать это 
@@ -1120,15 +1123,15 @@ namespace Client_chat
                                         //Для картинки подписываем
                                         DataGridViewImageColumn imgColumn = new DataGridViewImageColumn();
                                         //Назначаем заголовок Фото
-                                        imgColumn.Name = "Фото";      
+                                        imgColumn.Name = "Фото";
                                         //Добавляем колонку
-                                        dataGridViewUser.Columns.Add(imgColumn);    
+                                        dataGridViewUser.Columns.Add(imgColumn);
                                         //Заполняем друзей
                                         for (int i = 0; i < Friend.Count(); i++)
                                         {
-                                                DataGridViewTextBoxCell cell0 = (DataGridViewTextBoxCell)dataGridViewUser.Rows[i].Cells[0];
-                                                // Имя друзей
-                                                cell0.Value = Friend[i].Name;
+                                            DataGridViewTextBoxCell cell0 = (DataGridViewTextBoxCell)dataGridViewUser.Rows[i].Cells[0];
+                                            // Имя друзей
+                                            cell0.Value = Friend[i].Name;
                                         }
                                         //Заполняем картинку друзей
                                         for (int i = 0; i < Friend.Count(); i++)
@@ -1151,10 +1154,10 @@ namespace Client_chat
                                         //Заголовок для колонки друзей
                                         dataGridViewUser.Columns[0].HeaderText = "Друзья";
                                         //Заголовок для колонки Фото друзей
-                                        dataGridViewUser.Columns[1].HeaderText = "Фото";                                     
+                                        dataGridViewUser.Columns[1].HeaderText = "Фото";
                                     }
                                 }
-                                catch (Exception )
+                                catch (Exception)
                                 {
                                     //Обрабатываем ошибку
                                     // MessageBox.Show(ex.Message);
@@ -1173,6 +1176,137 @@ namespace Client_chat
             {
                 //Обрабатываем ошибки 
             }
+        }
+
+        // WaveIn - поток для записи
+        WaveIn waveIn;
+        //Класс для записи в файл
+        WaveFileWriter writer;
+        //Имя файла для записи
+        string outputFilename = "Тест.mp3";
+
+        //Получение данных из входного буфера 
+        void waveIn_DataAvailable(object sender, WaveInEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new EventHandler<WaveInEventArgs>(waveIn_DataAvailable), sender, e);
+            }
+            else
+            {
+                //Записываем данные из буфера в файл
+                writer.WriteData(e.Buffer, 0, e.BytesRecorded);
+            }
+        }
+        //Завершаем запись
+        void StopRecording()
+        {
+            MessageBox.Show("StopRecording");
+            waveIn.StopRecording();
+        }
+
+        //Окончание записи
+        private void waveIn_RecordingStopped(object sender, EventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new EventHandler(waveIn_RecordingStopped), sender, e);
+            }
+            else
+            {
+                waveIn.Dispose();
+                waveIn = null;
+                writer.Close();
+                writer = null;
+            }
+        }
+
+        // public SoundRecorder recorder;
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                MessageBox.Show("Start Recording");
+                waveIn = new WaveIn();
+                //Дефолтное устройство для записи (если оно имеется)
+                //встроенный микрофон ноутбука имеет номер 0
+                waveIn.DeviceNumber = 0;
+                //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
+                waveIn.DataAvailable += waveIn_DataAvailable;
+                //Прикрепляем обработчик завершения записи
+             
+                waveIn.RecordingStopped += waveIn_RecordingStopped;
+                //Формат wav-файла - принимает параметры - частоту дискретизации и количество каналов(здесь mono)
+                waveIn.WaveFormat = new WaveFormat(8000, 1);
+                //Инициализируем объект WaveFileWriter
+                writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
+                //Начало записи
+                waveIn.StartRecording();
+             
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+     
+
+                                                
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (waveIn != null)
+            {
+                StopRecording();
+            }
+        }
+
+
+        //private void button7_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    try
+        //    {
+        //        using(MemoryStream memory = new MemoryStream())
+        //        {
+        //            label1.Text = "Start Recording";
+        //            waveIn = new WaveIn();
+        //            //Дефолтное устройство для записи (если оно имеется)
+        //            //встроенный микрофон ноутбука имеет номер 0
+        //            waveIn.DeviceNumber = 0;
+        //            //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
+        //            waveIn.DataAvailable += waveIn_DataAvailable;
+        //            //Прикрепляем обработчик завершения записи
+
+        //            waveIn.RecordingStopped += waveIn_RecordingStopped;
+        //            //Формат wav-файла - принимает параметры - частоту дискретизации и количество каналов(здесь mono)
+        //            waveIn.WaveFormat = new WaveFormat(8000, 1);
+        //            //Инициализируем объект WaveFileWriter
+        //            writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
+        //            //Начало записи
+        //            waveIn.StartRecording();
+        //        }
+            
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
+
+        //private void button7_MouseLeave(object sender, EventArgs e)
+        //{
+        //    if (waveIn != null)
+        //    {
+        //        StopRecording();
+        //    }
+        //    // outputFilename
+        //}
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
