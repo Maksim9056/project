@@ -177,6 +177,9 @@ namespace Client_Tbot
                             //Отправляем звуковое сообщение
                             if (message.Voice != null)
                             {
+
+
+
                                 //Скачиваем сообщение звуковое от пользователя
                                 var voiceMessage = await botClient.GetFileAsync(update.Message.Voice.FileId);
 

@@ -1408,6 +1408,7 @@ namespace Client_chat
                 //id сообщения для удаления
                 // Update_id = tt.Id;
 
+
                 string FileFS = "";
 
                 var Сообщение = allChat[selectedrowindexs].Files;
@@ -1494,6 +1495,14 @@ namespace Client_chat
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        //   MainForm mainForm = new MainForm();
+            
+        //    mainForm.ShowDialog();
         }
     }
 }
