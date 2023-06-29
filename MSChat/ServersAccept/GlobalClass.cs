@@ -160,6 +160,21 @@ namespace ServersAccept
         public string Searh_Friends_Id_Telegram { get; set; }
 
         /// <summary>
+        ///id файла mp3 Голосовое сообщения
+        /// </summary>
+        public int Id_Files_Mp3_Voice_message { get; set; }
+
+        /// <summary>
+        ///Содержание файла mp3 Голосовое сообщения для отпраки клиенту
+        /// </summary>
+        public byte[] WavValue { get; set; }
+
+        /// <summary>
+        ///id файла mp3 Голосовое сообщения для отпраки клиенту
+        /// </summary>
+        public int id_value { get; set; }
+
+        /// <summary>
         /// Создают таблицу пользователей 
         /// </summary>
         public void CreateTable_Users()
@@ -292,7 +307,7 @@ namespace ServersAccept
                             "IdUserTo Serial REFERENCES Users(Id) ," +
                             "Message Varchar NOT NULL," +
                             "DataMess TIMESTAMP NOT NULL," +
-                          //  "Image  Serial REFERENCES Files(Id)," +
+                            "Image  INTEGER ," +
                             "Mark Serial NOT NULL);";
                         command.Connection = connection;
                         command.ExecuteNonQuery();
@@ -1256,7 +1271,7 @@ namespace ServersAccept
             {
                 case 1:
 
-                    string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
+                    string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Files},{messСhat.Mark})";
                     using (var connection = new SqliteConnection(GlobalClass.connectionString))
                     {
                         await connection.OpenAsync();
@@ -1318,7 +1333,7 @@ namespace ServersAccept
                     }
                     break;
                 case 2:
-                    string sqL = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}',{messСhat.Mark})";
+                    string sqL = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Image,Mark) VALUES ({messСhat.IdUserFrom},{messСhat.IdUserTo},'{messСhat.Message}','{messСhat.DataMess:s}', {messСhat.Files},{messСhat.Mark})";
                     using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
                     {
                         connection.Open();
@@ -1367,7 +1382,8 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                var id_file = Convert.ToInt32(sqReader["Image"]); 
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, id_file);
                                 //aChat = mСhat;
                                 aClats[k] = mСhats;
                                 k++;
@@ -1497,7 +1513,8 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                var id_file = Convert.ToInt32(sqReader["Image"]);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark,id_file);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1565,7 +1582,8 @@ namespace ServersAccept
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
-                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                var id_file = Convert.ToInt32(sqReader["Image"]);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, id_file);
                                 aClats[k] = mСhats;
                                 k++;
                             }
@@ -1688,9 +1706,10 @@ namespace ServersAccept
                                 int IdIdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
+                                int Files = Convert.ToInt32(sqReader["Image"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
 
-                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, Files);
                                 //aChat = mСhat;
                                 aChats[j] = mСhat;
                                 j++;
@@ -1749,9 +1768,10 @@ namespace ServersAccept
                                 int IdIdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
                                 int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
                                 int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
+                                int Files = Convert.ToInt32(sqReader["Image"].ToString());
                                 DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
 
-                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                MessСhat mСhat = new MessСhat(Id, IdIdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, Files);
                                 //aChat = mСhat;
                                 aChats[j] = mСhat;
                                 j++;
@@ -2531,6 +2551,162 @@ namespace ServersAccept
                 Console.WriteLine(e.Message);
             }
         }
+
+        async public void Insert_File_Music(Insert_Fille_Music buf)
+        {
+            try
+            {
+
+
+                switch (GlobalClass.TypeSQL) //SQLite
+                {
+                    case 1:
+
+                        string sq = $"INSERT INTO Files (Image) VALUES (@buf)";
+                        using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                        {
+                            await connection.OpenAsync();
+                            SqliteCommand command = new SqliteCommand(sq, connection);
+                            command.Parameters.Add(new SqliteParameter("@buf", buf.Fille));
+                            await command.ExecuteNonQueryAsync();
+                            command.CommandText = sq;
+                            command.CommandText = "select last_insert_rowid()";
+                            int lastId = Convert.ToInt32(command.ExecuteScalar());
+                            //int number = command.ExecuteNonQuery();
+                            Id_Image = lastId;
+                        }
+                        break;
+                    case 2:
+                        //select last_insert_rowid() Не работает в Posgres
+                        string sql = $"INSERT INTO Files (Image) VALUES (@buf)";
+                        using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                        {
+                            connection.Open();
+                            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                            command.Parameters.Add(new NpgsqlParameter("@buf", buf.Fille));
+                            command.CommandText = sql;
+                            command.ExecuteNonQuery();
+                            command.CommandText = "SELECT currval(pg_get_serial_sequence('Files', 'id'))";
+                            int lastId = Convert.ToInt32(command.ExecuteScalar());
+                            //int number = command.ExecuteNonQuery();
+                            Id_Files_Mp3_Voice_message = lastId;
+
+                          
+                        }
+                        break;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+
+
+        /// <summary>
+        /// Поиск и выборка файлов.mp3 по ID 
+        /// </summary>
+        /// <param name="data"></param>
+        async public void Select_Files(Insert_Fille_Music data)
+        {
+            try {
+                //string Name = "";
+                switch (GlobalClass.TypeSQL) //SQLite
+                {
+                    case 1:
+
+                        string sqlExpressio = $"SELECT * FROM Files  WHERE Id = '{data.Id}'";
+
+                        using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                        {
+                            await connection.OpenAsync();
+                            SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                            SqliteCommand commandS = new SqliteCommand(sqlExpressio, connection);
+                            var n = await command.ExecuteReaderAsync();
+                            SqliteDataReader sqReader = commandS.ExecuteReader();
+
+                            if (n.HasRows == true)
+                            {
+                                //Console.WriteLine("Такое имя уже есть");
+                                UserConnect = true;
+                                // Always call Read before accessing data.
+                                while (sqReader.Read())
+                                {
+
+                                    object Im = sqReader["Image"];
+                                    //byte[] Image = Convert.FromBase64String(Im.ToString());
+                                    string StringImage = Convert.ToBase64String(Im as Byte[]);
+                                    string[] strings = new string[1];
+                                    strings[0] = StringImage;
+                                    UseImage useImage = new UseImage(strings, "true", 1);
+                                    Items_Image = useImage;
+                                }
+                            }
+                            else
+                            {
+                                UserConnect = false;
+                            }
+                        }
+                        break;
+
+                    case 2:
+
+                        string sqlExpressiol = $"SELECT * FROM Files  WHERE Id = '{data.Id}'";
+                        int Id = 0;
+                        MemoryStream memoryStream = new MemoryStream();
+                        string[] bs = new string[] { };
+                        // Ims = null;
+                        //     int i = 0;
+                        // object values = null;
+                        using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                        {
+                            connection.Open();
+                            NpgsqlCommand command = new NpgsqlCommand(sqlExpressiol, connection);
+                            //NpgsqlCommand commandS = new NpgsqlCommand(sqlExpressiol, connection);
+                            //var n =  command.ExecuteReader();
+                            NpgsqlDataReader sqReader = command.ExecuteReader();
+
+                            if (sqReader.HasRows == true)
+                            {
+                                //Console.WriteLine("Такое имя уже есть");
+                                UserConnect = true;
+                                // Always call Read before accessing data.
+                                while (sqReader.Read())
+                                {
+
+                                    var ds = sqReader["Image"];
+                                    Id = Convert.ToInt32(sqReader["Id"]);
+                                    // i++;
+                                    string StringImage = Convert.ToBase64String(ds as Byte[]);
+                                    //var d = Convert.FromBase64String(StringImage);
+                                    WavValue = Convert.FromBase64String(StringImage);
+                                }
+
+                                //  string StringImage = Convert.ToBase64String(Im as Byte[]);
+                                // string[] strings = new string[1];
+                                //strings[0] = StringImage;
+
+                            } else
+                            {
+                                // UserConnect = false;
+                            }
+                        }
+
+
+
+
+                        id_value = Id;
+                        //   value = value;
+
+
+                        break;
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            }
         /// </summary>
     }
 }

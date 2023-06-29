@@ -49,6 +49,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.прослушатьСообщениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.button5 = new System.Windows.Forms.Button();
@@ -248,23 +249,32 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
+            this.toolStripMenuItem2,
+            this.прослушатьСообщениеToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 80);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(357, 118);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(250, 38);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(356, 38);
             this.toolStripMenuItem1.Text = "Редактировать";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(250, 38);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(356, 38);
             this.toolStripMenuItem2.Text = "Удалить";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // прослушатьСообщениеToolStripMenuItem
+            // 
+            this.прослушатьСообщениеToolStripMenuItem.Name = "прослушатьСообщениеToolStripMenuItem";
+            this.прослушатьСообщениеToolStripMenuItem.Size = new System.Drawing.Size(356, 38);
+            this.прослушатьСообщениеToolStripMenuItem.Text = "Прослушать сообщение";
+            this.прослушатьСообщениеToolStripMenuItem.Click += new System.EventHandler(this.прослушатьСообщениеToolStripMenuItem_Click);
             // 
             // timer1
             // 
@@ -293,7 +303,7 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.Location = new System.Drawing.Point(1793, 956);
+            this.button6.Location = new System.Drawing.Point(1800, 956);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(114, 86);
             this.button6.TabIndex = 14;
@@ -361,5 +371,6 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.ToolStripMenuItem прослушатьСообщениеToolStripMenuItem;
     }
 }

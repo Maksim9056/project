@@ -14,6 +14,13 @@ using NAudio.Wave;
 using NAudio.FileFormats;
 using NAudio.CoreAudioApi;
 using NAudio;
+using System.Data.SqlTypes;
+using System.Media;
+using System.IO.Pipes;
+using System.Collections;
+using System.Diagnostics;
+using System.Numerics;
+
 namespace Client_chat
 {
     public partial class Chats_main : Form
@@ -342,10 +349,21 @@ namespace Client_chat
                         //Заполняем класс с чатом новое сообщение
                         using (MemoryStream fs = new MemoryStream())
                         {
-                            DateTime dateTime = DateTime.Now;
-                            MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1,0);
-                            JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
-                            FileFS = Encoding.Default.GetString(fs.ToArray());
+                           if(command.Insert_Fille_Music_id == null)
+                            {
+                                DateTime dateTime = DateTime.Now;
+                                MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1, 0);
+                                JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
+                                FileFS = Encoding.Default.GetString(fs.ToArray());
+                            }
+                            else 
+                            {
+                                DateTime dateTime = DateTime.Now;
+                                MessСhat Mes_chat = new MessСhat(0, Users, Friends, textBox1.Text, dateTime, 1, command.Insert_Fille_Music_id.Id);
+                                JsonSerializer.Serialize<MessСhat>(fs, Mes_chat);
+                                FileFS = Encoding.Default.GetString(fs.ToArray());
+                            }
+                         
                         }
                         // чтение данных
                         textBox1.Text = "";
@@ -851,6 +869,7 @@ namespace Client_chat
                                 }
                                 else
                                 {
+                                    
                                     //Поиск dataGridViewChat.SelectedCells[0].RowIndex 
                                     //Выбераем ячейку сообщение
                                     int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
@@ -1198,11 +1217,62 @@ namespace Client_chat
                 writer.WriteData(e.Buffer, 0, e.BytesRecorded);
             }
         }
+
         //Завершаем запись
-        void StopRecording()
+        void StopRecording(object sender, EventArgs e)
         {
+            waveIn.StopRecording();  
             MessageBox.Show("StopRecording");
-            waveIn.StopRecording();
+
+       //     var path = Environment.CurrentDirectory.ToString();
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                MemoryStream memoryStreams = new MemoryStream();
+                string FileFS = "";
+                
+
+                int i = 0;
+
+                using (FileStream fileStream = new FileStream(outputFilename, FileMode.OpenOrCreate))
+                {
+                    byte[] bytes = new byte[fileStream.Length];
+                    i = fileStream.Read(bytes, 0, bytes.Length);
+
+                    memoryStream.Write(bytes, 0, bytes.Length);
+                }
+
+                // чтение из файла
+                //using (FileStream fileStream = File.OpenRead(outputFilename))
+                //{
+                //    // выделяем массив для считывания данных из файла
+                //    byte[] buffer = new byte[fileStream.Length];
+                //    // считываем данные
+                //    fileStream.Read(buffer, 0, buffer.Length);
+                //    // декодируем байты в строку
+                //    //string textFromFile = Encoding.Default.GetString(buffer);
+                //    //Console.WriteLine($"Текст из файла: {textFromFile}");
+                    
+                //}
+
+                
+                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(0, memoryStream.ToArray());
+
+                JsonSerializer.Serialize<Insert_Fille_Music>(memoryStreams, insert_Fille_Music);
+
+                FileFS = Encoding.Default.GetString(memoryStreams.ToArray());
+                Task.Run(async () => await command.Stream_Filles_music(IP_ADRES.Ip_adress, FileFS, "019")).Wait();
+
+                if (command.Insert_Fille_Music_id == null)
+                {
+
+                }
+                else
+                {
+                    textBox1.Text = "Голосовое сообщение ";
+                   button3_Click(sender,e);
+                }
+            }
         }
 
         //Окончание записи
@@ -1232,6 +1302,7 @@ namespace Client_chat
                 //Дефолтное устройство для записи (если оно имеется)
                 //встроенный микрофон ноутбука имеет номер 0
                 waveIn.DeviceNumber = 0;
+     
                 //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
                 waveIn.DataAvailable += waveIn_DataAvailable;
                 //Прикрепляем обработчик завершения записи
@@ -1259,7 +1330,7 @@ namespace Client_chat
         {
             if (waveIn != null)
             {
-                StopRecording();
+                StopRecording(sender,e);
             }
         }
 
@@ -1287,7 +1358,7 @@ namespace Client_chat
         //            //Начало записи
         //            waveIn.StartRecording();
         //        }
-            
+
         //    }
         //    catch (Exception ex)
         //    {
@@ -1304,7 +1375,121 @@ namespace Client_chat
         //    // outputFilename
         //}
 
-        private void button7_Click(object sender, EventArgs e)
+
+
+        private void прослушатьСообщениеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (dataGridViewChat == null)
+            {
+
+            }
+            else
+            {
+
+
+
+                //int tt=0;
+                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+                
+                //Находим по фильтру id dataGridViewChat
+                //for(int i=0; i < allChat.Length; i++)
+                //{
+                //    if (allChat[i].Id == selectedrowindexs)
+                //    {
+                //        tt = allChat[i].Files;
+                //        break;
+                //    }
+                       
+                //}
+
+                //Сообщения для удаления
+                //textBox1.Text = tt.Message;
+                //id сообщения для удаления
+                // Update_id = tt.Id;
+
+                string FileFS = "";
+
+                var Сообщение = allChat[selectedrowindexs].Files;
+
+
+
+                if (Сообщение == 0)
+                {
+
+                }
+                else
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+
+                        byte[] bytes = new byte[] { };
+                        Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(Сообщение, bytes);
+                        JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                        FileFS = Encoding.Default.GetString(ms.ToArray());
+                        //FileFS = "";
+                        Task.Run(async () => await command.Stream_Fille_accept_music(IP_ADRES.Ip_adress, FileFS, "020")).Wait();
+                    }
+                    if (command.Select_Fille_Music_id == null)
+                    {
+
+                    }
+                    else
+                    {
+                        
+                         Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                        /*
+                        var path = Environment.CurrentDirectory.ToString();
+                        string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                        Random rand = new Random();
+
+                        if (File.Exists(path))
+                        {
+                            NameFile = NameFile + rand.Next(1000000000) as String;
+                        }
+
+                        //string filePath = "name.mp3";
+                        File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                        //Process.Start(NameFile);
+                        //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                        //{
+
+
+                        //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                        //}
+
+                        //   using(FileStream FS = new CreateParams )
+                        //   var path = Environment.CurrentDirectory.ToString();
+
+                        SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                        simpleSound.Play();
+
+                        //simpleSound WindowsMediaPlayer
+                        //  WindowsMediaPlayer
+                        //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                        //this.Text = WMP.versionInfo;
+                        //WMP.URL = @"D:\sound.mp3 ";
+                        //WMP.controls.play();
+                        */
+                        using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                        {
+                            SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                            simpleSound2.Play();
+                        }
+
+                    }
+                }
+            }
+        }
+
+        private void слушатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
         }

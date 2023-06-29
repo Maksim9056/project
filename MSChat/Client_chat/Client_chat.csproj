@@ -203,7 +203,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Audio files\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Images\Зеленый.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

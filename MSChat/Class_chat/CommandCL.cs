@@ -48,7 +48,17 @@ namespace Class_chat
         //Класс пользователей зарестрированых в телеграм
         public static List_Bot_Telegram Id_Telegram { get; set; }
 
+        /// <summary>
+        /// id голосового сообщения
+        /// </summary>
+        public Insert_Fille_Music  Insert_Fille_Music_id    { get; set; }
 
+
+
+        /// <summary>
+        /// id голосового сообщения для воспроизведения 
+        /// </summary>
+        public Insert_Fille_Music Select_Fille_Music_id { get; set; }
 
 
         /// <summary>
@@ -900,6 +910,120 @@ namespace Class_chat
             catch (SocketException)
             {
                 //MessageBox.Show("SocketException: {0}", e.Message);
+            }
+        }
+
+        // Процедура отправки регистрации пользователей 019
+        async public Task Stream_Filles_music(String server, string fs, string command)
+        {
+            try
+            {
+                //Регистрация
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    //Декодируем Bite []
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
+                    await stream.WriteAsync(data, 0, data.Length);
+
+                    String responseData = String.Empty;
+                    //Функия получения
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
+                    //Получаем имя пользователя
+                    if(responseData == null)
+                    {
+
+                    }
+                    else
+                    {
+                        Insert_Fille_Music insert_Fille_Music = JsonSerializer.Deserialize<Insert_Fille_Music>(responseData);
+                        Insert_Fille_Music_id = insert_Fille_Music;
+                    }
+                 
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e.Message);
+            }
+            catch (Exception)
+            {
+                // MessageBox.Show(e.Message);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Процедура отправки регистрации пользователей 020
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="fs"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        async public Task Stream_Fille_accept_music(String server, string fs, string command)
+        {
+            try
+            {
+                //Регистрация
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    //Декодируем Bite []
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    //Отправляем на сервер
+                    await stream.WriteAsync(data, 0, data.Length);
+
+                    String responseData = String.Empty;
+                    //Функия получения
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    responseData = completeMessage.ToString();
+                    //Получаем имя пользователя
+                    if (responseData == null)
+                    {
+
+                    }
+                    else
+                    {
+                        Insert_Fille_Music Select_Fille_Music = JsonSerializer.Deserialize<Insert_Fille_Music>(responseData);
+                        Select_Fille_Music_id = Select_Fille_Music;
+                    }
+
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e.Message);
+            }
+            catch (Exception)
+            {
+                // MessageBox.Show(e.Message);
             }
         }
 

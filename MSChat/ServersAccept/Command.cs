@@ -4,6 +4,8 @@ using System.Text.Json;
 using System.IO;
 using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
+using Telegram.Bot.Types;
+using System.Runtime.Serialization.Formatters.Binary;
 //using System.Threading;
 //using System.Collections.Generic;
 
@@ -818,6 +820,102 @@ namespace ServersAccept
         }
 
 
+        /// <summary>
+        /// 019-Добавляет музыку
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="globalClass"></param>
+        /// <param name="stream"></param>
+        public void Registration_Insert_File_Music(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            using (MemoryStream tt2 = new MemoryStream())
+            {
+
+
+                string Class = Program.data_;
+                DateTime dateTime = DateTime.Now;
+                string responseData = Class;
+                Insert_Fille_Music person2 = JsonSerializer.Deserialize<Insert_Fille_Music>(msg);
+
+                globalClass.Insert_File_Music(person2);
+
+              
+                //   globalClass.Insert_User(person2.Name, person2.Pass, person2.Age, dateTime, person2.Id_Telegram);
+                using (MemoryStream Insert_Fille_Music = new MemoryStream())
+                {
+                    byte[] data = new byte[] {};
+                    Insert_Fille_Music searh = new Insert_Fille_Music(globalClass.Id_Files_Mp3_Voice_message, data);
+                    JsonSerializer.Serialize<Insert_Fille_Music>(Insert_Fille_Music, searh);
+                    stream.Write(Insert_Fille_Music.ToArray(), 0, Insert_Fille_Music.ToArray().Length);
+                }
+
+            }
+        }
+        public void Registration_Insert_File_Music_Accept(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try {
+                using (MemoryStream tt2 = new MemoryStream())
+                {
+
+
+                    string Class = Program.data_;
+                    DateTime dateTime = DateTime.Now;
+                    string responseData = Class;
+                    Insert_Fille_Music person2 = JsonSerializer.Deserialize<Insert_Fille_Music>(msg);
+
+                    globalClass.Select_Files(person2);
+
+
+                    //   globalClass.Insert_User(person2.Name, person2.Pass, person2.Age, dateTime, person2.Id_Telegram);
+                    using (MemoryStream Insert_Fille_Music = new MemoryStream())
+                    {
+
+                        //string StringImage = Convert.ToBase64String(globalClass.WavValue as Byte[]);
+                        //var d = Convert.FromBase64String(StringImage);
+
+                        // var d = Convert.ChangeType(globalClass.value,);
+                        //        var dss = Convert.FromBase64CharArray(d,0,d.Length);
+                        // byte[] bytes = new byte[dss.Length];
+
+                        // bytes = Convert.FromBase64String(dss);
+                        // string aA = Ims.ToString();
+                        // byte[] Image = Convert.FromBase64String(aA);
+
+                        //Items_Image = useImage;
+                        //Select_Fille_Music = useImag;   
+
+                        Insert_Fille_Music useImag = new Insert_Fille_Music(globalClass.id_value, globalClass.WavValue);
+                        //   byte[] data = new byte[] { };
+        //                Insert_Fille_Music searh = new Insert_Fille_Music(useImag.Id, useImag.Fille);
+                        JsonSerializer.Serialize<Insert_Fille_Music>(Insert_Fille_Music, useImag);
+                        stream.Write(Insert_Fille_Music.ToArray(), 0, Insert_Fille_Music.ToArray().Length);
+                    }
+
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            } 
+        }
+
+        //public byte[] ConvertToByteArray(object obj)
+        //{
+        //    if (obj == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    //BinaryFormatter formatter = new BinaryFormatter();
+        //    //using (MemoryStream memoryStream = new MemoryStream())
+        //    //{
+        //    //    formatter.Serialize(memoryStream, obj);
+        //    //    return memoryStream.ToArray();
+        //    //}
+
+        //    //object Im = sqReader["Image"];
+        //    string StringImage = Convert.ToBase64String(obj as Byte[]);
+        //    return Convert.FromBase64String(StringImage);
+        //}
 
     }
 }

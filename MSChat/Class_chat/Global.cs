@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Internal;
 //using System.Net;
 using System.Runtime.Serialization;
 //using System.Text.Json.Serialization;
@@ -417,6 +418,17 @@ namespace Class_chat
     }
 
 
+    public class Insert_Fille_Music
+    {
+        Insert_Fille_Music() { }
+        public int  Id { get; set; }
+        public byte[] Fille { get; set; }
+        public Insert_Fille_Music(int id, byte[] fille)
+        {
+            Id = id;
+            Fille = fille;
+        }
+    }
 
 }
 
