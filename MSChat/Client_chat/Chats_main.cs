@@ -1473,6 +1473,8 @@ namespace Client_chat
                         //WMP.URL = @"D:\sound.mp3 ";
                         //WMP.controls.play();
                         */
+
+                        // Воспроизводит звук из памяти из формата byte[]
                         using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
                         {
                             SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
