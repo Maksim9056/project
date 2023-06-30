@@ -1205,6 +1205,7 @@ namespace Client_chat
         string outputFilename = "Тест.mp3";
 
         //Получение данных из входного буфера 
+        [Obsolete]
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
             if (this.InvokeRequired)
@@ -1292,6 +1293,7 @@ namespace Client_chat
         }
 
         // public SoundRecorder recorder;
+        [Obsolete]
         private void button5_Click(object sender, EventArgs e)
         {
 

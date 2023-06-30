@@ -20,7 +20,7 @@ namespace Client_Tbot
        //Для Отправки команд на сервер
        public CommandCL command = new CommandCL();
 
-        public Bot_Telegram[] list_Bot_Telegram = new Bot_Telegram[] { };  
+        public Bot_Telegram[]? list_Bot_Telegram = new Bot_Telegram[] { };  
 
         /// <summary>
         /// Запращиваем Сообщения из чата
@@ -30,7 +30,7 @@ namespace Client_Tbot
             try
             {
                 //Команда для запроса
-                Task.Run(async () => await command.Select_User_Bot(Program.sistem.IP, "", "015")).Wait();
+                Task.Run(async () => await command.Select_User_Bot(Program.sistem?.IP, "", "015")).Wait();
 
 
 
@@ -137,7 +137,7 @@ namespace Client_Tbot
                  //       msgUser_Logins = user_Photos;
                     }
                     //Отправляем сообщения что пользователель вошел
-                    await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_.Name} !");
+                    await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_?.Name} !");
                 }
             }
         }
@@ -153,9 +153,9 @@ namespace Client_Tbot
 
             int Id_Telegram = 0;
         
-            for (int i=0;i< list_Bot_Telegram.Length; i++)
+            for (int i=0;i< list_Bot_Telegram?.Length; i++)
             {
-                if (Convert.ToInt32(message.From.Id) == list_Bot_Telegram[i].Id_Bot)
+                if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
                 {
                     Id_Telegram = list_Bot_Telegram[i].Id_Bot;
                     break;
@@ -210,11 +210,11 @@ namespace Client_Tbot
         {
 
             int Id_Telegram = 0;
-            string Users = "";
+            string? Users = "";
 
-            for (int i = 0; i < list_Bot_Telegram.Length; i++)
+            for (int i = 0; i < list_Bot_Telegram?.Length; i++)
             {
-                if (Convert.ToInt32(message.From.Id) == list_Bot_Telegram[i].Id_Bot)
+                if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
                 {
                  //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
 
@@ -254,15 +254,9 @@ namespace Client_Tbot
                     FileFS = Encoding.Default.GetString(Update.ToArray());
                 }
 
-
-
-
                 ////Отправляем редактированое сообщение на сервер
                 //Task.Run(async () => await command.Select_Message(sistem.IP, FileFS, "009")).Wait();
-
             }
-
-
         }
 
 
@@ -278,13 +272,13 @@ namespace Client_Tbot
             try {
                 int Id_Telegram = 0;
                 int Id_Telegrams = 0;
-                string Users = "";
+               // string Users = "";
                 _Name id_Friends_Telegram;
                 int Id_Telegram_From_Friends = 0;
 
-                for (int i = 0; i < list_Bot_Telegram.Length; i++)
+                for (int i = 0; i < list_Bot_Telegram?.Length; i++)
                 {
-                    if (Convert.ToInt32(message.From.Id) == list_Bot_Telegram[i].Id_Bot)
+                    if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
                     {
                         //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
 
@@ -332,7 +326,7 @@ namespace Client_Tbot
                     int id_friends = 0;
                     for (int i = 0; i < id; i++)
                     {
-                        if (list_Bot_Telegram[i].Id_user == null)
+                        if (list_Bot_Telegram?[i]?.Id_user == null)
                         {
 
                         }
@@ -357,7 +351,7 @@ namespace Client_Tbot
 
                     for (int i = 0; i < 3; i++)
                     {
-                        if (list_Bot_Telegram[i].Id_user == null)
+                        if (list_Bot_Telegram?[i]?.Id_user == null)
                         {
 
                         }
@@ -399,7 +393,6 @@ namespace Client_Tbot
                     else
                     {
 
-
                         if (command._Answe.ToString() == "true")
                         {
                             for (int j = 0; j < CommandCL.Travel_Telegram_message.AClass.Count(); j++)
@@ -410,13 +403,13 @@ namespace Client_Tbot
                                 //Десерилизуем класс и получаем класс MessСhat
 
                                 //десерилизуем класс по частям MessСhat
-                                for (int i = 0; i < command._AClass.Count(); i++)
+                                for (int i = 0; i < command?._AClass.Count(); i++)
                                 {
                                     //Строка ввиде json  класса essСhat
                                     string yu = command._AClass[i].ToString();
 
                                     //Десерилизуем класс MessСhat из json строки в класс MessСhat
-                                    MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                    MessСhat? useTravel = JsonSerializer.Deserialize<MessСhat?>(yu);
                                     //Запомнили чат
                                     les[i] = useTravel;
 
@@ -449,7 +442,7 @@ namespace Client_Tbot
                                             }
 
                                         }
-                                        //Отправляем сообщения друга и его имя
+                                     //Отправляем сообщения друга и его имя
 
                                     }
                                     else
@@ -553,9 +546,6 @@ namespace Client_Tbot
 
                             //    }
 
-
-                        
-                    
                         }
                         else //Если нету сообщений то отправляет "Сообщений нету : у пользователя " и друга имя
                         {

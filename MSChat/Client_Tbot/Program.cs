@@ -19,14 +19,14 @@ namespace Client_Tbot
 
         public const string Text_3 = "Вывести список сообщений из Программы MSChat";
 
-        private const string V = "Привет";
+        private const string? V = "Привет";
         /// </summary>
      
         //Имя пользователя
-        public static string user { get;  set; }
+        public static string? user { get;  set; }
 
         //Пароль пользователя
-        public static string password { get; set; }
+        public static string? password { get; set; }
 
         //Класс из библиотека Chat
         public static CommandCL command = new CommandCL();
@@ -36,64 +36,65 @@ namespace Client_Tbot
 
 
         //Для имени друга
-        public static string Friends { get; set; }
+        public static string? Friends { get; set; }
 
         //Для id друга
-        public static int id_Friends { get; set; }
+        public static int ? id_Friends { get; set; }
 
         //Класс друзей
-        public static User_photo[] msgUser_Logins { get; set; }
+        public static User_photo[]? msgUser_Logins { get; set; }
 
         //Токен телеграм
         public static TelegramBotClient client = new TelegramBotClient("6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI");
+
         public static Command_Tbot command_Tbot = new Command_Tbot();
         static void Main(string[] args)
         {
             //Сохраняет настройки
-            sistem.Setting();
+            sistem?.Setting();
 
             //Отдельный класс команды
 
 
             //Запращиваем   регестрированых пользователей
-            command_Tbot.Select_Message_From_Chats();
+            command_Tbot?.Select_Message_From_Chats();
 
             //Стартуем принятия сообщенией и ошибок
-            client.StartReceiving(Update, Error );
+            client?.StartReceiving(Update, Error );
 
             //Ожидаем сообщений боту
             Console.ReadLine();        
         }
         
         //Команда для  отправки что было выполнено
-        private static  async void Bot_OnMessage( Update e)
+        private static  async void Bot_OnMessage( Update update)
         {
-            var message = e.Message;
+            Message? message = update.Message;
 
             if (message == null || message.Type != Telegram.Bot.Types.Enums.MessageType.Text)
                 return;
 
-            var user = message.From;
-            var userData = SessionManager.GetUserData(user);
+            User? users = message.From;
+            var userData = SessionManager.GetUserData(users);
 
             // Добавляем логику обработки сообщения и обновления данных пользователя
 
-            await client.SendTextMessageAsync(message.Chat.Id, "Echo: " + message.Text);
+            await client.SendTextMessageAsync(message.Chat.Id, "Echo: " + message?.Text);
         }
 
         //Последущие использование вместо 
         public class UserData
         {
-            public static string user { get; set; }
-            public static string password { get; set; }
+            public static string? user { get; set; }
+            public static string? password { get; set; }
             public static CommandCL command = new CommandCL();
             //    public static  Ip_adres ip_Adres { get; set; }
 
             public static Sistem sistem = new Sistem();
-            public static string Friends { get; set; }
+            public static string? Friends { get; set; }
             public static int id_Friends { get; set; }
 
-            public static User_photo[] msgUser_Logins { get; set; }
+            public static User_photo[]? msgUser_Logins { get; set; }
             // Другие свойства, необходимые для хранения данных пользователя
         }
 
@@ -116,7 +117,7 @@ namespace Client_Tbot
         }
 
         //Команда для принятия сообщений
-        async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
+        async static Task Update(ITelegramBotClient botClient, Update? update, CancellationToken token)
         {
          //   Command_Tbot command_Tbot = new Command_Tbot();
             //Для отправки назад сообщений
@@ -127,19 +128,19 @@ namespace Client_Tbot
     
 
                 //Собщеения сейчас нуту
-                Message message ;
+                Message? message ;
 
                 //Проверяем есть ли значения в update
                 if (update != null)
                 {
                     //Заполняем сообщение присланое из телеграм
-                    message = update.Message;
+                    message = update?.Message;
 
                     //Проверяем есть ли сообщение
                     if (message != null)
                     {
                         //Проверяем есть ли сообщение update
-                        if (update.Message?.Text == null)
+                        if (update?.Message?.Text == null)
                         {
                             //Проверяем прислали нам фото в сообщении
                             if (message.Photo != null)
@@ -175,14 +176,14 @@ namespace Client_Tbot
                             }
 
                             //Отправляем звуковое сообщение
-                            if (message.Voice != null)
+                            if (message?.Voice != null)
                             {
 
 
 
-                                //Скачиваем сообщение звуковое от пользователя
-                                var voiceMessage = await botClient.GetFileAsync(update.Message.Voice.FileId);
-
+                                //Скачиваем сообщение звуковое от пользователя  update.Message.Voice.FileId
+                                var voiceMessage = await botClient.GetFileAsync(message.Voice.FileId);
+                           
                                 //Отправляем звуковое сообщения пользователю
                                 await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
                                 return;
@@ -197,7 +198,7 @@ namespace Client_Tbot
                             var Result = Class?.Split(new char[] { ',', ':' });
 
                             //Проверяем по индексу команду Comand
-                            if (Result[0] == "Comand ")
+                            if (Result?[0] == "Comand ")
                             {
 
                                 using (MemoryStream fs = new MemoryStream())
@@ -206,7 +207,7 @@ namespace Client_Tbot
                                     string FileFS = "";
 
                                     //Собрали класс UserLogin
-                                    UserLogin tom = new UserLogin(Result[1], Result[2], Convert.ToInt32(message.From.Id));
+                                    UserLogin tom = new UserLogin(Result[1], Result[2], Convert.ToInt32(message.From?.Id));
 
                                     //Серилизовали класс UserLogin в MemoryStream fs 
                                     JsonSerializer.Serialize<UserLogin>(fs, tom);
@@ -215,7 +216,7 @@ namespace Client_Tbot
                                     FileFS = Encoding.Default.GetString(fs.ToArray());
 
                                     //Отправили и получили результат
-                                    Task.Run(async () => await command.Check_User_Possword(sistem.IP, FileFS, "003")).Wait();
+                                    Task.Run(async () => await command.Check_User_Possword(sistem?.IP, FileFS, "003")).Wait();
 
                                     //Обнуляем строку для следущей команды
                                     FileFS = "";
@@ -248,13 +249,13 @@ namespace Client_Tbot
                                             user_Photo.Current = 0;
 
                                             //Отправляем на сервер
-                                            Task.Run(async () => await command.Check_Mess_Friend(sistem.IP, FileFS, "006")).Wait();
+                                            Task.Run(async () => await command.Check_Mess_Friend(sistem?.IP, FileFS, "006")).Wait();
 
                                             //Проверяем есть ли сообщения
-                                            if (command._Answe.ToString() == "true")
+                                            if (command?._Answe.ToString() == "true")
                                             {
                                                 //Обьявляем количество в MessСhat
-                                                MessСhat[] les = new MessСhat[command._AClass.Count()];
+                                                MessСhat[]? les = new MessСhat[command._AClass.Count()];
                                                 //Десерилизуем класс и получаем класс MessСhat 
 
                                                 using (MemoryStream ms = new MemoryStream())
@@ -263,13 +264,13 @@ namespace Client_Tbot
                                                     for (int i = 0; i < command._AClass.Count(); i++)
                                                     {
                                                         //Заполняем в строку класс общий
-                                                        string yu = command._AClass[i].ToString();
+                                                        string? yu = command._AClass[i]?.ToString();
 
                                                         //Десерилизуем MessСhat
-                                                        MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                                        MessСhat? useTravel = JsonSerializer.Deserialize<MessСhat?>(yu);
 
                                                         //Присваеваем значение useTravel
-                                                        les[i] = useTravel;
+                                                        les[i] = useTravel ;
 
                                                         //Отправляем в телеграм имя друга и сообщения без фильтрации
                                                         await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
@@ -285,7 +286,8 @@ namespace Client_Tbot
                                         }
 
                                     }
-                                }                            }
+                                }                            
+                            }
                             else
                             {
                                 //Получаем команду 
@@ -295,7 +297,7 @@ namespace Client_Tbot
                                 var Results = Return?.Split(new char[] { ':' });
 
                                 //Проверяем команду Имя по индексу
-                                if (Results[0] == "Имя")
+                                if (Results?[0] == "Имя")
                                 {
                                     //Запоминаем пользователя имя
                                     user = Results[1];
@@ -306,16 +308,16 @@ namespace Client_Tbot
                                 else
                                 {
                                     //Команда Пароль проверяем по идексу
-                                    if (Results[0] == "Пароль")
+                                    if (Results?[0] == "Пароль")
                                     {
-                                        command_Tbot.Select_Message_To_Chats(botClient, message, user, Results[1], sistem);
+                                        command_Tbot?.Select_Message_To_Chats(botClient, message, user, Results[1], sistem);
                                     }
                                     else
                                     {
                                         //Проверяем для команды Friends по индексу
-                                        if (Results[0] == "Friends")
+                                        if (Results?[0] == "Friends")
                                         {
-                                            command_Tbot.Friend_Message(botClient, message, sistem);
+                                            command_Tbot?.Friend_Message(botClient, message, sistem);
                                         }
                                         else
                                         {
@@ -323,9 +325,9 @@ namespace Client_Tbot
                                             //   Message: Сообщение Телеграм," Друг имя "
                                             var Message = Insert_Message?.Split(new char[] { ':', ',' });
 
-                                            if (Message[0] == "Message")
+                                            if (Message?[0] == "Message")
                                             {
-                                                command_Tbot.Insert_Telegram_Message_Chats(botClient, message, sistem, Message[1], Message[2]);
+                                                command_Tbot?.Insert_Telegram_Message_Chats(botClient, message, sistem, Message[1], Message[2]);
 
                                             }
                                             else
@@ -344,7 +346,7 @@ namespace Client_Tbot
                                                 message = update.Message;
                               
                                                 //Проверяет если сообщение
-                                                if (message.Text != null)
+                                                if (message?.Text != null)
                                                 {
                                                     //Начала запуска бота и отправляет информацию
                                                     if (message.Text == "/start")
@@ -373,8 +375,9 @@ namespace Client_Tbot
                                                         string[][] ara = new string[][]{
                                                         new string[] { "Для логина в чате введите после имя пользователя: Имя:", "Для логина в чате введите после пароль  пользователя:Пароль: ", " Для выбора друга  в чате введите id друга  :Friends: "},
                                                         };
+                                                        
                                                         //Кнопка
-                                                        InlineKeyboardButton[][] buttonss = new InlineKeyboardButton[ara.Length][];
+                                                        InlineKeyboardButton[][]? buttonss = new InlineKeyboardButton[ara.Length][];
                                                         //Цикл 
                                                         for (int i = 0; i < ara.Length; i++)
                                                         {   //формирует кнопку по частям
@@ -465,13 +468,13 @@ namespace Client_Tbot
                         }
                     }
                     //Обрабатываються ошибки Связаными с ботом уже в чате
-                    if (update.CallbackQuery == null)
+                    if (update?.CallbackQuery == null)
                     {
                     }
                     else
                     {
                         //Принимает кнопки нажатые в чате в сообщения
-                        switch (update.CallbackQuery.Data)
+                        switch (update?.CallbackQuery?.Data)
                         {
                             case "Привет":
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Привет !");
@@ -497,6 +500,7 @@ namespace Client_Tbot
                 Console.WriteLine(e.Message);
             }
         }
+
 
         private static IReplyMarkup GetButons()
         {
@@ -526,8 +530,8 @@ namespace Client_Tbot
 
             //Возрашаем кнопки
             return replyKeyboardMarkup;
-
             //Пример
+
             /*//InlineKeyboardMarkup inlineKeyboard = new(new[]
             //{
             //// first row
@@ -552,7 +556,6 @@ namespace Client_Tbot
             //       KeyboardButton.WithRequestContact("Share Contact"),
             //});
             //return replyKeyboardMarkup;*/
-
         }
 
         //Ошибки в телеграмме
