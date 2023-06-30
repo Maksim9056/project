@@ -1293,35 +1293,10 @@ namespace Client_chat
         }
 
         // public SoundRecorder recorder;
-        [Obsolete]
+      
         private void button5_Click(object sender, EventArgs e)
         {
 
-            try
-            {
-                MessageBox.Show("Start Recording");
-                waveIn = new WaveIn();
-                //Дефолтное устройство для записи (если оно имеется)
-                //встроенный микрофон ноутбука имеет номер 0
-                waveIn.DeviceNumber = 0;
-     
-                //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
-                waveIn.DataAvailable += waveIn_DataAvailable;
-                //Прикрепляем обработчик завершения записи
-             
-                waveIn.RecordingStopped += waveIn_RecordingStopped;
-                //Формат wav-файла - принимает параметры - частоту дискретизации и количество каналов(здесь mono)
-                waveIn.WaveFormat = new WaveFormat(8000, 1);
-                //Инициализируем объект WaveFileWriter
-                writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
-                //Начало записи
-                waveIn.StartRecording();
-             
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
      
@@ -1505,6 +1480,36 @@ namespace Client_chat
         //   MainForm mainForm = new MainForm();
             
         //    mainForm.ShowDialog();
+        }
+        [Obsolete]
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                MessageBox.Show("Start Recording");
+                waveIn = new WaveIn();
+                //Дефолтное устройство для записи (если оно имеется)
+                //встроенный микрофон ноутбука имеет номер 0
+                waveIn.DeviceNumber = 0;
+
+                //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
+                waveIn.DataAvailable += waveIn_DataAvailable;
+                //Прикрепляем обработчик завершения записи
+
+                waveIn.RecordingStopped += waveIn_RecordingStopped;
+                //Формат wav-файла - принимает параметры - частоту дискретизации и количество каналов(здесь mono)
+                waveIn.WaveFormat = new WaveFormat(8000, 1);
+                //Инициализируем объект WaveFileWriter
+                writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
+                //Начало записи
+                waveIn.StartRecording();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -1,11 +1,14 @@
 ﻿
 using Class_chat;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Client_Tbot
 {
 
@@ -184,12 +187,44 @@ namespace Client_Tbot
                             //Отправляем звуковое сообщение
                             if (message?.Voice != null)
                             {
-
-
-
                                 //Скачиваем сообщение звуковое от пользователя  update.Message.Voice.FileId
-                                var voiceMessage = await botClient.GetFileAsync(message.Voice.FileId);
-                              //  voiceMessage.FileId
+                                //var voiceMessage = await botClient.GetFileAsync(message.Voice.FileId);
+                                //MemoryStream T= new MemoryStream();
+                                //botClient.DownloadFileAsync(voiceMessage.FilePath, T);
+
+
+                                var voiceMessage = message.Voice;
+                                var fileId = voiceMessage.FileId;
+
+                                // Download audio file
+                                var file = await botClient.GetFileAsync(fileId);
+                                var filePath = file.FilePath;
+                                var download_url = @"https://api.telegram.org/file/bot6057879360:AAHsQFj0U1rLC1X2Er9v3oLXGf5fCB3quZI/" + file.FilePath;
+
+                                using var httpClient = new HttpClient();
+                                //var tempPath = Path.GetTempFileName();
+                                var s = await httpClient.GetStreamAsync(download_url);
+                                //byte[] audioBytes = await GetAudioFile(fileId);
+                                //MemoryStream Files101 = new MemoryStream();
+                                // Save audio file locally
+                                //using (var stream = System.IO.File.Open(filePath, System.IO.FileMode.OpenOrCreate))
+                                //{
+                                //    await botClient.DownloadFileAsync(filePath, stream);
+                                //}
+                                byte[] buffer;
+                                using (var memoryStream = new MemoryStream())
+                                {
+                                    s.CopyTo(memoryStream);
+                                    buffer = memoryStream.ToArray();
+                                }
+                                string file111 = Encoding.Default.GetString(buffer);
+
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
+                                command_Tbot?.Insert_Telegram_Message_Voice_Chats(botClient, message, sistem, buffer, user);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
+
+                                //  voiceMessage.FileId
+                           //     var voiceMessages = await botClient.GetFileAsync(message.Voice.FileId);
                                 //Отправляем звуковое сообщения пользователю
                                 //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
                                 return;
@@ -348,6 +383,15 @@ namespace Client_Tbot
                                             }
                                             else
                                             {
+
+                                                if(Message?[0] == "Друг")
+                                                {
+                                                    user = Message?[1];
+                                                }
+                                                else
+                                                {
+
+                                                }
                                                 //Требует переделать  начнем с новой команды
 
                                                 //Разделяет сообщение
@@ -432,7 +476,7 @@ namespace Client_Tbot
 
                                                               InlineKeyboardButton.WithCallbackData("Для выбора отправки сообщений из телеграма Message:Пользователь,Друг :Message: ,","4" ),
 
-                                                              InlineKeyboardButton.WithCallbackData("Для выбора Перед отправкой голосовых 1 сообщения   и все из телеграма Д:Пользователь,Чат:Имя друга: ,","5" ),
+                                                              InlineKeyboardButton.WithCallbackData("Для выбора Перед отправкой голосовых 1 сообщения   и все из телеграма Друг:имя ,","5" ),
                                                             }
                                                          }
                                                         ));
@@ -521,7 +565,7 @@ namespace Client_Tbot
                                 break;
                             case "5":
 #pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
-                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Чат:Имя друга ,");
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Друг:имя ,");
 #pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                         }

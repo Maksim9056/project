@@ -430,6 +430,20 @@ namespace Class_chat
         }
     }
 
+    public class Insert_Fille_Music_VOICE
+    {
+        Insert_Fille_Music_VOICE() { }
+        public int Id { get; set; }
+        public byte[] Fille { get; set; }
+        public string  User { get; set; }  
+        public Insert_Fille_Music_VOICE(int id, byte[] fille, string user)
+        {
+            Id = id;
+            Fille = fille;
+            User = user;
+        }
+    }
+
 }
 
 //}   Friends[] UserRG = new Friends[] {

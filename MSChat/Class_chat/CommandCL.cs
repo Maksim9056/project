@@ -1027,6 +1027,60 @@ namespace Class_chat
             }
         }
 
+        // Процедура отправки 017
+        async public Task Insert_Message_Voice_Telegram(String server, string fs, string command)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient(server, ConnectSettings.port))
+                {
+                    Byte[] data = System.Text.Encoding.Default.GetBytes(command + fs);
+                    NetworkStream stream = client.GetStream();
+                    await stream.WriteAsync(data, 0, data.Length);
+
+                    //     String responseDat = String.Empty;
+                    String responseData = String.Empty;
+
+                    Byte[] readingData = new Byte[256];
+                    StringBuilder completeMessage = new StringBuilder();
+                    int numberOfBytesRead = 0;
+                    do
+                    {
+                        numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                        completeMessage.AppendFormat("{0}", Encoding.Default.GetString(readingData, 0, numberOfBytesRead));
+                    }
+                    while (stream.DataAvailable);
+                    //Получили результат
+                    responseData = completeMessage.ToString();
+
+                    if (string.IsNullOrEmpty(responseData))
+                    {
+
+                    }
+                    else
+                    {
+                        MsgInfo msgInfo = JsonSerializer.Deserialize<MsgInfo>(responseData);
+                        Travel_Telegram_message = msgInfo;
+                        JObject details = JObject.Parse(responseData);
+                        JToken Answe = details.SelectToken("Answe");
+                        JToken List_Mess = details.SelectToken("List_Mess");
+                        JToken AClass = details.SelectToken("AClass");
+                        _Answe = Answe;
+                        _List_Mess_count = List_Mess;
+                        _AClass = AClass;
+                    }
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                //  MessageBox.Show("ArgumentNullException:{0}", e.Message);
+            }
+            catch (SocketException)
+            {
+                //  MessageBox.Show("SocketException: {0}", e.Message);
+            }
+        }
+
     }
 }
 

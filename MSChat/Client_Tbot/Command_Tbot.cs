@@ -1,6 +1,7 @@
 ﻿using Class_chat;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -14,13 +15,13 @@ namespace Client_Tbot
 
     public class Command_Tbot
     {
-       //Запращиваем настройки Ip adress,port для отсылания на ServersAcept
-       //public  Ip_adres Seting = new Ip_adres();
+        //Запращиваем настройки Ip adress,port для отсылания на ServersAcept
+        //public  Ip_adres Seting = new Ip_adres();
 
-       //Для Отправки команд на сервер
-       public CommandCL command = new CommandCL();
+        //Для Отправки команд на сервер
+        public CommandCL command = new CommandCL();
 
-        public Bot_Telegram[]? list_Bot_Telegram = new Bot_Telegram[] { };  
+        public Bot_Telegram[]? list_Bot_Telegram = new Bot_Telegram[] { };
 
         /// <summary>
         /// Запращиваем Сообщения из чата
@@ -77,7 +78,7 @@ namespace Client_Tbot
                 //    MessageBox.Show("Такой учетной записи нет");
                 //}
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message.ToString());
             }
@@ -86,7 +87,7 @@ namespace Client_Tbot
         /// <summary>
         /// Регистрация
         /// </summary>
-        public async void Select_Message_To_Chats(ITelegramBotClient botClient,Message message,string user,string password,Sistem sistem)
+        public async void Select_Message_To_Chats(ITelegramBotClient botClient, Message message, string user, string password, Sistem sistem)
         {
             //Проверяем не пуст ли пользователь
             if (user == "")
@@ -101,7 +102,7 @@ namespace Client_Tbot
                 {
                     //Запомнаем пароль по индексу
                     // password = 
-                  
+
 
                     //Заполняем класс регистрация
                     UserLogin tom = new UserLogin(user, password, Convert.ToInt32(message.Chat.Id));
@@ -134,7 +135,7 @@ namespace Client_Tbot
                             await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья в {CommandCL.User_Logins_and_Friends.AClass[j].Name} и id друга  {CommandCL.User_Logins_and_Friends.AClass[j].Id} !");
                         }
                         //Запомнили друзей
-                 //       msgUser_Logins = user_Photos;
+                        //       msgUser_Logins = user_Photos;
                     }
                     //Отправляем сообщения что пользователель вошел
                     await botClient.SendTextMessageAsync(message.Chat.Id, $"Вошли в логин как  {CommandCL.User_Logins_and_Friends.User_?.Name} !");
@@ -152,8 +153,8 @@ namespace Client_Tbot
 
 
             int Id_Telegram = 0;
-        
-            for (int i=0;i< list_Bot_Telegram?.Length; i++)
+
+            for (int i = 0; i < list_Bot_Telegram?.Length; i++)
             {
                 if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
                 {
@@ -166,47 +167,47 @@ namespace Client_Tbot
                 }
 
             }
-            
-            if(Id_Telegram == 0)
+
+            if (Id_Telegram == 0)
             {
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");                 
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");
             }
             else
             {
-             // await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
+                // await botClient.SendTextMessageAsync(message.Chat.Id, "Пользователь зарегрировался  !");
 
-              Travel travel = new Travel(Id_Telegram);
+                Travel travel = new Travel(Id_Telegram);
 
-              string FileFS = "";
+                string FileFS = "";
 
-              //Обьявим память 
-              MemoryStream memoryStream = new MemoryStream();
+                //Обьявим память 
+                MemoryStream memoryStream = new MemoryStream();
 
-              //Серилизуем класс UserLogin в json ввиде памяти
-              JsonSerializer.Serialize<Travel>(memoryStream, travel);
+                //Серилизуем класс UserLogin в json ввиде памяти
+                JsonSerializer.Serialize<Travel>(memoryStream, travel);
 
-            //Получаем из памяти json строку с классом UserLogin
-             FileFS = Encoding.Default.GetString(memoryStream.ToArray());
-         
-             Task.Run(async () => await command.Select_User_(sistem.IP, FileFS,"016")).Wait();
+                //Получаем из памяти json строку с классом UserLogin
+                FileFS = Encoding.Default.GetString(memoryStream.ToArray());
 
-             FileFS = "";
+                Task.Run(async () => await command.Select_User_(sistem.IP, FileFS, "016")).Wait();
 
-             User_photo[] A = new User_photo[CommandCL.User_Logins_and_Friends.List_Mess];
+                FileFS = "";
 
-              for (int I = 0; I < CommandCL.User_Logins_and_Friends.AClass.Count(); I++)
-              {
-                   A[I] = CommandCL.User_Logins_and_Friends.AClass[I];
+                User_photo[] A = new User_photo[CommandCL.User_Logins_and_Friends.List_Mess];
 
-                  await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья  {CommandCL.User_Logins_and_Friends.AClass[I].Name} и" +
-                  $" id друга  {CommandCL.User_Logins_and_Friends.AClass[I].Id} !");
-              }
-              
-            }       
+                for (int I = 0; I < CommandCL.User_Logins_and_Friends.AClass.Count(); I++)
+                {
+                    A[I] = CommandCL.User_Logins_and_Friends.AClass[I];
+
+                    await botClient.SendTextMessageAsync(message.Chat.Id, $"Друзья  {CommandCL.User_Logins_and_Friends.AClass[I].Name} и" +
+                    $" id друга  {CommandCL.User_Logins_and_Friends.AClass[I].Id} !");
+                }
+
+            }
         }
 
 
-        public async void Telegram_Message(ITelegramBotClient botClient, Message message, string Message ,string User , Sistem sistem)
+        public async void Telegram_Message(ITelegramBotClient botClient, Message message, string Message, string User, Sistem sistem)
         {
 
             int Id_Telegram = 0;
@@ -218,7 +219,7 @@ namespace Client_Tbot
             {
                 if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
                 {
-                 //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+                    //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
 
                     Id_Telegram = list_Bot_Telegram[i].Id_user;
                     break;
@@ -247,7 +248,7 @@ namespace Client_Tbot
                     DateTime dateTime = DateTime.Now;
 
                     //Класс соберает MessСhat
-                    User_photo Mes_chat = new User_photo("", User, "", 0,Id_Telegram, Id_Telegram);
+                    User_photo Mes_chat = new User_photo("", User, "", 0, Id_Telegram, Id_Telegram);
 
                     //Впамяти запоминает и считывает класс MessСhat ввиде json 
                     JsonSerializer.Serialize<User_photo>(Update, Mes_chat);
@@ -274,7 +275,7 @@ namespace Client_Tbot
             try {
                 int Id_Telegram = 0;
                 int Id_Telegrams = 0;
-               // string Users = "";
+                // string Users = "";
                 _Name id_Friends_Telegram;
                 int Id_Telegram_From_Friends = 0;
 
@@ -396,13 +397,13 @@ namespace Client_Tbot
 #pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                     string yu = command._AClass[i].ToString();
 #pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
-                              //Десерилизуем класс MessСhat из json строки в класс MessСhat
+                                    //Десерилизуем класс MessСhat из json строки в класс MessСhat
                                     MessСhat? useTravel = JsonSerializer.Deserialize<MessСhat?>(yu);
                                     //Запомнили чат
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
                                     les[i] = useTravel;
 #pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                              //Сообщения друга к пользователю
+                                    //Сообщения друга к пользователю
                                     if (les[i].IdUserFrom == Convert.ToInt32(les[i].IdUserTo) && les[i].IdUserTo == Convert.ToInt32(les[i].IdUserFrom))
                                     {
                                         if (les[i].IdUserFrom == Id_Telegrams)
@@ -428,7 +429,7 @@ namespace Client_Tbot
                                             }
 
                                         }
-                                     //Отправляем сообщения друга и его имя
+                                        //Отправляем сообщения друга и его имя
                                     }
                                     else
                                     {
@@ -516,7 +517,7 @@ namespace Client_Tbot
                         }
                     }
                 }
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -528,17 +529,491 @@ namespace Client_Tbot
         /// </summary>
         /// <param name="botClient"></param>
         /// <param name="message"></param>
-        public async void Insert_Telegram_Message_Voice_Chats(ITelegramBotClient botClient, Message message, Sistem sistem, string Cообщение_пользователя, string Друг)
+        public async void Insert_Telegram_Message_Voice_Chats(ITelegramBotClient botClient, Message message, Sistem sistem, byte [] Cообщение_пользователя, string Друг)
         {
             try
             {
+                int Id_Telegram = 0;
+                int Id_Telegrams = 0;
+                // string Users = "";
+#pragma warning disable CS0168 // Переменная объявлена, но не используется
+                _Name id_Friends_Telegram;
+#pragma warning restore CS0168 // Переменная объявлена, но не используется
 
+#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
+                int Id_Telegram_From_Friends = 0;
+#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
+
+                for (int i = 0; i < list_Bot_Telegram?.Length; i++)
+                {
+                    if (Convert.ToInt32(message.From?.Id) == list_Bot_Telegram[i].Id_Bot)
+                    {
+                        //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+
+                        Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+                        Id_Telegrams = list_Bot_Telegram[i].Id_user;
+                        //   Users = list_Bot_Telegram[i];
+                        break;
+                    }
+                    else
+                    {
+
+                    }
+                }
+                if (Id_Telegram == 0)
+                {
+                    await botClient.SendTextMessageAsync(message.Chat.Id, "Авторизуйтесь пожалуйста  !");
+                }
+                else
+                {
+                    string FileFS = "";
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        Insert_Fille_Music_VOICE insert_Message_Telegram = new Insert_Fille_Music_VOICE(Id_Telegrams,Cообщение_пользователя, Друг );
+                        JsonSerializer.Serialize<Insert_Fille_Music_VOICE>(stream, insert_Message_Telegram);
+                        //Воспроизводит из памяти Серилизованный класс Insert_Message_Telegram
+                        FileFS = Encoding.Default.GetString(stream.ToArray());
+                    }
+
+                    //Отправляем Сообщение сообщение на сервер
+                    Task.Run(async () => await command.Insert_Message_Voice_Telegram(sistem.IP, FileFS, "021")).Wait();
+
+                    if (command._Answe.ToString() == "true")
+                    {
+#pragma warning disable CS0162 // Обнаружен недостижимый код
+                        for (int j = 0; j < CommandCL.Travel_Telegram_message.AClass.Count(); j++)
+                        {
+                            //Заполняем класс MessСhat сообщениями
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+                            MessСhat[] les = new MessСhat[command._AClass.Count()];
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
+                            //Десерилизуем класс и получаем класс MessСhat
+                            //десерилизуем класс по частям MessСhat
+                            using (MemoryStream stream = new MemoryStream())
+                            {
+                                _Name _Name = new _Name(Друг);
+
+                                JsonSerializer.Serialize<_Name>(stream, _Name);
+                                //Воспроизводит из памяти Серилизованный класс Insert_Message_Telegram
+                                FileFS = Encoding.Default.GetString(stream.ToArray());
+                            }
+                            Task.Run(async () => await command.From_Friend(sistem.IP, FileFS, "018")).Wait();
+                            //Заполняет информацию json виде текста о классах
+                            int id_friends_id_Пользователя =Convert.ToInt32( command.id_Friends.__Name);
+#pragma warning disable CS0219 // Переменная назначена, но ее значение не используется
+                            int id_friends = 0;
+#pragma warning restore CS0219 // Переменная назначена, но ее значение не используется
+                            //for (int i = 0; i < 3; i++)
+                            //{
+                            //    if (list_Bot_Telegram?[i]?.Id_user == null)
+                            //    {
+                            //    }
+                            //    else
+                            //    {
+                            //        if (Convert.ToInt32(message.Chat.Id) == list_Bot_Telegram[i].Id_user)
+                            //        {
+                            //            //   Id_Telegram = list_Bot_Telegram[i].Id_Bot;
+                            //            // Id_Telegram_From_Friends = list_Bot_Telegram[i].Id_Bot;
+                            //            id_friends_id_Пользователя = list_Bot_Telegram[i].Id_user;
+                            //            //   Users = list_Bot_Telegram[i];
+                            //            id_friends = list_Bot_Telegram[i].Id_Bot;
+                            //            break;
+                            //        }
+                            //        else
+                            //        {
+                            //        }
+                            //        if (id_friends_id_Пользователя > 0)
+                            //            break;
+                            //    }
+
+                            //}
+
+                            for (int i = 0; i < command?._AClass.Count(); i++)
+                            {
+                                //Строка ввиде json  класса essСhat
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+                                string yu = command._AClass[i].ToString();
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
+                                //Десерилизуем класс MessСhat из json строки в класс MessСhat
+                                MessСhat? useTravel = JsonSerializer.Deserialize<MessСhat?>(yu);
+                                //Запомнили чат
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                                les[i] = useTravel;
+
+                                if (les[i].Files > 0)
+                                {
+
+                                }
+                                //Здесь фильтруем  сообщения пользователя к другу
+                                if (les[i].IdUserTo == Id_Telegrams)
+                                {
+                                    await botClient.SendTextMessageAsync(message.Chat.Id, message.Chat.FirstName + ":" + les[i].Message);
+                                }
+                                else
+                                {
+                                    if (les[i].IdUserFrom == id_friends_id_Пользователя)
+                                    {
+                                        await botClient.SendTextMessageAsync(message.Chat.Id, Друг + ":" + les[i].Message);
+                                    }
+                                    else
+                                    {
+                                        if (les[i].IdUserFrom == id_friends_id_Пользователя)
+                                        {
+                                            await botClient.SendTextMessageAsync(message.Chat.Id, message.Chat.FirstName + ":" + les[i].Message);
+                                        }
+                                        else
+                                        {
+                                            await botClient.SendTextMessageAsync(message.Chat.Id, Друг + ":" + les[i].Message);
+                                        }
+                                        // await botClient.SendTextMessageAsync(message.Chat.Id, message.Chat.FirstName + ":" + les[i].Message);
+                                    }
+
+                                }
+
+
+                                /////////Друг 
+                                if (Id_Telegram_From_Friends == 0)
+                                {
+                                    //if (id_friends == true)
+                                    //{
+                                    //    await botClient.SendTextMessageAsync(message.Chat.Id, "У " + Друг + "не зарегистрирован телеграм_Id не можем уведомить его о сообщении!");
+                                    //}
+
+                                    //friends_telegram = false;
+                                }
+                                else
+                                {
+
+                                }
+                                if (les[i].IdUserFrom == Convert.ToInt32(les[i].IdUserTo) && les[i].IdUserTo == Convert.ToInt32(les[i].IdUserFrom))
+                                {
+
+                                    if (les[i].IdUserFrom == Id_Telegrams)
+                                    {
+                                        if (les[i].Files > 0)
+                                        {
+                                            using (MemoryStream ms = new MemoryStream())
+                                            {
+
+                                                byte[] bytes = new byte[] { };
+                                                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(les[i].Files, bytes);
+                                                JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                                                FileFS = Encoding.Default.GetString(ms.ToArray());
+                                                //FileFS = "";
+                                                Task.Run(async () => await command.Stream_Fille_accept_music(sistem.IP,  FileFS, "020")).Wait();
+                                            }
+                                            if (command.Select_Fille_Music_id == null)
+                                            {
+                                            }
+                                            else
+                                            {
+                                                Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                                                /*
+                                                var path = Environment.CurrentDirectory.ToString();
+                                                string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                                                Random rand = new Random();
+
+                                                if (File.Exists(path))
+                                                {
+                                                    NameFile = NameFile + rand.Next(1000000000) as String;
+                                                }
+
+                                                //string filePath = "name.mp3";
+                                                File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                                                //Process.Start(NameFile);
+                                                //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                                                //{
+
+
+                                                //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                                                //}
+
+                                                //   using(FileStream FS = new CreateParams )
+                                                //   var path = Environment.CurrentDirectory.ToString();
+
+                                                SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                                                simpleSound.Play();
+
+                                                //simpleSound WindowsMediaPlayer
+                                                //  WindowsMediaPlayer
+                                                //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                                                //this.Text = WMP.versionInfo;
+                                                //WMP.URL = @"D:\sound.mp3 ";
+                                                //WMP.controls.play();
+                                                */
+
+                                                string File_stream = Convert.ToBase64String(_Fille_Music.Fille);
+                                             /* //  Воспроизводит звук из памяти из формата byte[]
+                                                //using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                                                //{*/
+                                                    var voiceMessage = await botClient.GetFileAsync(File_stream);
+                                                     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                          /*      //Отправляем звуковое сообщения пользователю
+                                                //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                //  SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                                                //     simpleSound2.Play();
+                                                //}*/
+                                            }
+                                        }
+                                        else
+                                        {
+
+
+                                            await botClient.SendTextMessageAsync(Id_Telegram_From_Friends, message.Chat.FirstName + ":" + les[i].Message);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (les[i].Files > 0)
+                                        {
+                                            using (MemoryStream ms = new MemoryStream())
+                                            {
+
+                                                byte[] bytes = new byte[] { };
+                                                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(les[i].Files, bytes);
+                                                JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                                                FileFS = Encoding.Default.GetString(ms.ToArray());
+                                                //FileFS = "";
+                                                Task.Run(async () => await command.Stream_Fille_accept_music(sistem.IP, FileFS, "020")).Wait();
+                                            }
+                                            if (command.Select_Fille_Music_id == null)
+                                            {
+                                            }
+                                            else
+                                            {
+                                                Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                                                /*
+                                                var path = Environment.CurrentDirectory.ToString();
+                                                string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                                                Random rand = new Random();
+
+                                                if (File.Exists(path))
+                                                {
+                                                    NameFile = NameFile + rand.Next(1000000000) as String;
+                                                }
+
+                                                //string filePath = "name.mp3";
+                                                File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                                                //Process.Start(NameFile);
+                                                //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                                                //{
+
+
+                                                //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                                                //}
+
+                                                //   using(FileStream FS = new CreateParams )
+                                                //   var path = Environment.CurrentDirectory.ToString();
+
+                                                SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                                                simpleSound.Play();
+
+                                                //simpleSound WindowsMediaPlayer
+                                                //  WindowsMediaPlayer
+                                                //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                                                //this.Text = WMP.versionInfo;
+                                                //WMP.URL = @"D:\sound.mp3 ";
+                                                //WMP.controls.play();
+                                                */
+
+                                                string File_stream = Convert.ToBase64String(_Fille_Music.Fille);
+                                                /* //  Воспроизводит звук из памяти из формата byte[]
+                                                   //using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                                                   //{*/
+                                                var voiceMessage = await botClient.GetFileAsync(File_stream);
+                                                await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                /*      //Отправляем звуковое сообщения пользователю
+                                                      //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                      //  SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                                                      //     simpleSound2.Play();
+                                                      //}*/
+                                            }
+                                        }
+                                        else
+                                        {
+                                            await botClient.SendTextMessageAsync(Id_Telegram_From_Friends, Друг + ":" + les[i].Message);
+                                        }
+                                    }
+                                    //Отправляем сообщения друга и его имя
+                                }
+                                else
+                                {
+
+                                    //Здесь фильтруем  сообщения пользователя к другу
+
+                                    if (les[i].IdUserTo == Id_Telegrams)
+                                    {
+                                        if (les[i].Files > 0)
+                                        {
+                                            using (MemoryStream ms = new MemoryStream())
+                                            {
+
+                                                byte[] bytes = new byte[] { };
+                                                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(les[i].Files, bytes);
+                                                JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                                                FileFS = Encoding.Default.GetString(ms.ToArray());
+                                                //FileFS = "";
+                                                Task.Run(async () => await command.Stream_Fille_accept_music(sistem.IP, FileFS, "020")).Wait();
+                                            }
+                                            if (command.Select_Fille_Music_id == null)
+                                            {
+                                            }
+                                            else
+                                            {
+                                                Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                                                /*
+                                                var path = Environment.CurrentDirectory.ToString();
+                                                string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                                                Random rand = new Random();
+
+                                                if (File.Exists(path))
+                                                {
+                                                    NameFile = NameFile + rand.Next(1000000000) as String;
+                                                }
+
+                                                //string filePath = "name.mp3";
+                                                File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                                                //Process.Start(NameFile);
+                                                //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                                                //{
+
+
+                                                //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                                                //}
+
+                                                //   using(FileStream FS = new CreateParams )
+                                                //   var path = Environment.CurrentDirectory.ToString();
+
+                                                SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                                                simpleSound.Play();
+
+                                                //simpleSound WindowsMediaPlayer
+                                                //  WindowsMediaPlayer
+                                                //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                                                //this.Text = WMP.versionInfo;
+                                                //WMP.URL = @"D:\sound.mp3 ";
+                                                //WMP.controls.play();
+                                                */
+
+                                                string File_stream = Convert.ToBase64String(_Fille_Music.Fille);
+                                                /* //  Воспроизводит звук из памяти из формата byte[]
+                                                   //using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                                                   //{*/
+                                                var voiceMessage = await botClient.GetFileAsync(File_stream);
+                                                await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                /*      //Отправляем звуковое сообщения пользователю
+                                                      //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                      //  SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                                                      //     simpleSound2.Play();
+                                                      //}*/
+                                            }
+                                        }
+                                        else
+                                        {
+                                            await botClient.SendTextMessageAsync(Id_Telegram_From_Friends, message.Chat.FirstName + ":" + les[i].Message);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (les[i].Files > 0)
+                                        {
+                                            using (MemoryStream ms = new MemoryStream())
+                                            {
+
+                                                byte[] bytes = new byte[] { };
+                                                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(les[i].Files, bytes);
+                                                JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                                                FileFS = Encoding.Default.GetString(ms.ToArray());
+                                                //FileFS = "";
+                                                Task.Run(async () => await command.Stream_Fille_accept_music(sistem.IP, FileFS, "020")).Wait();
+                                            }
+                                            if (command.Select_Fille_Music_id == null)
+                                            {
+                                            }
+                                            else
+                                            {
+                                                Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                                                /*
+                                                var path = Environment.CurrentDirectory.ToString();
+                                                string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                                                Random rand = new Random();
+
+                                                if (File.Exists(path))
+                                                {
+                                                    NameFile = NameFile + rand.Next(1000000000) as String;
+                                                }
+
+                                                //string filePath = "name.mp3";
+                                                File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                                                //Process.Start(NameFile);
+                                                //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                                                //{
+
+
+                                                //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                                                //}
+
+                                                //   using(FileStream FS = new CreateParams )
+                                                //   var path = Environment.CurrentDirectory.ToString();
+
+                                                SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                                                simpleSound.Play();
+
+                                                //simpleSound WindowsMediaPlayer
+                                                //  WindowsMediaPlayer
+                                                //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                                                //this.Text = WMP.versionInfo;
+                                                //WMP.URL = @"D:\sound.mp3 ";
+                                                //WMP.controls.play();
+                                                */
+
+                                                string File_stream = Convert.ToBase64String(_Fille_Music.Fille);
+                                                /* //  Воспроизводит звук из памяти из формата byte[]
+                                                   //using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                                                   //{*/
+                                                var voiceMessage = await botClient.GetFileAsync(File_stream);
+                                                await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                /*      //Отправляем звуковое сообщения пользователю
+                                                      //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                                      //  SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                                                      //     simpleSound2.Play();
+                                                      //}*/
+                                            }
+                                        }
+                                        else
+                                        {
+                                            await botClient.SendTextMessageAsync(Id_Telegram_From_Friends, Друг + ":" + les[i].Message);
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                    else //Если нету сообщений то отправляет "Сообщений нету : у пользователя " и друга имя
+                    {
+                        for (int j = 0; j < CommandCL.Travel_Telegram_message.AClass.Count(); j++)
+                        {
+                            await botClient.SendTextMessageAsync(message.Chat.Id, "Сообщений нету : у пользователя " + " " + CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString());
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
+            } 
         }
+        
             //public async void Friend_Message(ITelegramBotClient botClient, Message message, string user, string password, Sistem sistem)
             // {
             //     //Обьявляем память

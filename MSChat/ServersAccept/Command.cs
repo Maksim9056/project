@@ -898,6 +898,68 @@ namespace ServersAccept
             } 
         }
 
+
+
+        public void Registration_Insert_Voice_Telegram_Music_Accept(byte[] msg, GlobalClass globalClass, NetworkStream stream)
+        {
+            try
+            {
+                using (MemoryStream tt2 = new MemoryStream())
+                {
+
+
+                    string Class = Program.data_;
+                    DateTime dateTime = DateTime.Now;
+                    string responseData = Class;
+                    Insert_Fille_Music_VOICE person2 = JsonSerializer.Deserialize<Insert_Fille_Music_VOICE>(msg);
+
+                    globalClass.Insert_File_Voice_Telegram(person2.Fille);
+                    globalClass.Id_Friends(person2.User);
+                    globalClass.Insert_Message_Telegrams_Voice(person2.Id, globalClass.IdUserTo_Telegram, globalClass.Id_Files_Mp3_Voice_message_Telegram);
+                    //
+                    // 
+                    //   globalClass.Insert_User(person2.Name, person2.Pass, person2.Age, dateTime, person2.Id_Telegram);
+
+                    if (globalClass.Frends_Chat_Wath == null)
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {   //Заполняем в пустой класс для принятия на клиенте
+
+                            MessСhat[] json_Update_delete = new MessСhat[] { };
+                            //Собераем класс отправки
+                            UseTravel Update_chats_make_up_after_delete = new UseTravel("false", json_Update_delete.Length, json_Update_delete);
+                            //Серилизуем класс User_photo_Travel 
+                            JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
+                            //Отправляем
+                            stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                        }
+                    }
+                    else
+                    {
+
+
+                        MessСhat[] json_Update_delete = new MessСhat[globalClass.Frends_Chat_Wath.Length];
+
+                        for (int k = 0; k < globalClass.Frends_Chat_Wath.Length; k++)
+                        {
+                            json_Update_delete[k] = globalClass.Frends_Chat_Wath[k];
+                        }
+
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            UseTravel Update_chats_make_up_after_delete = new UseTravel("true", json_Update_delete.Length, json_Update_delete);
+                            JsonSerializer.Serialize<UseTravel>(ms, Update_chats_make_up_after_delete);
+                            stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
         //public byte[] ConvertToByteArray(object obj)
         //{
         //    if (obj == null)

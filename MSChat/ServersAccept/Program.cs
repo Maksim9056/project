@@ -105,6 +105,7 @@ namespace ServersAccept
             FDictCommands.Add("018", new Action<byte[], GlobalClass, NetworkStream>(command.Select_id_Friends));
             FDictCommands.Add("019", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_Insert_File_Music));
             FDictCommands.Add("020", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_Insert_File_Music_Accept));
+            FDictCommands.Add("021", new Action<byte[], GlobalClass, NetworkStream>(command.Registration_Insert_Voice_Telegram_Music_Accept));
         }
 
         static void HandleCommand(string aCommand, byte[] data, GlobalClass cls, NetworkStream ns)

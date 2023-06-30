@@ -5,6 +5,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using Telegram.Bot.Types;
@@ -163,6 +164,13 @@ namespace ServersAccept
         ///id файла mp3 Голосовое сообщения
         /// </summary>
         public int Id_Files_Mp3_Voice_message { get; set; }
+
+
+        /// <summary>
+        ///id файла mp3 Голосовое сообщения Телеграм
+        /// </summary>
+        public int Id_Files_Mp3_Voice_message_Telegram { get; set; }
+
 
         /// <summary>
         ///Содержание файла mp3 Голосовое сообщения для отпраки клиенту
@@ -2316,8 +2324,9 @@ namespace ServersAccept
                             {
 
                             }
-                            IdUserTo_Telegram = IdUserTol;
+                            
                         }
+                        IdUserTo_Telegram = IdUserTol;
 
                         break;
                 }
@@ -2706,7 +2715,205 @@ namespace ServersAccept
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        async public void Insert_File_Voice_Telegram(byte [] buf)
+        {
+            try
+            {
+               // JObject keyValuePairs = new JObject(AUDIO);
+
+              // string StringImage = Convert.ToBase64String(AUDIO as byte[]);
+                //var d = Convert.FromBase64String(StringImage);
+               //WavValue = Convert.FromBase64String(StringImage);
+            //    byte[] buf = Convert.FromBase64String(AUDIO);
+                switch (GlobalClass.TypeSQL) //SQLite
+                {
+                    case 1:
+
+                        string sq = $"INSERT INTO Files (Image) VALUES (@buf)";
+                        using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                        {
+                            await connection.OpenAsync();
+                            SqliteCommand command = new SqliteCommand(sq, connection);
+                            command.Parameters.Add(new SqliteParameter("@buf", buf));
+                            await command.ExecuteNonQueryAsync();
+                            command.CommandText = sq;
+                            command.CommandText = "select last_insert_rowid()";
+                            int lastId = Convert.ToInt32(command.ExecuteScalar());
+                            //int number = command.ExecuteNonQuery();
+                            Id_Image = lastId;
+                        }
+                        break;
+                    case 2:
+                        //select last_insert_rowid() Не работает в Posgres
+                        string sql = $"INSERT INTO Files (Image) VALUES (@buf)";
+                        using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                        {
+                            connection.Open();
+                            NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                            command.Parameters.Add(new NpgsqlParameter("@buf", buf));
+                            command.CommandText = sql;
+                            command.ExecuteNonQuery();
+                            command.CommandText = "SELECT currval(pg_get_serial_sequence('Files', 'id'))";
+                            int lastId = Convert.ToInt32(command.ExecuteScalar());
+                            //int number = command.ExecuteNonQuery();
+                            Id_Files_Mp3_Voice_message_Telegram = lastId;
+
+
+                        }
+                        break;
+                }
             }
+            catch(Exception ex) 
+            {
+              Console.WriteLine(ex.Message);
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Добавляет  в таблицу Чат  сообщение от пользователя 
+        /// </summary>
+        /// <param name="messСhat"></param>
+        async public void Insert_Message_Telegrams_Voice(int IdUserFroms, int IdUserTos, int Id_Voice_File)
+        {
+            switch (GlobalClass.TypeSQL) //SQLite
+            {
+                case 1:
+
+                    DateTime DataMesss = DateTime.Now;
+                    string sq = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Mark) VALUES ({IdUserFroms},{IdUserTos},'Голосовое сообщение','{DataMesss:s}',{Id_Voice_File},{1})";
+                    using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                    {
+                        await connection.OpenAsync();
+                        SqliteCommand command = new SqliteCommand(sq, connection);
+                        await command.ExecuteNonQueryAsync();
+                        command.CommandText = sq;
+                    }
+                    int UserCount = 0;
+                    //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
+                    string sqlExpressioCount = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{IdUserFroms}' and IdUserTo = '{IdUserTos}') or " +
+                                                                                             $"(IdUserTo = '{IdUserFroms}' and IdUserFrom = '{IdUserTos}'))";
+                    using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                    {
+                        await connection.OpenAsync();
+                        SqliteCommand command = new SqliteCommand(sqlExpressioCount, connection);
+                        SqliteDataReader sqReader = command.ExecuteReader();
+                        //while (sqReader.Read())
+                        //{
+                        //    UserCount = sqReader.GetInt32(0);
+                        //}
+                        sqReader.Read();
+                        UserCount = Convert.ToInt32(sqReader["rec_count"].ToString());
+                    }
+                    //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
+                    string sqlExpressio = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{IdUserFroms}' and IdUserTo = '{IdUserTos}') or " +
+                                                                      $"(IdUserTo = '{IdUserFroms}' and IdUserFrom = '{IdUserTos}'))";
+                    using (var connection = new SqliteConnection(GlobalClass.connectionString))
+                    {
+                        await connection.OpenAsync();
+                        SqliteCommand command = new SqliteCommand(sqlExpressio, connection);
+                        SqliteCommand command2 = new SqliteCommand(sqlExpressio, connection);
+                        var n = await command.ExecuteReaderAsync();
+                        //         // Заполняем Dataset
+                        SqliteDataReader sqReader = command2.ExecuteReader();
+                        // Always call Read before accessing data.
+                        if (n.HasRows == true)
+                        {
+                            MessСhat[] aClats = new MessСhat[UserCount];
+                            int k = 0;
+
+                            while (sqReader.Read())
+                            {
+                                int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
+                                int IdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
+                                int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
+                                DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
+                                int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, 0);
+                                //aChat = mСhat;
+                                aClats[k] = mСhats;
+                                k++;
+                            }
+                            Frends_Chat_Wath = aClats;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    break;
+                case 2:
+                    DateTime DataMessss = DateTime.Now;
+
+                    string sqL = $"INSERT INTO Chat ( IdUserFrom,IdUserTo,Message,DataMess,Image,Mark) VALUES ({IdUserFroms},{IdUserTos},'Голосовое сообщение','{DataMessss:s}', {Id_Voice_File},{1})";
+                    using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                    {
+                        connection.Open();
+                        NpgsqlCommand command = new NpgsqlCommand(sqL, connection);
+                        command.CommandText = sqL;
+                        command.ExecuteNonQuery();
+
+                    }
+                    int UserCountL = 0;
+                    //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и х количество
+                    string sqlExpressioCountL = $"SELECT COUNT(*) AS rec_count FROM Chat WHERE ((IdUserFrom = '{IdUserFroms}' and IdUserTo = '{IdUserTos}') or " +
+                                                                                             $"(IdUserTo = '{IdUserFroms}' and IdUserFrom = '{IdUserTos}'))";
+                    using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                    {
+                        connection.Open();
+                        NpgsqlCommand command = new NpgsqlCommand(sqlExpressioCountL, connection);
+                        NpgsqlDataReader sqReader = command.ExecuteReader();
+                        //while (sqReader.Read())
+                        //{
+                        //    UserCount = sqReader.GetInt32(0);
+                        //}
+                        sqReader.Read();
+                        UserCountL = Convert.ToInt32(sqReader["rec_count"].ToString());
+                    }
+                    //Проверяет количество записей  в таблицу Чат  сообщение от пользователя  1 до 2 и от 2 до 1 и их передает
+                    string sqlExpressioL = $"SELECT *  FROM Chat  WHERE ((IdUserFrom = '{IdUserFroms}' and IdUserTo = '{IdUserTos}') or " +
+                                                                      $"(IdUserTo = '{IdUserFroms}' and IdUserFrom = '{IdUserTos}'))";
+                    using (var connection = new NpgsqlConnection(GlobalClass.connectionStringPostGreSQL))
+                    {
+                        connection.Open();
+                        NpgsqlCommand command = new NpgsqlCommand(sqlExpressioL, connection);
+                        //NpgsqlCommand command2 = new NpgsqlCommand(sqlExpressioL, connection);
+                        //var n = await command.ExecuteReaderAsync();
+                        //         // Заполняем Dataset
+                        NpgsqlDataReader sqReader = command.ExecuteReader();
+                        // Always call Read before accessing data.
+                        if (sqReader.HasRows == true)
+                        {
+                            MessСhat[] aClats = new MessСhat[UserCountL];
+                            int k = 0;
+
+                            while (sqReader.Read())
+                            {
+                                int Id_message = Convert.ToInt32(sqReader["Id"].ToString());
+                                int IdUserFrom = Convert.ToInt32(sqReader["IdUserFrom"].ToString());
+                                int IdUserTo = Convert.ToInt32(sqReader["IdUserTo"].ToString());
+                                DateTime DataMess = Convert.ToDateTime(sqReader["DataMess"].ToString());
+                                int Mark = Convert.ToInt32(sqReader["Mark"].ToString());
+                                var id_file = Convert.ToInt32(sqReader["Image"]);
+                                MessСhat mСhats = new MessСhat(Id_message, IdUserFrom, IdUserTo, sqReader["Message"] as string, DataMess, Mark, id_file);
+                                //aChat = mСhat;
+                                aClats[k] = mСhats;
+                                k++;
+                            }
+                            Frends_Chat_Wath = aClats;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    break;
+            }
+        }
         /// </summary>
     }
 }
