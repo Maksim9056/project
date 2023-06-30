@@ -1,11 +1,11 @@
 ﻿
-using Telegram.Bot.Types;
-using Telegram.Bot;
-using Telegram.Bot.Types.ReplyMarkups;
 using Class_chat;
+using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
-using System.Collections.Concurrent;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 namespace Client_Tbot
 {
 
@@ -75,7 +75,9 @@ namespace Client_Tbot
                 return;
 
             User? users = message.From;
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
             var userData = SessionManager.GetUserData(users);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
 
             // Добавляем логику обработки сообщения и обновления данных пользователя
 
@@ -119,9 +121,11 @@ namespace Client_Tbot
         //Команда для принятия сообщений
         async static Task Update(ITelegramBotClient botClient, Update? update, CancellationToken token)
         {
-         //   Command_Tbot command_Tbot = new Command_Tbot();
+            //   Command_Tbot command_Tbot = new Command_Tbot();
             //Для отправки назад сообщений
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
             Bot_OnMessage(update);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
 
             try
             {
@@ -146,6 +150,7 @@ namespace Client_Tbot
                             if (message.Photo != null)
                             {
                                 //Отправляем сообщение
+#pragma warning disable CS0162 // Обнаружен недостижимый код
                                 for (int i = 0; i < message.Photo.Length;i++)
                                 {
                                     //Отправляем в телеграм сообщение
@@ -155,6 +160,7 @@ namespace Client_Tbot
                                     break;
 
                                 }
+#pragma warning restore CS0162 // Обнаружен недостижимый код
                             }
                             //Проверяем сообщение есть ли видио 
                             if (message.Video != null)
@@ -183,9 +189,9 @@ namespace Client_Tbot
 
                                 //Скачиваем сообщение звуковое от пользователя  update.Message.Voice.FileId
                                 var voiceMessage = await botClient.GetFileAsync(message.Voice.FileId);
-                           
+                              //  voiceMessage.FileId
                                 //Отправляем звуковое сообщения пользователю
-                                await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
+                                //     await botClient.SendAudioAsync(message.Chat.Id, InputFile.FromFileId(voiceMessage.FileId));
                                 return;
                             }
                         }
@@ -249,7 +255,9 @@ namespace Client_Tbot
                                             user_Photo.Current = 0;
 
                                             //Отправляем на сервер
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                             Task.Run(async () => await command.Check_Mess_Friend(sistem?.IP, FileFS, "006")).Wait();
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
 
                                             //Проверяем есть ли сообщения
                                             if (command?._Answe.ToString() == "true")
@@ -267,10 +275,14 @@ namespace Client_Tbot
                                                         string? yu = command._AClass[i]?.ToString();
 
                                                         //Десерилизуем MessСhat
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
                                                         MessСhat? useTravel = JsonSerializer.Deserialize<MessСhat?>(yu);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
 
                                                         //Присваеваем значение useTravel
+#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
                                                         les[i] = useTravel ;
+#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
 
                                                         //Отправляем в телеграм имя друга и сообщения без фильтрации
                                                         await botClient.SendTextMessageAsync(message.Chat.Id, CommandCL.User_Logins_and_Friends.AClass[j].Name.ToString() + ":" + les[i].Message);
@@ -310,7 +322,9 @@ namespace Client_Tbot
                                     //Команда Пароль проверяем по идексу
                                     if (Results?[0] == "Пароль")
                                     {
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
                                         command_Tbot?.Select_Message_To_Chats(botClient, message, user, Results[1], sistem);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
                                     }
                                     else
                                     {
@@ -327,7 +341,9 @@ namespace Client_Tbot
 
                                             if (Message?[0] == "Message")
                                             {
+#pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
                                                 command_Tbot?.Insert_Telegram_Message_Chats(botClient, message, sistem, Message[1], Message[2]);
+#pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
 
                                             }
                                             else
@@ -415,6 +431,8 @@ namespace Client_Tbot
                                                               InlineKeyboardButton.WithCallbackData("Для выбора друга  в чате введите id друга  :Friends:","3" ),
 
                                                               InlineKeyboardButton.WithCallbackData("Для выбора отправки сообщений из телеграма Message:Пользователь,Друг :Message: ,","4" ),
+
+                                                              InlineKeyboardButton.WithCallbackData("Для выбора Перед отправкой голосовых 1 сообщения   и все из телеграма Д:Пользователь,Чат:Имя друга: ,","5" ),
                                                             }
                                                          }
                                                         ));
@@ -474,22 +492,37 @@ namespace Client_Tbot
                     else
                     {
                         //Принимает кнопки нажатые в чате в сообщения
-                        switch (update?.CallbackQuery?.Data)
+                        switch (update?.CallbackQuery.Data)
                         {
                             case "Привет":
-                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Привет !");
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+                                _ = await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Привет !");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                             case "1":
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Имя:");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                             case "2":
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Пароль:");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                             case "3":
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Friends:");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                             case "4":
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
                                 await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Введите:Message: ,");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
+                                break;
+                            case "5":
+#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
+                                await botClient.SendTextMessageAsync(update.CallbackQuery.Message.Chat.Id, "Чат:Имя друга ,");
+#pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
                                 break;
                         }
                     }
