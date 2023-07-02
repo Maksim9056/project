@@ -84,89 +84,96 @@ namespace Client_chat
         //Отображает Сообщения из чата
         public void Chat(CommandCL command)
         {
-            using (MemoryStream Chats = new MemoryStream())
+            try
             {
-                // Проверяем не равно ли   null
-                if (command._Answe != null)
+                using (MemoryStream Chats = new MemoryStream())
                 {
-                    //Здесь проверяем есть ли true то заполняет чат
-                    if (command._Answe.ToString() == "true")
+                    // Проверяем не равно ли   null
+                    if (command._Answe != null)
                     {
-                        //Заполняем размерность классу
-                        MessСhat[] les = new MessСhat[command._AClass.Count()];
-                        //Десерилизуем класс и получаем класс MessСhat 
-                        for (int i = 0; i < command._AClass.Count(); i++)
+                        //Здесь проверяем есть ли true то заполняет чат
+                        if (command._Answe.ToString() == "true")
                         {
-                            string yu = command._AClass[i].ToString();
-                            MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
-                            les[i] = useTravel;
-                        }
-                        //Отчищаем чат
-                        dataGridViewChat.Rows.Clear();
-                        //Устанавливаем количество столбцов
-                        dataGridViewChat.RowCount = les.Count();
-
-                        //Устанавливаем количество 2 колонок
-                        dataGridViewChat.ColumnCount = 2;
-                        //Для прочтения
-
-                        DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
-                        {
-                        }
-                        //Передаем значения от les до  allChat
-                        allChat = les;
-                        //Добавляем колонкку признак активности
-                        dataGridViewChat.Columns.Insert(2, column);
-                        //Проверяем   i < les.Count() больше ли  размерности массива
-                        for (int i = 0; i < les.Count(); i++)
-                        {
-                            //Выводим в    dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message сообщение
-                            for (int j = 0; j < 1; j++)
+                            //Заполняем размерность классу
+                            MessСhat[] les = new MessСhat[command._AClass.Count()];
+                            //Десерилизуем класс и получаем класс MessСhat 
+                            for (int i = 0; i < command._AClass.Count(); i++)
                             {
-                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
-                                //Присваем заголовок колонке
-                                dataGridViewChat.Columns[j].HeaderText = "Сообщения";
-                                //Проверяем от кого сообщения и заполняем голлубым
-                                if (les[i].IdUserFrom != Users)
+                                string yu = command._AClass[i].ToString();
+                                MessСhat useTravel = JsonSerializer.Deserialize<MessСhat>(yu);
+                                les[i] = useTravel;
+                            }
+                            //Отчищаем чат
+                            dataGridViewChat.Rows.Clear();
+                            //Устанавливаем количество столбцов
+                            dataGridViewChat.RowCount = les.Count();
+
+                            //Устанавливаем количество 2 колонок
+                            dataGridViewChat.ColumnCount = 2;
+                            //Для прочтения
+
+                            DataGridViewCheckBoxColumn column = new DataGridViewCheckBoxColumn();
+                            {
+                            }
+                            //Передаем значения от les до  allChat
+                            allChat = les;
+                            //Добавляем колонкку признак активности
+                            dataGridViewChat.Columns.Insert(2, column);
+                            //Проверяем   i < les.Count() больше ли  размерности массива
+                            for (int i = 0; i < les.Count(); i++)
+                            {
+                                //Выводим в    dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message сообщение
+                                for (int j = 0; j < 1; j++)
                                 {
-                                    dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                    dataGridViewChat.Rows[i].Cells[j].Value = les[i].Message;
+                                    //Присваем заголовок колонке
+                                    dataGridViewChat.Columns[j].HeaderText = "Сообщения";
+                                    //Проверяем от кого сообщения и заполняем голлубым
+                                    if (les[i].IdUserFrom != Users)
+                                    {
+                                        dataGridViewChat.Rows[i].Cells[j].Style.ForeColor = Color.Blue;
+                                    }
+                                }
+                                //Отправка
+                                for (int j = 1; j < 2; j++)
+                                {  //Выводим в dataGridViewChat дату отправления сообщения
+                                    dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
+                                    //Заголовок дата отправки
+                                    dataGridViewChat.Columns[j].HeaderText = "Дата отправки";
+                                }
+                                //Признак активности
+                                for (int j = 2; j < 3; j++)
+                                {
+                                    bool aMark = false;
+                                    if (les[i].Mark.ToString() == "1")
+                                    {
+                                        aMark = true;
+                                    }
+                                    //Выводим галочку
+                                    dataGridViewChat.Rows[i].Cells[j].Value = aMark;
                                 }
                             }
-                            //Отправка
-                            for (int j = 1; j < 2; j++)
-                            {  //Выводим в dataGridViewChat дату отправления сообщения
-                                dataGridViewChat.Rows[i].Cells[j].Value = les[i].DataMess;
-                                //Заголовок дата отправки
-                                dataGridViewChat.Columns[j].HeaderText = "Дата отправки";
-                            }
-                            //Признак активности
-                            for (int j = 2; j < 3; j++)
-                            {
-                                bool aMark = false;
-                                if (les[i].Mark.ToString() == "1")
-                                {
-                                    aMark = true;
-                                }
-                                //Выводим галочку
-                                dataGridViewChat.Rows[i].Cells[j].Value = aMark;
-                            }
+                            //Даем размерность автоматически но слимитами
+                            dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                            dataGridViewChat.Visible = true;
                         }
-                        //Даем размерность автоматически но слимитами
-                        dataGridViewChat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        dataGridViewChat.Visible = true;
+                        else
+                        {
+                            //Отчищаем чат
+                            dataGridViewChat.Rows.Clear();
+                        }
                     }
                     else
                     {
-                        //Отчищаем чат
+                        //Если нет сообщений
                         dataGridViewChat.Rows.Clear();
+                        //MessageBox.Show("Сообщений нет");
                     }
                 }
-                else
-                {
-                    //Если нет сообщений
-                    dataGridViewChat.Rows.Clear();
-                    //MessageBox.Show("Сообщений нет");
-                }
+            }
+            catch(Exception)
+            {
+
             }
         }
 
@@ -194,15 +201,22 @@ namespace Client_chat
         /// <param name="Name"></param>
         public void SaveConfig(Int32 Port, string ipAddress, string Name)
         {
-            //Чтения файла Client.json"
-            using (FileStream file = new FileStream("Client.json", FileMode.OpenOrCreate))
+            try
             {
-                //Заполняем класс Connect_Client_
-                Connect_Client_ connect_Client = new Connect_Client_(Port, ipAddress, Name);
-                //Серелизуем класс Connect_Client_
-                JsonSerializer.Serialize<Connect_Client_>(file, connect_Client);
-                //Ip adress присваеваем
-                IP_ADRES.Ip_adress = ipAddress;
+                //Чтения файла Client.json"
+                using (FileStream file = new FileStream("Client.json", FileMode.OpenOrCreate))
+                {
+                    //Заполняем класс Connect_Client_
+                    Connect_Client_ connect_Client = new Connect_Client_(Port, ipAddress, Name);
+                    //Серелизуем класс Connect_Client_
+                    JsonSerializer.Serialize<Connect_Client_>(file, connect_Client);
+                    //Ip adress присваеваем
+                    IP_ADRES.Ip_adress = ipAddress;
+                }
+            }
+            catch(Exception)
+            {
+
             }
         }
 
@@ -1205,110 +1219,134 @@ namespace Client_chat
         string outputFilename = "Тест.mp3";
 
         //Получение данных из входного буфера 
-        [Obsolete]
+      //  [Obsolete]
+
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            if (this.InvokeRequired)
+            try
             {
-                this.BeginInvoke(new EventHandler<WaveInEventArgs>(waveIn_DataAvailable), sender, e);
+                if (this.InvokeRequired)
+                {
+                    this.BeginInvoke(new EventHandler<WaveInEventArgs>(waveIn_DataAvailable), sender, e);
+                }
+                else
+                {
+                    //Записываем данные из буфера в файл
+#pragma warning disable CS0618 // Тип или член устарел
+                    writer.WriteData(e.Buffer, 0, e.BytesRecorded);
+#pragma warning restore CS0618 // Тип или член устарел
+                }
             }
-            else
+            catch(Exception)
             {
-                //Записываем данные из буфера в файл
-                writer.WriteData(e.Buffer, 0, e.BytesRecorded);
+
             }
         }
 
         //Завершаем запись
         void StopRecording(object sender, EventArgs e)
         {
-            waveIn.StopRecording();  
-            MessageBox.Show("StopRecording");
-
-       //     var path = Environment.CurrentDirectory.ToString();
-
-            using (MemoryStream memoryStream = new MemoryStream())
+            try
             {
-                MemoryStream memoryStreams = new MemoryStream();
-                string FileFS = "";
-                
 
-                int i = 0;
 
-                using (FileStream fileStream = new FileStream(outputFilename, FileMode.OpenOrCreate))
+                waveIn.StopRecording();
+                MessageBox.Show("StopRecording");
+
+                //     var path = Environment.CurrentDirectory.ToString();
+
+                using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    byte[] bytes = new byte[fileStream.Length];
-                    i = fileStream.Read(bytes, 0, bytes.Length);
+                    MemoryStream memoryStreams = new MemoryStream();
+                    string FileFS = "";
 
-                    memoryStream.Write(bytes, 0, bytes.Length);
+
+                    int i = 0;
+
+                    using (FileStream fileStream = new FileStream(outputFilename, FileMode.OpenOrCreate))
+                    {
+                        byte[] bytes = new byte[fileStream.Length];
+                        i = fileStream.Read(bytes, 0, bytes.Length);
+
+                        memoryStream.Write(bytes, 0, bytes.Length);
+                    }
+
+                    // чтение из файла
+                    //using (FileStream fileStream = File.OpenRead(outputFilename))
+                    //{
+                    //    // выделяем массив для считывания данных из файла
+                    //    byte[] buffer = new byte[fileStream.Length];
+                    //    // считываем данные
+                    //    fileStream.Read(buffer, 0, buffer.Length);
+                    //    // декодируем байты в строку
+                    //    //string textFromFile = Encoding.Default.GetString(buffer);
+                    //    //Console.WriteLine($"Текст из файла: {textFromFile}");
+
+                    //}
+
+
+                    Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(0, memoryStream.ToArray());
+
+                    JsonSerializer.Serialize<Insert_Fille_Music>(memoryStreams, insert_Fille_Music);
+
+                    FileFS = Encoding.Default.GetString(memoryStreams.ToArray());
+                    Task.Run(async () => await command.Stream_Filles_music(IP_ADRES.Ip_adress, FileFS, "019")).Wait();
+
+                    if (command.Insert_Fille_Music_id == null)
+                    {
+
+                    }
+                    else
+                    {
+                        textBox1.Text = "Голосовое сообщение ";
+                        button3_Click(sender, e);
+                    }
                 }
+            }
+            catch(Exception)
+            {
 
-                // чтение из файла
-                //using (FileStream fileStream = File.OpenRead(outputFilename))
-                //{
-                //    // выделяем массив для считывания данных из файла
-                //    byte[] buffer = new byte[fileStream.Length];
-                //    // считываем данные
-                //    fileStream.Read(buffer, 0, buffer.Length);
-                //    // декодируем байты в строку
-                //    //string textFromFile = Encoding.Default.GetString(buffer);
-                //    //Console.WriteLine($"Текст из файла: {textFromFile}");
-                    
-                //}
-
-                
-                Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(0, memoryStream.ToArray());
-
-                JsonSerializer.Serialize<Insert_Fille_Music>(memoryStreams, insert_Fille_Music);
-
-                FileFS = Encoding.Default.GetString(memoryStreams.ToArray());
-                Task.Run(async () => await command.Stream_Filles_music(IP_ADRES.Ip_adress, FileFS, "019")).Wait();
-
-                if (command.Insert_Fille_Music_id == null)
-                {
-
-                }
-                else
-                {
-                    textBox1.Text = "Голосовое сообщение ";
-                   button3_Click(sender,e);
-                }
             }
         }
 
         //Окончание записи
         private void waveIn_RecordingStopped(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
+            try
             {
-                this.BeginInvoke(new EventHandler(waveIn_RecordingStopped), sender, e);
+                if (this.InvokeRequired)
+                {
+                    this.BeginInvoke(new EventHandler(waveIn_RecordingStopped), sender, e);
+                }
+                else
+                {
+                    waveIn.Dispose();
+                    waveIn = null;
+                    writer.Close();
+                    writer = null;
+                }
             }
-            else
+            catch(Exception)
             {
-                waveIn.Dispose();
-                waveIn = null;
-                writer.Close();
-                writer = null;
+
             }
         }
 
-        // public SoundRecorder recorder;
-      
-        private void button5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-     
-
-                                                
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if (waveIn != null)
+            try
             {
-                StopRecording(sender,e);
+                if (waveIn != null)
+                {
+                    StopRecording(sender, e);
+                }
             }
+            catch(Exception ex )
+            {
+                MessageBox.Show(ex.Message);
+            }
+         
         }
 
 
@@ -1356,111 +1394,117 @@ namespace Client_chat
 
         private void прослушатьСообщениеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            if (dataGridViewChat == null)
+            try
             {
-
-            }
-            else
-            {
-
-
-
-                //int tt=0;
-                int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
-                
-                //Находим по фильтру id dataGridViewChat
-                //for(int i=0; i < allChat.Length; i++)
-                //{
-                //    if (allChat[i].Id == selectedrowindexs)
-                //    {
-                //        tt = allChat[i].Files;
-                //        break;
-                //    }
-                       
-                //}
-
-                //Сообщения для удаления
-                //textBox1.Text = tt.Message;
-                //id сообщения для удаления
-                // Update_id = tt.Id;
-
-
-                string FileFS = "";
-
-                var Сообщение = allChat[selectedrowindexs].Files;
-
-
-
-                if (Сообщение == 0)
+                if (dataGridViewChat == null)
                 {
 
                 }
                 else
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
 
-                        byte[] bytes = new byte[] { };
-                        Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(Сообщение, bytes);
-                        JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
 
-                        FileFS = Encoding.Default.GetString(ms.ToArray());
-                        //FileFS = "";
-                        Task.Run(async () => await command.Stream_Fille_accept_music(IP_ADRES.Ip_adress, FileFS, "020")).Wait();
-                    }
-                    if (command.Select_Fille_Music_id == null)
+
+                    //int tt=0;
+                    int selectedrowindexs = dataGridViewChat.SelectedCells[0].RowIndex;
+
+                    //Находим по фильтру id dataGridViewChat
+                    //for(int i=0; i < allChat.Length; i++)
+                    //{
+                    //    if (allChat[i].Id == selectedrowindexs)
+                    //    {
+                    //        tt = allChat[i].Files;
+                    //        break;
+                    //    }
+
+                    //}
+
+                    //Сообщения для удаления
+                    //textBox1.Text = tt.Message;
+                    //id сообщения для удаления
+                    // Update_id = tt.Id;
+
+
+                    string FileFS = "";
+
+                    var Сообщение = allChat[selectedrowindexs].Files;
+
+
+
+                    if (Сообщение == 0)
                     {
 
                     }
                     else
                     {
-                        
-                         Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
-                        /*
-                        var path = Environment.CurrentDirectory.ToString();
-                        string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
-
-                        Random rand = new Random();
-
-                        if (File.Exists(path))
+                        using (MemoryStream ms = new MemoryStream())
                         {
-                            NameFile = NameFile + rand.Next(1000000000) as String;
+
+                            byte[] bytes = new byte[] { };
+                            Insert_Fille_Music insert_Fille_Music = new Insert_Fille_Music(Сообщение, bytes);
+                            JsonSerializer.Serialize<Insert_Fille_Music>(ms, insert_Fille_Music);
+
+                            FileFS = Encoding.Default.GetString(ms.ToArray());
+                            //FileFS = "";
+                            Task.Run(async () => await command.Stream_Fille_accept_music(IP_ADRES.Ip_adress, FileFS, "020")).Wait();
                         }
-
-                        //string filePath = "name.mp3";
-                        File.WriteAllBytes(NameFile, _Fille_Music.Fille);
-                        //Process.Start(NameFile);
-                        //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
-                        //{
-
-
-                        //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
-                        //}
-
-                        //   using(FileStream FS = new CreateParams )
-                        //   var path = Environment.CurrentDirectory.ToString();
-
-                        SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
-                        simpleSound.Play();
-
-                        //simpleSound WindowsMediaPlayer
-                        //  WindowsMediaPlayer
-                        //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
-                        //this.Text = WMP.versionInfo;
-                        //WMP.URL = @"D:\sound.mp3 ";
-                        //WMP.controls.play();
-                        */
-
-                        // Воспроизводит звук из памяти из формата byte[]
-                        using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                        if (command.Select_Fille_Music_id == null)
                         {
-                            SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
-                            simpleSound2.Play();
-                        }
 
+                        }
+                        else
+                        {
+
+                            Insert_Fille_Music _Fille_Music = command.Select_Fille_Music_id;
+                            /*
+                            var path = Environment.CurrentDirectory.ToString();
+                            string NameFile = path + "\\AudioFiles\\AudioFile.mp3";
+
+                            Random rand = new Random();
+
+                            if (File.Exists(path))
+                            {
+                                NameFile = NameFile + rand.Next(1000000000) as String;
+                            }
+
+                            //string filePath = "name.mp3";
+                            File.WriteAllBytes(NameFile, _Fille_Music.Fille);
+                            //Process.Start(NameFile);
+                            //using (FileStream fileStream = new FileStream(NameFile, FileMode.OpenOrCreate))
+                            //{
+
+
+                            //    fileStream.Write(_Fille_Music.Fille, 0, _Fille_Music.Fille.Length);
+                            //}
+
+                            //   using(FileStream FS = new CreateParams )
+                            //   var path = Environment.CurrentDirectory.ToString();
+
+                            SoundPlayer simpleSound = new SoundPlayer($"{NameFile}");
+                            simpleSound.Play();
+
+                            //simpleSound WindowsMediaPlayer
+                            //  WindowsMediaPlayer
+                            //WMPLib.WindowsMediaPlayer WMP = new WMPLib.WindowsMediaPlayer();
+                            //this.Text = WMP.versionInfo;
+                            //WMP.URL = @"D:\sound.mp3 ";
+                            //WMP.controls.play();
+                            */
+
+                            // Воспроизводит звук из памяти из формата byte[]
+                            using (MemoryStream fileStream = new MemoryStream(_Fille_Music.Fille))
+                            {
+                                SoundPlayer simpleSound2 = new SoundPlayer(fileStream);
+                                simpleSound2.Play();
+                            }
+
+                        }
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -1481,7 +1525,7 @@ namespace Client_chat
             
         //    mainForm.ShowDialog();
         }
-        [Obsolete]
+        //[Obsolete]
         private void button8_Click(object sender, EventArgs e)
         {
 
@@ -1494,8 +1538,10 @@ namespace Client_chat
                 waveIn.DeviceNumber = 0;
 
                 //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
+#pragma warning disable CS0612 // Тип или член устарел
                 waveIn.DataAvailable += waveIn_DataAvailable;
-                //Прикрепляем обработчик завершения записи
+#pragma warning restore CS0612 // Тип или член устарел
+                              //Прикрепляем обработчик завершения записи
 
                 waveIn.RecordingStopped += waveIn_RecordingStopped;
                 //Формат wav-файла - принимает параметры - частоту дискретизации и количество каналов(здесь mono)
@@ -1510,6 +1556,20 @@ namespace Client_chat
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Application.ExitThread();
+                Environment.Exit(0);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
         }
     }
 }
