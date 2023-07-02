@@ -182,6 +182,14 @@ namespace ServersAccept
         /// </summary>
         public int id_value { get; set; }
 
+
+    //    CREATE DATABASE "MsChat"
+    //WITH
+    //OWNER = postgres
+    //ENCODING = 'UTF8'
+    //CONNECTION LIMIT = -1
+    //IS_TEMPLATE = False;
+
         /// <summary>
         /// Создают таблицу пользователей 
         /// </summary>
