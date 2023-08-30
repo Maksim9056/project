@@ -1349,7 +1349,7 @@ namespace Client_chat
          
         }
 
-
+        //
         //private void button7_MouseMove(object sender, MouseEventArgs e)
         //{
         //    try
@@ -1525,7 +1525,7 @@ namespace Client_chat
             
         //    mainForm.ShowDialog();
         }
-        //[Obsolete]
+        //[Obsolete]//
         private void button8_Click(object sender, EventArgs e)
         {
 

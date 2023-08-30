@@ -133,7 +133,9 @@ namespace ServersAccept
         public int Id { get; set; }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int Id_Telegrams { get; set; }
 
 

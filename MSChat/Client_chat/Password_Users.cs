@@ -177,7 +177,7 @@ namespace Client_chat
             }
             catch
             {
-
+                //
             }
         }
 
